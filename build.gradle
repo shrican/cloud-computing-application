@@ -36,24 +36,25 @@ idea {
 }
 
 dependencies {
-    compile ('org.springframework.boot:spring-boot-starter-actuator')
-    compile ('org.springframework.boot:spring-boot-actuator-docs')
-    compile ('org.springframework.boot:spring-boot-starter-mail')
-    compile ('org.springframework.boot:spring-boot-starter-security')
-    compile ('org.springframework.session:spring-session')
-    compile ('org.springframework.boot:spring-boot-starter-web')
-    compile ('org.apache.commons:commons-lang3:+')
-    compile ('com.google.guava:guava:+')
-    compile ('org.apache.httpcomponents:httpclient:+')
-    compile ('com.google.code.gson:gson:+')
-    compile ('com.amazonaws:aws-java-sdk:+')
-    compile ('com.google.cloud:google-cloud:+')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('org.springframework.boot:spring-boot-actuator-docs')
+    compile('org.springframework.boot:spring-boot-starter-mail')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.session:spring-session')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.apache.commons:commons-lang3:+')
+    compile('com.google.guava:guava:+')
+    compile('org.apache.httpcomponents:httpclient:+')
+    compile('com.google.code.gson:gson:+')
+    //compile ('com.amazonaws:aws-java-sdk:+')
+    //compile ('com.google.cloud:google-cloud:+')
 
     runtime('org.springframework.boot:spring-boot-devtools')
     runtime('mysql:mysql-connector-java')
 
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
+    testCompile('io.rest-assured:rest-assured:3.0.3')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.security:spring-security-test')
 }
