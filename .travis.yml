@@ -7,3 +7,8 @@ install: true
 
 script:
   - ./gradlew war
+
+notifications:
+  email:
+    recipients:
+    - t.parikh@northeastern.edu
