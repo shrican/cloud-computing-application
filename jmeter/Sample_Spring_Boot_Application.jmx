@@ -18,7 +18,7 @@
           <stringProp name="LoopController.loops">1000</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">5000</stringProp>
-        <stringProp name="ThreadGroup.ramp_time">10</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">0</stringProp>
         <longProp name="ThreadGroup.start_time">1505353461000</longProp>
         <longProp name="ThreadGroup.end_time">1505353461000</longProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
@@ -80,7 +80,7 @@
             </value>
           </objProp>
           <stringProp name="TestPlan.comments">s</stringProp>
-          <stringProp name="filename">~/Desktop/out.csv</stringProp>
+          <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
