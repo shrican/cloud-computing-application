@@ -1,5 +1,6 @@
 package com.csye6225.demo.auth;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,13 +14,17 @@ import org.springframework.session.web.http.HttpSessionStrategy;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+  @Autowired
+  private BasicAuthEntryPoint basicAuthEntryPoint;
+
   protected void configure(HttpSecurity http) throws Exception {
     http
         .authorizeRequests()
         .antMatchers("/").permitAll()
         .anyRequest().authenticated()
         .and()
-        .httpBasic();
+        .httpBasic()
+        .authenticationEntryPoint(basicAuthEntryPoint);
   }
 
   @Bean

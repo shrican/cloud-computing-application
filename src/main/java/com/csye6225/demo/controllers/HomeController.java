@@ -34,4 +34,12 @@ public class HomeController {
     return jsonObject.toString();
   }
 
+  @RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
+  @ResponseBody
+  public String test() {
+    JsonObject jsonObject = new JsonObject();
+    jsonObject.addProperty("message", "authorized for /test");
+    return jsonObject.toString();
+  }
+
 }
