@@ -5,6 +5,7 @@ Execute following command on your bash shell
 $ curl http://localhost:8080
 ```
 
+
 ## Expected Response:
 ```
 {"message":"you are not logged in!!!"}
