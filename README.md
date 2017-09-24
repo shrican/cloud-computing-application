@@ -1,2 +1,4 @@
 # csye6225-fall2017
-update 
+update
+Update By Manish 
+Udate By Rahul
