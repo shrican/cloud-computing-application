@@ -6,9 +6,10 @@ sudo: false
 install: true
 
 script:
+  - cd csye6225-fall2017
   - ./gradlew war
 
 notifications:
   email:
     recipients:
-      - t.parikh@northeastern.edu
+      - patil.man@husky.neu.edu
