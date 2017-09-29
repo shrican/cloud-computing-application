@@ -15,10 +15,10 @@ $ curl http://localhost:8080
 
 Execute following command on your bash shell
 ``` bash
-$ curl -u user:password http://localhost:8080
+$ curl -u userAccount:password http://localhost:8080
 ```
 
-where *user* is the username and *password* is the password.
+where *userAccount* is the username and *password* is the password.
 
 ## Expected Response:
  ```

@@ -60,6 +60,11 @@ dependencies {
 
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
+    // https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api
+    compile('javax.ws.rs:javax.ws.rs-api:2.0.1')
+    compile("org.projectlombok:lombok:1.16.16")
+    compile('org.mapstruct:mapstruct-jdk8:1.2.0.CR1')
+
     testCompile('io.rest-assured:rest-assured:3.0.3')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.security:spring-security-test')
