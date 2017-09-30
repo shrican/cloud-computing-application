@@ -35,4 +35,13 @@ public class UserAccountDao {
 
         return userAccountMapper.entityToDto(userAccountEntity);
     }
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    public UserAccountDto loadUserByUsername(String username) {
+        UserAccountEntity user = userAccountRepository.findByUsername(username);
+        if (user == null) {
+
+        }
+        return userAccountMapper.entityToDto(user);
+    }
 }

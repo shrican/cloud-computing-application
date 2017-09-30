@@ -9,6 +9,6 @@ script:
   - ./gradlew war
 
 notifications:
-  email:
+  username:
     recipients:
       - patil.man@husky.neu.edu
