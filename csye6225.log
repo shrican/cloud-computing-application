@@ -6977,3 +6977,4 @@ com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Dupl
 2017-09-30 03:13:01.663  INFO 6084 --- [restartedMain] s.a.ScheduledAnnotationBeanPostProcessor : No TaskScheduler/ScheduledExecutorService bean found for scheduled processing
 2017-09-30 03:13:01.874  INFO 6084 --- [restartedMain] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)
 2017-09-30 03:13:01.916  INFO 6084 --- [restartedMain] edu.neu.csye.DemoApplication             : Started DemoApplication in 26.039 seconds (JVM running for 27.381)
+2017-09-30 03:13:49.224  INFO 6084 --- [http-nio-8080-exec-2] o.h.h.i.QueryTranslatorFactoryInitiator  : HHH000397: Using ASTQueryTranslatorFactory
