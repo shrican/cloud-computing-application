@@ -11,4 +11,4 @@ script:
 notifications:
   username:
     recipients:
-      - mudholkar.s@husky.neu.edu
+      - patil.man@husky.neu.edu
