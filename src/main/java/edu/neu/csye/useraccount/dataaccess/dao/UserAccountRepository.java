@@ -12,5 +12,5 @@ public interface UserAccountRepository extends CrudRepository<UserAccountEntity,
     UserAccountEntity save(UserAccountEntity entity);
 
     @Transactional(propagation = Propagation.MANDATORY)
-    UserAccountEntity findByEmail(String email);
+    UserAccountEntity findByUsername(String username);
 }

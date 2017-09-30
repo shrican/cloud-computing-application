@@ -17,8 +17,8 @@ public class UserAccountEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "EMAIL", unique = true)
-    private String email;
+    @Column(name = "USERNAME", unique = true)
+    private String username;
 
     @Column(name = "PASSWORD")
     private String password;
