@@ -18,8 +18,8 @@ public class UserAccount implements Serializable {
 
     private static final long serialVersionUID = -7488073602465822378L;
 
-    @NotBlank(message = "EMAIL_CANT_BE_BLANK")
-    private String email;
+    @NotBlank(message = "USERNAME_CANT_BE_BLANK")
+    private String username;
 
     @NotBlank(message = "PASSWORD_CANT_BE_BLANK")
     private String password;

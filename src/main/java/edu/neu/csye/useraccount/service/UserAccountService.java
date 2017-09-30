@@ -2,11 +2,18 @@ package edu.neu.csye.useraccount.service;
 
 import edu.neu.csye.useraccount.dataaccess.dao.UserAccountDao;
 import edu.neu.csye.useraccount.service.model.UserAccountDto;
+import edu.neu.csye.useraccount.service.model.UserAccountMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 
 
 /**
@@ -15,10 +22,13 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class UserAccountService {
+public class UserAccountService implements UserDetailsService {
 
     @Autowired
     private final UserAccountDao userAccountDao;
+
+    @Autowired
+    private final UserAccountMapper userAccountMapper;
 
     /**
      * Registers a user.
@@ -28,6 +38,18 @@ public class UserAccountService {
      */
     public UserAccountDto register(UserAccountDto userAccountDto){
         return userAccountDao.save(userAccountDto);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+
+        UserAccountDto userRecord = userAccountDao.loadUserByUsername(username);
+
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("User");
+
+        UserDetails springUserRecord = new User(userRecord.getUsername(), userRecord.getPassword(), Arrays.asList(grantedAuthority));
+
+        return springUserRecord;
     }
 
 }
