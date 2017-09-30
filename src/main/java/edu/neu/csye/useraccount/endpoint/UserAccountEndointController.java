@@ -18,9 +18,13 @@ public class UserAccountEndointController implements UserAccountEndpointRest {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public UserAccountDto register(UserAccount userAccount)
+    public String register(UserAccount userAccount)
     {
         userAccount.setPassword(bCryptPasswordEncoder.encode(userAccount.getPassword()));
-        return userAccountService.register(userAccountMapper.userAccountToDto(userAccount));
+        if(userAccountService.ensuireUsernameIsUnique(userAccount.getUsername())){
+            userAccountService.register(userAccountMapper.userAccountToDto(userAccount));
+        return "Registration Successful!";
+        }
+        return "Username Already Exists";
     }
 }

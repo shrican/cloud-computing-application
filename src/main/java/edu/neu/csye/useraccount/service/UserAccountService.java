@@ -52,4 +52,7 @@ public class UserAccountService implements UserDetailsService {
         return springUserRecord;
     }
 
+    public boolean ensuireUsernameIsUnique(String username){
+       return !userAccountDao.existsByUsername(username);
+    }
 }

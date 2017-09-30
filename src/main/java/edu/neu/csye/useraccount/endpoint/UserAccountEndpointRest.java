@@ -16,5 +16,5 @@ public interface UserAccountEndpointRest {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    UserAccountDto register(UserAccount userAccount);
+    String register(UserAccount userAccount);
 }
