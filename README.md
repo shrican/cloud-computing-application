@@ -57,7 +57,8 @@ Add additional notes about how to deploy this on a live system
 ## Built With
 
 * [Travis CI](https://travis-ci.com/) - Travis CI is a hosted, distributed continuous integration service used to build and test software projects hosted at GitHub.
-Travis build link for the project : 
+
+Travis build link for the project : [Click here for the link](https://travis-ci.com/shrican/csye6225-fall2017.svg?token=Bz5BxQbm4vVpwaJw2HRJ&branch=assignment3)
 
 ## Authors
 
