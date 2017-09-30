@@ -1,4 +1,4 @@
-package com.csye6225.demo.controllers;
+package edu.neu.csye.controllers;
 
 
 import com.google.gson.JsonObject;

@@ -3,6 +3,7 @@ package edu.neu.csye.useraccount.service;
 import edu.neu.csye.useraccount.dataaccess.dao.UserAccountDao;
 import edu.neu.csye.useraccount.service.model.UserAccountDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,6 +17,7 @@ import javax.transaction.Transactional;
 @Transactional
 public class UserAccountService {
 
+    @Autowired
     private final UserAccountDao userAccountDao;
 
     /**

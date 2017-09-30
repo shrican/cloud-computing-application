@@ -1,4 +1,4 @@
-package com.csye6225.demo;
+package edu.neu.csye;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
