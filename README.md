@@ -15,21 +15,12 @@ Below are the instructions that will get you a copy of the project up and runnin
 
 ### Installation
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
- ** addcode**
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+* Git Clone the required repository
+* Import existing code source from Github/folder
+* Import Gradle configuration along with Java JDK
+* Make/Update changes to build.gradle and travis.yml
+* Add MySQL database Configuration
+* Build Application using Travis CI 
 
 ## Instructions to run unit, integration and/or load tests
 
@@ -54,10 +45,19 @@ Example : ** Add code **
 
 Add additional notes about how to deploy this on a live system
 
-## Built With
+## Build with Travis CI
 
 * [Travis CI](https://travis-ci.com/) - Travis CI is a hosted, distributed continuous integration service used to build and test software projects hosted at GitHub.
-Travis build link for the project : 
+
+Steps for Travis CI build
+
+* LOgin to Travis CI (using github login)
+* Activate your repository
+* Flick the repository switch on
+* Add .travis.yml file to your repository
+* Trigger your first build with a git push
+
+Travis build link for the project : [Click here for the link](https://travis-ci.com/shrican/csye6225-fall2017.svg?token=Bz5BxQbm4vVpwaJw2HRJ&branch=assignment3)
 
 ## Authors
 
