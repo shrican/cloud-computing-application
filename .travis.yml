@@ -11,4 +11,4 @@ script:
 notifications:
   username:
     recipients:
-      - t.parikh@northeastern.edu
+      - mudholkar.s@husky.neu.edu
