@@ -9,6 +9,6 @@ script:
   - ./gradlew war
 
 notifications:
-  email:
+  username:
     recipients:
       - t.parikh@northeastern.edu

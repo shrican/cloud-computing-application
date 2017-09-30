@@ -13,4 +13,7 @@ public interface UserAccountRepository extends CrudRepository<UserAccountEntity,
 
     @Transactional(propagation = Propagation.MANDATORY)
     UserAccountEntity findByEmail(String email);
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    UserAccountEntity findByUsername(String username);
 }
