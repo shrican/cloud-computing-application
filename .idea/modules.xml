@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/csye6225-spring-boot-starter-webapp-1/src/main/main.iml" filepath="$PROJECT_DIR$/csye6225-spring-boot-starter-webapp-1/src/main/main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/csye6225-spring-boot-starter-webapp-1/src/test/test.iml" filepath="$PROJECT_DIR$/csye6225-spring-boot-starter-webapp-1/src/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/assignment3.iml" filepath="$PROJECT_DIR$/.idea/modules/assignment3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/assignment3_main.iml" filepath="$PROJECT_DIR$/.idea/modules/assignment3_main.iml" group="assignment3" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/assignment3_test.iml" filepath="$PROJECT_DIR$/.idea/modules/assignment3_test.iml" group="assignment3" />
+      <module fileurl="file://$PROJECT_DIR$/src/main/main.iml" filepath="$PROJECT_DIR$/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/test/test.iml" filepath="$PROJECT_DIR$/src/test/test.iml" />
     </modules>
   </component>
 </project>
