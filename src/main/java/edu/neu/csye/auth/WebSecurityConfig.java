@@ -1,4 +1,4 @@
-package com.csye6225.demo.auth;
+package edu.neu.csye.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

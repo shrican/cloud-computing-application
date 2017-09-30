@@ -11,9 +11,10 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/user")
 public interface UserAccountEndpointRest {
+
+    @Path("/register")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     UserAccountDto register(UserAccount createMerchantCategoryCodeRequest);
-
 }

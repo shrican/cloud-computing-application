@@ -4,6 +4,7 @@ import edu.neu.csye.useraccount.dataaccess.model.UserAccountEntity;
 import edu.neu.csye.useraccount.service.model.UserAccountDto;
 import edu.neu.csye.useraccount.service.model.UserAccountMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserAccountDao {
 
     private final UserAccountRepository userAccountRepository;
+
+    @Autowired
     private final UserAccountMapper userAccountMapper;
 
     /**

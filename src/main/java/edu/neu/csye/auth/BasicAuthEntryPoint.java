@@ -1,4 +1,4 @@
-package com.csye6225.demo.auth;
+package edu.neu.csye.auth;
 
 import com.google.gson.JsonObject;
 import org.apache.http.entity.ContentType;

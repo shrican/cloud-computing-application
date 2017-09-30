@@ -1,4 +1,4 @@
-package com.csye6225.demo;
+package edu.neu.csye;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
