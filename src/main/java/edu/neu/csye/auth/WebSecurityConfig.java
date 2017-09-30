@@ -8,11 +8,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
 
@@ -23,9 +20,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private BasicAuthEntryPoint basicAuthEntryPoint;
 
   @Autowired
-  private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-  @Autowired
   private UserAccountService userAccountService;
 
   protected void configure(HttpSecurity http) throws Exception {
@@ -33,8 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .csrf()
         .disable()
         .authorizeRequests()
-        .antMatchers("/").permitAll()
-        .anyRequest().authenticated()
+        .antMatchers("/").authenticated()
+        .antMatchers("/user/register").permitAll()
         .and()
         .httpBasic()
         .authenticationEntryPoint(basicAuthEntryPoint);

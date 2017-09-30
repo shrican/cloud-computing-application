@@ -18,7 +18,6 @@ public class HomeController {
 
   private final static Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-  @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
   @ResponseBody
   public String welcome() {
 
