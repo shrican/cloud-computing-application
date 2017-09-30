@@ -1,5 +1,6 @@
 package edu.neu.csye.useraccount.endpoint;
 
+import com.google.gson.JsonObject;
 import edu.neu.csye.useraccount.endpoint.model.UserAccount;
 import edu.neu.csye.useraccount.service.UserAccountService;
 import edu.neu.csye.useraccount.service.model.UserAccountDto;
@@ -20,11 +21,17 @@ public class UserAccountEndointController implements UserAccountEndpointRest {
     @Override
     public String register(UserAccount userAccount)
     {
+        JsonObject jsonObject = new JsonObject();
         userAccount.setPassword(bCryptPasswordEncoder.encode(userAccount.getPassword()));
         if(userAccountService.ensuireUsernameIsUnique(userAccount.getUsername())){
             userAccountService.register(userAccountMapper.userAccountToDto(userAccount));
-        return "Registration Successful!";
+            jsonObject.addProperty("message", "Registration Successful");
+
         }
-        return "Username Already Exists";
+        else {
+            jsonObject.addProperty("message", "Username exixst");
+        }
+
+        return jsonObject.toString();
     }
 }
