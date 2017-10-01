@@ -33,8 +33,8 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-	&quot;username&quot;: &quot;abcd123&quot;,&#xd;
-	&quot;password&quot;: &quot;password&quot;&#xd;
+	&quot;username&quot;: &quot;${__RandomString(6,a12zeczclk, MYVAR)}&quot;,&#xd;
+	&quot;password&quot;: &quot;${__RandomString(6,a12zeczclk, MYVAR)}&quot;&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
