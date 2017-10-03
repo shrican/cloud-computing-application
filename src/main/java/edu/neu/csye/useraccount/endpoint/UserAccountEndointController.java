@@ -9,10 +9,9 @@ package edu.neu.csye.useraccount.endpoint;
 import com.google.gson.JsonObject;
 import edu.neu.csye.useraccount.endpoint.model.UserAccount;
 import edu.neu.csye.useraccount.service.UserAccountService;
-import edu.neu.csye.useraccount.service.model.UserAccountDto;
 import edu.neu.csye.useraccount.service.model.UserAccountMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +27,7 @@ public class UserAccountEndointController implements UserAccountEndpointRest {
     public String register(UserAccount userAccount)
     {
         JsonObject jsonObject = new JsonObject();
-        userAccount.setPassword(bCryptPasswordEncoder.encode(userAccount.getPassword()));
+        userAccount.setPassword(BCrypt.hashpw(userAccount.getPassword(), BCrypt.gensalt()));
         if(userAccountService.ensuireUsernameIsUnique(userAccount.getUsername())){
             userAccountService.register(userAccountMapper.userAccountToDto(userAccount));
             jsonObject.addProperty("message", "Registration Successful");
