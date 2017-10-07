@@ -19,6 +19,34 @@
       "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
     },
 
+    "hostedZoneId": {
+      "Description": "Hosted Zone Id",
+      "Type": "String"
+      
+    },
+
+    "securityGroupName": {
+      "Description": "Security Group name",
+      "Type": "String"
+      
+    },
+
+    "dnsName": {
+      "Description": "DNS name",
+      "Type": "String"
+      
+    },
+    "recordSetType": {
+      "Description": "Record set type",
+      "Type": "String"
+      
+    },
+    "recordSetTTL": {
+      "Description": "Record set TTL",
+      "Type": "String"
+      
+    },
+
     "SSHLocation" : {
       "Description" : "The IP address range that can be used to SSH to the EC2 instances",
       "Type": "String",
@@ -172,14 +200,15 @@
         "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
         "KeyName" : { "Ref" : "KeyName" },
         "ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" },
-                          { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] }
+                          { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] },
+        
       }
     },
 
     "InstanceSecurityGroup" : {
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
-	"GroupName" : "csye6225-fall2017-stack_name-webapp",
+       "GroupName": {"Ref": "securityGroupName"},
         "GroupDescription" : "Enable SSH access",
         "SecurityGroupIngress" : 
           [ { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation"} }]
@@ -196,7 +225,21 @@
         "InstanceId" : { "Ref" : "EC2Instance" },
         "EIP" : { "Ref" : "IPAddress" }
       }
-    }
+    },
+
+    "myRecordSet" : {
+           "Type" : "AWS::Route53::RecordSet",
+           "Properties" : {
+           "HostedZoneId" : {"Ref": "hostedZoneId"},
+                 "Comment" : "DNS name for my instance.", 
+           "Name" : {"Ref": "dnsName"},
+           "Type" : {"Ref": "recordSetType"},
+           "TTL" : {"Ref": "recordSetTTL"},
+           "ResourceRecords" : [
+              { "Fn::GetAtt" : [ "EC2Instance", "PublicIp" ] }
+           ]
+          }   
+  }
   },
   "Outputs" : {
     "InstanceId" : {
