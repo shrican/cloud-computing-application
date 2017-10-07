@@ -1,5 +1,5 @@
 #creaing group
-
+export VPC_ID=$(aws ec2 describe-vpcs --query "Vpcs[0].VpcId" --output text)
 groupName="csye6225-fall2017-webapp"
 groupDescription="CSYE6225-fall2017-assignment4"
 aws ec2 create-security-group --group-name $groupName --description $groupDescription
@@ -15,8 +15,8 @@ instanceId=$(aws ec2 run-instances --image-id $amiId --instance-type t2.micro --
 aws ec2 wait instance-running --instance-ids $instanceId
 aws ec2 describe-instance-status --instance-ids $instanceId 
 
-#PUBLIC_IP=$(aws ec2 describe-instances --instance-ids $instanceId --query "Reservations[0].Instances[0].PublicIpAddress" --output text);
+publicIP=$(aws ec2 describe-instances --instance-ids $instanceId --query "Reservations[0].Instances[0].PublicIpAddress" --output text);
 
-#DOMAIN_NAME="ec2.csye6225-fall2017-chandrara.me."
+domainName="ec2.csye6225-fall2017-chandrara.me."
 
-#aws route53 change-resource-record-sets --hosted-zone-id Z31TTYNFTW06J1 --change-batch "{\"Comment\": \"DNS name for my instance.\", \"Changes\":[{\"Action\": \"UPSERT\", \"ResourceRecordSet\": { \"Name\": \""$DOMAIN_NAME"\", \"Type\": \"A\", \"TTL\": 60, \"ResourceRecords\": [{\"Value\": \""$PUBLIC_IP"\"}]}}]}"
+aws route53 change-resource-record-sets --hosted-zone-id Z2Z3C72EUKJKZS --change-batch "{\"Comment\": \"DNS name for my instance.\", \"Changes\":[{\"Action\": \"UPSERT\", \"ResourceRecordSet\": { \"Name\": \""$domainName"\", \"Type\": \"A\", \"TTL\": 60, \"ResourceRecords\": [{\"Value\": \""$PUBLIC_IP"\"}]}}]}"
