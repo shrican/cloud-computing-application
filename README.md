@@ -15,8 +15,12 @@ Below are the instructions that will get you a copy of the project up and runnin
 
 ### Installation
 
-* Git Clone the required repository
+Pull the porject
+
+To https://github.com/shrican/csye6225-fall2017.git
+
 * Import existing code source from Github/folder
+
 * Import Gradle configuration along with Java JDK
 * Make/Update changes to build.gradle and travis.yml
 * Add MySQL database Configuration
@@ -24,28 +28,40 @@ Below are the instructions that will get you a copy of the project up and runnin
 
 ## Instructions to run unit, integration and/or load tests
 
-Explain how to run the automated tests for this system
+
+use Jmeter to run jmeter/assignment3.jmx file
 
 ### List of Test Cases
 
+1. Register(): checks whether user registration is done properly.
 
-```
-Example : ** Add code **
+2. EnsureUserNameIsUnique(): Checks for the user name to be unique from the database.
 
-
-```
 
 ### Test Coding style/Pattern
 
-```
-Example : ** Add code **
-```
+We have used the following frameworks:
+Spring Boot
+Spring JPA
+Hibernate
+Mapstruct
+Lombok
+Jersey
+
+We have structred our projects in to following layers
+
+Endpoint
+Dataaccess
+Service
 
 ## Deployment
+1. Deploy assignemnt3.war on tomcat/
 
-Add additional notes about how to deploy this on a live system
+2. a. Import Project in Intellij
+   b. Run BootRun task in intellij
 
 ## Build with Travis CI
+
 
 * [Travis CI](https://travis-ci.com/) - Travis CI is a hosted, distributed continuous integration service used to build and test software projects hosted at GitHub.
 
@@ -55,9 +71,35 @@ Steps for Travis CI build
 * Activate your repository
 * Flick the repository switch on
 * Add .travis.yml file to your repository
+
+travis.yml
+
+language: java
+jdk:
+  - oraclejdk8
+
+sudo: false
+install: true
+
+script:
+  - ./gradlew war
+  - ./gradlew test
+
+notifications:
+  email:
+    recipients:
+      - chandra.ra@husky.neu.edu
+      - patil.man@husky.neu.edu
+      - mudholkar.s@husky.neu.edu
+      - bhanushali.v@husky.neu.edu
+    on_success: always
+
 * Trigger your first build with a git push
 
-Travis build link for the project : [Click here for the link](https://travis-ci.com/shrican/csye6225-fall2017.svg?token=Bz5BxQbm4vVpwaJw2HRJ&branch=assignment3)
+* Do Travis build from travisCI by manually entering the travisCI code
+
+Travis build link for the project : [Click here for the link]
+https://travis-ci.com/shrican/csye6225-fall2017/builds/55824033
 
 ## Authors
 
@@ -74,4 +116,3 @@ This project is licensed under the Northeastern University
 
 * Prof. Tejas Parikh who's initial code template was used
 * TA Jiamin and Haozhong for guidance 
-
