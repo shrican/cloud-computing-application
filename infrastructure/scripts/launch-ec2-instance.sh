@@ -2,7 +2,7 @@
 export VPC_ID=$(aws ec2 describe-vpcs --query "Vpcs[0].VpcId" --output text)
 groupName="csye6225-fall2017-webapp"
 groupDescription="CSYE6225-fall2017-assignment4"
-aws ec2 create-security-group --group-name $groupName --description $groupDescription
+aws ec2 create-security-group --group-name $groupName --description $groupDescription --vpc-id $VPC_ID
 aws ec2 authorize-security-group-ingress --group-name $groupName --protocol tcp --port 22 --cidr 76.119.140.124/24
 aws ec2 authorize-security-group-ingress --group-name $groupName --protocol tcp --port 80 --cidr 76.119.140.124/24
 aws ec2 authorize-security-group-ingress --group-name $groupName --protocol tcp --port 443 --cidr 76.119.140.124/24
