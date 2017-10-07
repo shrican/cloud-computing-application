@@ -24,4 +24,4 @@ publicIP=$(aws ec2 describe-instances --instance-ids $instanceId --query "Reserv
 
 domainName="ec2.csye6225-fall2017-chandrara.me."
 
-aws route53 change-resource-record-sets --hosted-zone-id Z2Z3C72EUKJKZS --change-batch "{\"Comment\": \"DNS name for my instance.\", \"Changes\":[{\"Action\": \"UPSERT\", \"ResourceRecordSet\": { \"Name\": \""$domainName"\", \"Type\": \"A\", \"TTL\": 60, \"ResourceRecords\": [{\"Value\": \""$PUBLIC_IP"\"}]}}]}"
+aws route53 change-resource-record-sets --hosted-zone-id Z2Z3C72EUKJKZS --change-batch "{\"Comment\": \"DNS name for my instance.\", \"Changes\":[{\"Action\": \"UPSERT\", \"ResourceRecordSet\": { \"Name\": \""$domainName"\", \"Type\": \"A\", \"TTL\": 60, \"ResourceRecords\": [{\"Value\": \""$publicIP"\"}]}}]}"
