@@ -1,4 +1,4 @@
-# csye6225-fall2017  Assignment 4 
+# csye6225-fall2017  Assignment 4 (Script)
 
 ### Objective:
 
