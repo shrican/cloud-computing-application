@@ -24,6 +24,7 @@ Install and setup AWS command line interface.
 ### Executing scripts
 
     Run create-csye6225-cloudformation-stack.sh script 
+	-bash create-csye6225-cloudformation-stack.sh <stack_name> <template_file> <instance)type>  <keyname> <hostedZoneId> <dns_name> <recordtype> <recordTTL>
     Run delete delete-csye6225-cloudformation-stack.sh script
     
 ### Author and Team Members
