@@ -1,0 +1,14 @@
+language: java
+jdk:
+  - oraclejdk8
+
+sudo: false
+install: true
+
+script:
+  - ./gradlew war
+
+notifications:
+  username:
+    recipients:
+      - patil.man@husky.neu.edu
