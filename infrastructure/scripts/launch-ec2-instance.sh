@@ -1,4 +1,9 @@
-#creaing group
+ # Varsha Bhanushali, 001234580, bhanushali.v@husky.neu.edu
+ # Shrikant Mudholkar, 001284732, mudholkar.s@husky.neu.edu
+ # Rahul Chandra, 01225683, chandra.ra@husky.neu.edu
+ # Manish Patil, 001228956, patil.man@husky.neu.edu 
+ 
+ #creaing group
 export VPC_ID=$(aws ec2 describe-vpcs --query "Vpcs[0].VpcId" --output text)
 groupName="csye6225-fall2017-webapp"
 groupDescription="CSYE6225-fall2017-assignment4"
