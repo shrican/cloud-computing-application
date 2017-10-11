@@ -18,7 +18,6 @@
 .idea/
 build/**/*
 .gradle/**/*
-/out/
 
 ### NetBeans ###
 nbproject/private/
@@ -30,3 +29,4 @@ nbdist/
 /.idea/
 /.idea/modules.xml
 /.idea/workspace.xml
+csye6225.log
