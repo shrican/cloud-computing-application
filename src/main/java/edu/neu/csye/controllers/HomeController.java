@@ -23,37 +23,37 @@ import java.util.Date;
 @Controller
 public class HomeController {
 
-  private final static Logger logger = LoggerFactory.getLogger(HomeController.class);
+    private final static Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-  @ResponseBody
-  public String welcome() {
+    @ResponseBody
+    public String welcome() {
 
-    JsonObject jsonObject = new JsonObject();
+        JsonObject jsonObject = new JsonObject();
 
-    if (SecurityContextHolder.getContext().getAuthentication() != null
-        && SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
-      jsonObject.addProperty("message", "you are not logged in!!!");
-    } else {
-      jsonObject.addProperty("message", "you are logged in. current time is " + new Date().toString());
+        if (SecurityContextHolder.getContext().getAuthentication() != null
+                && SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+            jsonObject.addProperty("message", "you are not logged in!!!");
+        } else {
+            jsonObject.addProperty("message", "you are logged in. current time is " + new Date().toString());
+        }
+
+        return jsonObject.toString();
     }
 
-    return jsonObject.toString();
-  }
+    @RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String test() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("message", "authorized for /test");
+        return jsonObject.toString();
+    }
 
-  @RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
-  @ResponseBody
-  public String test() {
-    JsonObject jsonObject = new JsonObject();
-    jsonObject.addProperty("message", "authorized for /test");
-    return jsonObject.toString();
-  }
-
-  @RequestMapping(value = "/testPost", method = RequestMethod.POST, produces = "application/json")
-  @ResponseBody
-  public String testPost() {
-    JsonObject jsonObject = new JsonObject();
-    jsonObject.addProperty("message", "authorized for /testPost");
-    return jsonObject.toString();
-  }
+    @RequestMapping(value = "/testPost", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public String testPost() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("message", "authorized for /testPost");
+        return jsonObject.toString();
+    }
 
 }

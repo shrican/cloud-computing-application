@@ -6,6 +6,7 @@
  **/
 
 package edu.neu.csye.tasks.endpoint;
+
 import edu.neu.csye.tasks.endpoint.model.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -16,16 +17,16 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class TasksEndpointController implements TasksEndpointRest{
+public class TasksEndpointController implements TasksEndpointRest {
 
 
     @Override
-    public Task create(Task task){
+    public Task create(Task task) {
         return null;
     }
 
     @Override
-    public List<Task> get(){
+    public List<Task> get() {
         return null;
     }
 }

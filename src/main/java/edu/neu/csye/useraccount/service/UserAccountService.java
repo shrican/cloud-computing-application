@@ -43,7 +43,7 @@ public class UserAccountService implements UserDetailsService {
      * @param userAccountDto the data about the user account
      * @return the userAccount that was updated
      */
-    public UserAccountDto register(UserAccountDto userAccountDto){
+    public UserAccountDto register(UserAccountDto userAccountDto) {
         return userAccountDao.save(userAccountDto);
     }
 
@@ -59,7 +59,7 @@ public class UserAccountService implements UserDetailsService {
         return springUserRecord;
     }
 
-    public boolean ensuireUsernameIsUnique(String username){
-       return !userAccountDao.existsByUsername(username);
+    public boolean ensuireUsernameIsUnique(String username) {
+        return !userAccountDao.existsByUsername(username);
     }
 }

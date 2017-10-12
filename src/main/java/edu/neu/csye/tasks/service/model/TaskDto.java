@@ -5,29 +5,23 @@
  * Manish Patil, 001228956, patil.man@husky.neu.edu
  **/
 
-package edu.neu.csye.tasks.endpoint.model;
+package edu.neu.csye.tasks.service.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotBlank;
-
-import java.io.Serializable;
 
 /**
- * Defines the properties and basic validation for a request to create a task.
+ * A model of the task domain object that is exposed to the public via an api.
  */
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task implements Serializable {
-
-    private static final long serialVersionUID = -7588073602465822378L;
+@Builder
+public class TaskDto {
 
     private String id;
-
-    @NotBlank(message = "DESCRIPTION CANT BE BLANK")
     private String description;
+
 }
