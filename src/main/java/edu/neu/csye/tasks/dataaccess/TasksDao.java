@@ -7,8 +7,10 @@
 
 package edu.neu.csye.tasks.dataaccess;
 
+import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
+import edu.neu.csye.tasks.service.model.TaskDto;
+import edu.neu.csye.tasks.service.model.TasksMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,4 +22,34 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TasksDao {
 
+    private TasksMapper tasksMapper;
+    private TasksRepository tasksRepository;
+
+    /**
+     * Saves the task to the database.
+     *
+     * @param taskDto the dto representation of the Task
+     * @return a TaskDto
+     */
+    @Transactional(propagation = Propagation.MANDATORY)
+    public TaskDto save(TaskDto taskDto) {
+        TaskEntity TaskEntity = tasksMapper.dtoToEntity(taskDto);
+
+        TaskEntity = tasksRepository.save(TaskEntity);
+
+        return tasksMapper.entityToDto(TaskEntity);
+    }
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    public TaskDto loadTaskById(String id) {
+        TaskEntity task = tasksRepository.findById(id);
+        if (task == null) {
+
+        }
+        return tasksMapper.entityToDto(task);
+    }
+
+    public boolean existsById(String id) {
+        return tasksRepository.findById(id) != null;
+    }
 }
