@@ -17,8 +17,10 @@ recordSetTTL=$8
 volumeType=$9
 volumeSize=$10
 
+export $vpc_id=$(aws ec2 describe-vpcs --query "Vpcs[0].VpcId" --output text)
+# export subnet from for respective user
 echo $templateFileName
-securityGroupName=csye6225-fall2017-$stackName-webapp
+securityGroupName=csye6225-webapp
 
 aws cloudformation create-stack --stack-name $stackName --template-body file://$templateFileName --enable-termination-protection --parameters ParameterKey=InstanceType,ParameterValue=$3 ParameterKey=KeyName,ParameterValue=$4 ParameterKey=hostedZoneId,ParameterValue=$hostedZoneId ParameterKey=dnsName,ParameterValue=$dnsName  ParameterKey=recordSetType,ParameterValue=$recordSetType ParameterKey=recordSetTTL,ParameterValue=$recordSetTTL ParameterKey=securityGroupName,ParameterValue=$securityGroupName
 
