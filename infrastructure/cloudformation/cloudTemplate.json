@@ -47,10 +47,48 @@
       
     },
 
-    "subnetId": {
-    	"Description": "Subnet id to create DBSubnetGroup",
-      "Type": "String"
+    "vpcId": {
+		"Description": "vpc id to create Subnet",
+	  	"Type": "AWS::EC2::VPC::Id"
     },
+
+
+    "subnetId": {
+		"Description": "Subnet Id to create Subnet",
+	  	"Type": "String"
+    },
+
+    "DBName": {
+      "Default": "MyDatabase",
+      "Description" : "The database name",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "64",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+
+    "DBUser": {
+    	"Default": "csye6225master",
+      "NoEcho": "true",
+      "Description" : "The database admin account username",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "16",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+
+    "DBPassword": {
+    	"Default": "csye6225password",
+      "NoEcho": "true",
+      "Description" : "The database admin account password",
+      "Type": "String",
+      "MinLength": "8",
+      "MaxLength": "41",
+      "AllowedPattern" : "[a-zA-Z0-9]*",
+      "ConstraintDescription" : "must contain only alphanumeric characters."
+    },			
 
     "SSHLocation" : {
       "Description" : "The IP address range that can be used to SSH to the EC2 instances",
@@ -205,7 +243,7 @@
         "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
         "KeyName" : { "Ref" : "KeyName" },
         "ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" },
-                          { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] },
+                          { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] }
         
       }
     },
@@ -251,7 +289,7 @@
   "DBInstance" : {
 		  "Type" : "AWS::RDS::DBInstance",
 		  "Properties" : {
-		  	  
+		  	  "DBName" : { "Ref" : "DBName" },		  	  
 		      "Engine" : "MySQL",
 		      "EngineVersion" : "5.6.35",
 		      "DBInstanceClass" : "db.t2.medium",
@@ -260,19 +298,19 @@
 		      "MasterUsername" : { "Ref" : "DBUser" },
 		      "MasterUserPassword" : { "Ref" : "DBPassword" },
 		      "AllocatedStorage" : "100",
-		      "DBSubnetGroupName" : { "Ref" : "myDBSubnetGroupName"}},
+		      "DBSubnetGroupName" : { "Ref" : "myDBSubnetGroupName"}}
    },
 
    "myDBSubnetGroupName" : {
 		   	"Type" : "AWS::RDS::DBSubnetGroup",
 		   	"Properties" : {
-		      "DBSubnetGroupDescription" : "",
-		      "SubnetIds" : [ {"Ref" : "subnetId" }],
-   				}
-}     
+		      "DBSubnetGroupDescription" : "DB subnet Group",
+		      "SubnetIds" : [ {"Ref" : "subnetId"} ]
+   			}
+	}
 
-  }
   },
+
   "Outputs" : {
     "InstanceId" : {
       "Description" : "InstanceId of the newly created EC2 instance",
