@@ -47,6 +47,55 @@
       
     },
 
+    "vpcId": {
+		"Description": "vpc id to create Subnet",
+	  	"Type": "AWS::EC2::VPC::Id"
+    },
+
+
+    "subnetId1": {
+		"Description": "Subnet Id1 to create Subnet",
+	  	"Type": "String"
+    },
+
+    "subnetId2": {
+		"Description": "Subnet Id2 to create Subnet",
+	  	"Type": "String"
+    },
+
+
+    "DBName": {
+      "Default": "MyDatabase",
+      "Description" : "The database name",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "64",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+
+    "DBUser": {
+    	"Default": "csye6225master",
+      "NoEcho": "true",
+      "Description" : "The database admin account username",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "16",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+
+    "DBPassword": {
+    	"Default": "csye6225password",
+      "NoEcho": "true",
+      "Description" : "The database admin account password",
+      "Type": "String",
+      "MinLength": "8",
+      "MaxLength": "41",
+      "AllowedPattern" : "[a-zA-Z0-9]*",
+      "ConstraintDescription" : "must contain only alphanumeric characters."
+    },			
+
     "SSHLocation" : {
       "Description" : "The IP address range that can be used to SSH to the EC2 instances",
       "Type": "String",
@@ -192,6 +241,47 @@
   },
 
   "Resources" : {
+
+    "DynamoDBTable" : {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "TaskId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "Description",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "AttachmentId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "Url",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "TaskId",
+            "KeyType": "Hash"
+          },
+          {
+            "AttributeName": "AttachmentId",
+            "KeyType": "Range"
+          }
+
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "5",
+          "WriteCapacityUnits": "5"
+        },
+        "TableName": "csye6225"
+      }
+    },
+
     "EC2Instance" : {
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
@@ -200,7 +290,7 @@
         "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
         "KeyName" : { "Ref" : "KeyName" },
         "ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" },
-                          { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] },
+                          { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] }
         
       }
     },
@@ -211,7 +301,9 @@
        "GroupName": {"Ref": "securityGroupName"},
         "GroupDescription" : "Enable SSH access",
         "SecurityGroupIngress" : 
-          [ { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation"} }]
+          [ { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation"} },
+          	{ "IpProtocol" : "tcp", "FromPort" : "80", "ToPort" : "80", "CidrIp" : { "Ref" : "SSHLocation"} },
+          	{ "IpProtocol" : "tcp", "FromPort" : "443", "ToPort" : "443", "CidrIp" : { "Ref" : "SSHLocation"} } ]
       }
     },
 
@@ -239,8 +331,44 @@
               { "Fn::GetAtt" : [ "EC2Instance", "PublicIp" ] }
            ]
           }   
-  }
   },
+
+  "DBInstance" : {
+		  "Type" : "AWS::RDS::DBInstance",
+		  "Properties" : {
+		  	  "DBName" : { "Ref" : "DBName" },		  	  
+		      "Engine" : "MySQL",
+		      "EngineVersion" : "5.6.35",
+		      "DBInstanceClass" : "db.t2.medium",
+		      "MultiAZ" : "false",
+		      "DBInstanceIdentifier" : "csye6225-fall2017",
+		      "MasterUsername" : { "Ref" : "DBUser" },
+		      "MasterUserPassword" : { "Ref" : "DBPassword" },
+		      "AllocatedStorage" : "100",
+		      "DBSubnetGroupName" : { "Ref" : "myDBSubnetGroupName"}}
+   },
+
+   "myDBSubnetGroupName" : {
+		   	"Type" : "AWS::RDS::DBSubnetGroup",
+		   	"Properties" : {
+		      "DBSubnetGroupDescription" : "DB subnet Group",
+		      "SubnetIds" : [ {"Ref" : "subnetId1"}, {"Ref" : "subnetId2"} ]
+   			}
+	},
+
+	"MyDBSecurityGroup": {
+   			"Type": "AWS::RDS::DBSecurityGroup",
+   			"Properties": {
+		      "EC2VpcId" : { "Ref" : "vpcId" },
+		      "DBSecurityGroupIngress": [
+		         {"EC2SecurityGroupName": { "Ref": "WebServerSecurityGroup"}}
+		      ],
+		      "GroupDescription": "Frontend Access"
+   }
+}
+
+  },
+
   "Outputs" : {
     "InstanceId" : {
       "Description" : "InstanceId of the newly created EC2 instance",

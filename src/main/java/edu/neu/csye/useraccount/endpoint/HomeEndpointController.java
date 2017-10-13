@@ -11,7 +11,7 @@ import java.util.Date;
  *
  */
 @Component
-public class HomeEndpointController implements HomeEndpointRest{
+public class HomeEndpointController implements HomeEndpointRest {
 
     @Override
     public String welcome() {

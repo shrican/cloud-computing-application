@@ -18,7 +18,7 @@ public class BusinessLogicException extends Exception {
     private static final long serialVersionUID = 3287665806587414504L;
 
 
-    public BusinessLogicException(){
+    public BusinessLogicException() {
     }
 
     @Override
