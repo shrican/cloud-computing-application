@@ -7,7 +7,9 @@
 
 package edu.neu.csye.tasks.service.model;
 
+import edu.neu.csye.tasks.dataaccess.model.AttachmentEntity;
 import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
+import edu.neu.csye.tasks.endpoint.model.Attachment;
 import edu.neu.csye.tasks.endpoint.model.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -23,4 +25,9 @@ public interface TasksMapper {
 
     Task dtoToTask(TaskDto taskDto);
 
+    AttachmentDto entityToDto(AttachmentEntity attachmentEntity);
+
+    AttachmentEntity dtoToEntity(AttachmentDto attachmentDto);
+
+    Attachment dtoToAttachment(AttachmentDto attachmentDto);
 }
