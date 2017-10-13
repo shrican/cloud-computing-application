@@ -47,6 +47,11 @@
       
     },
 
+    "subnetId": {
+    	"Description": "Subnet id to create DBSubnetGroup",
+      "Type": "String"
+    },
+
     "SSHLocation" : {
       "Description" : "The IP address range that can be used to SSH to the EC2 instances",
       "Type": "String",
@@ -211,7 +216,9 @@
        "GroupName": {"Ref": "securityGroupName"},
         "GroupDescription" : "Enable SSH access",
         "SecurityGroupIngress" : 
-          [ { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation"} }]
+          [ { "IpProtocol" : "tcp", "FromPort" : "22", "ToPort" : "22", "CidrIp" : { "Ref" : "SSHLocation"} },
+          	{ "IpProtocol" : "tcp", "FromPort" : "80", "ToPort" : "80", "CidrIp" : { "Ref" : "SSHLocation"} },
+          	{ "IpProtocol" : "tcp", "FromPort" : "443", "ToPort" : "443", "CidrIp" : { "Ref" : "SSHLocation"} } ]
       }
     },
 
@@ -239,6 +246,31 @@
               { "Fn::GetAtt" : [ "EC2Instance", "PublicIp" ] }
            ]
           }   
+  },
+
+  "DBInstance" : {
+		  "Type" : "AWS::RDS::DBInstance",
+		  "Properties" : {
+		  	  
+		      "Engine" : "MySQL",
+		      "EngineVersion" : "5.6.35",
+		      "DBInstanceClass" : "db.t2.medium",
+		      "MultiAZ" : "false",
+		      "DBInstanceIdentifier" : "csye6225-fall2017",
+		      "MasterUsername" : { "Ref" : "DBUser" },
+		      "MasterUserPassword" : { "Ref" : "DBPassword" },
+		      "AllocatedStorage" : "100",
+		      "DBSubnetGroupName" : { "Ref" : "myDBSubnetGroupName"}},
+   },
+
+   "myDBSubnetGroupName" : {
+		   	"Type" : "AWS::RDS::DBSubnetGroup",
+		   	"Properties" : {
+		      "DBSubnetGroupDescription" : "",
+		      "SubnetIds" : [ {"Ref" : "subnetId" }],
+   				}
+}     
+
   }
   },
   "Outputs" : {
