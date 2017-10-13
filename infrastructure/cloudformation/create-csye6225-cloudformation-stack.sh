@@ -17,12 +17,16 @@ recordSetTTL=$8
 volumeType=$9
 volumeSize=$10
 
-export $vpc_id=$(aws ec2 describe-vpcs --query "Vpcs[0].VpcId" --output text)
-# export subnet from for respective user
+export vpcId=$(aws ec2 describe-vpcs --query "Vpcs[0].VpcId" --output text)
+
+export subnetId=$(aws ec2 describe-subnets --filters "Name=vpc-id, Values=$vpcId" --query "Subnets[0].SubnetId" --output text)
+
+echo $vpcId
+echo $subnetId
 echo $templateFileName
 securityGroupName=csye6225-webapp
 
-aws cloudformation create-stack --stack-name $stackName --template-body file://$templateFileName --enable-termination-protection --parameters ParameterKey=InstanceType,ParameterValue=$3 ParameterKey=KeyName,ParameterValue=$4 ParameterKey=hostedZoneId,ParameterValue=$hostedZoneId ParameterKey=dnsName,ParameterValue=$dnsName  ParameterKey=recordSetType,ParameterValue=$recordSetType ParameterKey=recordSetTTL,ParameterValue=$recordSetTTL ParameterKey=securityGroupName,ParameterValue=$securityGroupName
+aws cloudformation create-stack --stack-name $stackName --template-body file://$templateFileName --enable-termination-protection --parameters ParameterKey=InstanceType,ParameterValue=$3 ParameterKey=KeyName,ParameterValue=$4 ParameterKey=hostedZoneId,ParameterValue=$hostedZoneId ParameterKey=dnsName,ParameterValue=$dnsName  ParameterKey=recordSetType,ParameterValue=$recordSetType ParameterKey=recordSetTTL,ParameterValue=$recordSetTTL ParameterKey=securityGroupName,ParameterValue=$securityGroupName ParameterKey=vpcId,ParameterValue=$vpcId ParameterKey=subnetId,ParameterValue=$subnetId
 
 export instanceId=$(aws ec2 describe-instances --query "Reservations[0].Instances[0].InstanceId" --output text)
 export hostedId=$(aws route53 list-hosted-zones-by-name --query "HostedZones[0].Id" --output text | cut -d "/" -f3)
