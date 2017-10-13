@@ -241,6 +241,47 @@
   },
 
   "Resources" : {
+
+    "DynamoDBTable" : {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "TaskId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "Description",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "AttachmentId",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "Url",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "TaskId",
+            "KeyType": "Hash"
+          },
+          {
+            "AttributeName": "AttachmentId",
+            "KeyType": "Range"
+          }
+
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "5",
+          "WriteCapacityUnits": "5"
+        },
+        "TableName": "csye6225"
+      }
+    },
+
     "EC2Instance" : {
       "Type" : "AWS::EC2::Instance",
       "Properties" : {
