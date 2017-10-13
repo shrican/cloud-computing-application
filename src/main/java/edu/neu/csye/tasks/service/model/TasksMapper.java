@@ -30,4 +30,7 @@ public interface TasksMapper {
     AttachmentEntity dtoToEntity(AttachmentDto attachmentDto);
 
     Attachment dtoToAttachment(AttachmentDto attachmentDto);
+
+    TaskDto taskToDto(Task task);
+
 }

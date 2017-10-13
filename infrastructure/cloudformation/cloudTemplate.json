@@ -53,10 +53,16 @@
     },
 
 
-    "subnetId": {
-		"Description": "Subnet Id to create Subnet",
+    "subnetId1": {
+		"Description": "Subnet Id1 to create Subnet",
 	  	"Type": "String"
     },
+
+    "subnetId2": {
+		"Description": "Subnet Id2 to create Subnet",
+	  	"Type": "String"
+    },
+
 
     "DBName": {
       "Default": "MyDatabase",
@@ -346,9 +352,20 @@
 		   	"Type" : "AWS::RDS::DBSubnetGroup",
 		   	"Properties" : {
 		      "DBSubnetGroupDescription" : "DB subnet Group",
-		      "SubnetIds" : [ {"Ref" : "subnetId"} ]
+		      "SubnetIds" : [ {"Ref" : "subnetId1"}, {"Ref" : "subnetId2"} ]
    			}
-	}
+	},
+
+	"MyDBSecurityGroup": {
+   			"Type": "AWS::RDS::DBSecurityGroup",
+   			"Properties": {
+		      "EC2VpcId" : { "Ref" : "vpcId" },
+		      "DBSecurityGroupIngress": [
+		         {"EC2SecurityGroupName": { "Ref": "WebServerSecurityGroup"}}
+		      ],
+		      "GroupDescription": "Frontend Access"
+   }
+}
 
   },
 

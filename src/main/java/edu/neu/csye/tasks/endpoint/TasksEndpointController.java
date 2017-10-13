@@ -8,6 +8,8 @@
 package edu.neu.csye.tasks.endpoint;
 
 import edu.neu.csye.tasks.endpoint.model.Task;
+import edu.neu.csye.tasks.service.TasksService;
+import edu.neu.csye.tasks.service.model.TasksMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,9 +22,16 @@ import java.util.List;
 public class TasksEndpointController implements TasksEndpointRest {
 
 
+    private TasksMapper mapper;
+
+    private TasksService service;
+
     @Override
     public Task create(Task task) {
-        return null;
+
+            //return mapper.entityToDto(service.save(mapper.taskToDto(task)));
+
+    return null;
     }
 
     @Override
