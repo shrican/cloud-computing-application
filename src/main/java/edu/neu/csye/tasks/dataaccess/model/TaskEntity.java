@@ -10,12 +10,7 @@ package edu.neu.csye.tasks.dataaccess.model;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "TASKS")
@@ -29,4 +24,8 @@ public class TaskEntity {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany
+    @JoinColumn(name="attachment_id")
+    private AttachmentEntity attachment;
 }

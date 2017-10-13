@@ -20,4 +20,5 @@ public interface TasksRepository extends CrudRepository<TaskEntity, Integer> {
 
     @Transactional(propagation = Propagation.MANDATORY)
     TaskEntity findById(String id);
+
 }

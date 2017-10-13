@@ -7,6 +7,7 @@
 
 package edu.neu.csye.tasks.endpoint;
 
+import edu.neu.csye.tasks.endpoint.model.Attachment;
 import edu.neu.csye.tasks.endpoint.model.Task;
 
 import javax.ws.rs.*;
@@ -24,5 +25,39 @@ public interface TasksEndpointRest {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     List<Task> get();
+
+    @Path("/{id}")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    Task update(Task task);
+
+    @Path("/{id}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    Task delete(@PathParam(id) int id);
+
+    @Path("/{id}/attachments")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    List<Attachment> getAttachments(Attachment attachment);
+
+    @Path("/{id}/attachments")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    List<Attachment> createAttachment(Attachment attachment);
+
+    @Path("/{id}/attachments/{attachmentid}")
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    List<Attachment> deleteAttachment(@PathParam(attachmentid) int attachmentid);
+
+
+
+
+
+
 
 }
