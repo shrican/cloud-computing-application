@@ -29,7 +29,7 @@ public class UserAccountEndointController implements UserAccountEndpointRest {
         JsonObject jsonObject = new JsonObject();
         userAccount.setPassword(BCrypt.hashpw(userAccount.getPassword(), BCrypt.gensalt()));
         if (userAccountService.ensuireUsernameIsUnique(userAccount.getUsername())) {
-            userAccountService.register(userAccountMapper.userAccountToDto(userAccount));
+            userAccountService.save(userAccountMapper.userAccountToDto(userAccount));
             jsonObject.addProperty("message", "Registration Successful");
 
         } else {

@@ -49,6 +49,9 @@ public class TasksDao {
         return tasksMapper.entityToDto(task);
     }
 
+//    public List<TaskDto> getAll(){
+//
+//    }
 
     public boolean existsById(String id) {
         return tasksRepository.findById(id) != null;

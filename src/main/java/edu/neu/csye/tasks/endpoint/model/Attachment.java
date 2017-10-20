@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
- * Defines the properties and basic validation for a request to register a UserAccount.
+ * Defines the properties and basic validation for a request to save a UserAccount.
  */
 @Data
 @Builder

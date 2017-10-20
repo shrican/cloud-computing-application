@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class Task implements Serializable {
     private String id;
 
     @NotBlank(message = "DESCRIPTION CANT BE BLANK")
+    @Size(max = 4096, message = "DESCRIPTION_TOO_LARGE")
     private String description;
 
     private List<Attachment> attachment;

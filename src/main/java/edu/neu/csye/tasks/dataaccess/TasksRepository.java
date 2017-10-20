@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
 
-public interface TasksRepository extends CrudRepository<TaskEntity, Integer> {
+public interface TasksRepository extends CrudRepository<TaskEntity, String> {
 
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
@@ -21,4 +21,6 @@ public interface TasksRepository extends CrudRepository<TaskEntity, Integer> {
     @Transactional(propagation = Propagation.MANDATORY)
     TaskEntity findById(String id);
 
+    @Override
+    Iterable<TaskEntity> findAll();
 }
