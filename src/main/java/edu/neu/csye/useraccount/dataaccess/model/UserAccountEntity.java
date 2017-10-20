@@ -20,6 +20,7 @@ import java.util.Set;
 public class UserAccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
 
     @Column(name = "USERNAME", unique = true)

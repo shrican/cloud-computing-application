@@ -19,7 +19,7 @@ public interface TasksRepository extends CrudRepository<TaskEntity, String> {
     TaskEntity save(TaskEntity entity);
 
     @Transactional(propagation = Propagation.MANDATORY)
-    TaskEntity findById(String id);
+    TaskEntity findByTaskId(String taskId);
 
     @Override
     Iterable<TaskEntity> findAll();
