@@ -141,7 +141,11 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         AttachmentEntity attachmentEntity = attachmentRepository.findByAttachmentId(idAttachments);
 
-        attachmentRepository.delete(attachmentEntity);
+        TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
+
+        taskEntity.getAttachment().remove(attachmentEntity);
+
+        tasksRepository.save(taskEntity);
 
         return Response.status(Response.Status.OK).build();
     }
