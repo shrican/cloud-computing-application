@@ -13,6 +13,7 @@ import edu.neu.csye.tasks.dataaccess.model.AttachmentEntity;
 import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
 import edu.neu.csye.tasks.endpoint.model.Task;
 import edu.neu.csye.tasks.service.TasksService;
+import edu.neu.csye.tasks.service.model.AttachmentDto;
 import edu.neu.csye.tasks.service.model.TaskDto;
 import edu.neu.csye.tasks.service.model.TasksMapper;
 import edu.neu.csye.useraccount.dataaccess.dao.UserAccountRepository;
@@ -148,8 +149,34 @@ public class TasksEndpointController implements TasksEndpointRest {
 
     public void createAttachment(String id, InputStream fileInputStream,
                                  FormDataContentDisposition cd) {
+
+        UserAccountDto userAccountDto = getUser();
+
+        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
+
+
         String fileurl = service.saveUploadedFile(id, fileInputStream, cd);
 
+
+        TaskEntity task = tasksRepository.findByTaskId(id);
+        TaskDto taskDto = mapper.entityToDto(task);
+
+        AttachmentDto att = new AttachmentDto();
+        att.setUrl(fileurl);
+
+        task.getAttachment().add(mapper.attachmentDtoToEntity(att));
+
+        tasksRepository.save(task);
+
+
+//        taskDto.getAttachmentDtos().add(att);
+//
+//        userAccountDto.getTaskDtoSet().add(mapper.entityToDto());
+//
+//        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
+//
+//        userAccountEntity.getTaskEntity().add(mapper.dtoToEntity(taskDto));
+//        userAccountEntity = userAccountRepository.save(userAccountEntity);
 
     }
 

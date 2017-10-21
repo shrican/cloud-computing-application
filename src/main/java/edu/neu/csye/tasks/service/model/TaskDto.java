@@ -10,19 +10,23 @@ package edu.neu.csye.tasks.service.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * A model of the task domain object that is exposed to the public via an api.
  */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class TaskDto {
 
     private String id;
     private String description;
+    private Set<AttachmentDto> attachmentDtos;
+
+    public TaskDto() {
+        attachmentDtos = new HashSet<>();
+    }
 }

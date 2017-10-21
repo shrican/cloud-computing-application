@@ -47,4 +47,12 @@ public interface TasksMapper {
 
     Task entityToTasks(TaskEntity taskEntity);
 
+    Set<AttachmentEntity> toAttSetEntity(Set<AttachmentDto> attachmentDtos);
+
+    Set<Attachment> toAttSet(Set<AttachmentDto> attachmentDtos);
+
+    Set<AttachmentDto> setAttEntittiesToDtos(Set<AttachmentEntity> attachmentEntities);
+
+    Set<Attachment> setAttEntitiesToTask(Set<AttachmentEntity> attachmentEntities);
+
 }
