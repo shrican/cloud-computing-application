@@ -21,6 +21,14 @@ after_success:
 
 deploy:
   - provider: s3
+  - access_key_id:
+  - secret_access_key:
+   secure: 3finP0xvgs4vlgbEhsMBnfaGLFoOUbRSi6+PJ0pb49PauNeb0/HTs7f0C+TuMeYJNLPJ5KsXnRdKQhGwtqrGIuu0xtVd218Ra0i6fF1V7xOFbrFDXJPfssRgYUBw/ZGVTZtLONs4QXlDoF8o8aJi/+kVYng76nWch44d3yc7MStpHJ4tc8TedbxI8nuAubXII4JyPHIZGJEfimRxnAfzE4rZRg5RRdLbx6Qzrs4ouuFqCaG6NnfGYKxLWqOaQatA2X7QEdGSyiZa/OsZe5qI4DeSn8R3aswT4zsucFmMODwPjLGTDWHmuGnzddMhxb8C2oGhc+xj8WKKAZ0T0XCOvAhw2hmSh2XJ7IGMx0N7D7bHiUWaZC/hPo2XYio1hBo7iCFrzqLzBHQs9hGy7prtKSsf9gboK4vchuvAOISWITzbvT61LQfuQELjg3X8n4VohosZZ7EF1GV+PGVepIVRlewoMliR6OULbw82fJAtBOVBf4A6X/zgHBMdPVyMlQAqaPrMupzFWA/VWMlpDeBLUULPzXTvn1Jbq5pnCQxA3GAUrsokVlsDn9I/t3cSb1PwVeBSrztGOEtGcbePDct+Io+738e34xKrd7q1HDJcnSTgIe5VlKpF/UIvXKAkwK8Z/5P4cZpSWCw8n40jGfzZJoKet1XsEB2T7JSStW8QKkA=
+   local_dir: codedeploy
+   bucket: code-deploy.csye6225.com
+   region: us-east-1
+   skip_cleanup: true
+
 
 
 notifications:
