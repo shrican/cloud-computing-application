@@ -116,7 +116,10 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
 
-        tasksRepository.delete(taskEntity);
+
+        userAccountEntity.getTaskEntity().remove(taskEntity);
+
+        userAccountRepository.save(userAccountEntity);
 
         return Response.status(Response.Status.OK).build();
 
