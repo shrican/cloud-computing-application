@@ -13,7 +13,6 @@ import edu.neu.csye.useraccount.service.model.UserAccountMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -34,7 +33,7 @@ public class UserAccountDao {
      * @param userAccountDto the dto representation of the User Account
      * @return a UserAccountDto
      */
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional()
     public UserAccountDto save(UserAccountDto userAccountDto) {
         UserAccountEntity userAccountEntity = userAccountMapper.dtoToEntity(userAccountDto);
 
@@ -43,7 +42,7 @@ public class UserAccountDao {
         return userAccountMapper.entityToDto(userAccountEntity);
     }
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional()
     public UserAccountDto loadUserByUsername(String username) {
         UserAccountEntity user = userAccountRepository.findByUsername(username);
         if (user == null) {

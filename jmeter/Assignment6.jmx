@@ -343,7 +343,7 @@ vars.put(&quot;base64HeaderValue&quot;,new String(encodedUsernamePassword));</st
           </HeaderManager>
           <hashTree/>
           <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="Task Id CSV" enabled="true">
-            <stringProp name="filename">/home/mp/Desktop/manish/csye6225/git/csye6225-fall2017/jmeter/taskId.csv</stringProp>
+            <stringProp name="filename">/home/mp/Desktop/manish/csye6225/git/csye6225-fall2017/taskId.csv</stringProp>
             <stringProp name="fileEncoding"></stringProp>
             <stringProp name="variableNames">taskid,updated_description</stringProp>
             <boolProp name="ignoreFirstLine">false</boolProp>
@@ -898,9 +898,5 @@ vars.put(&quot;base64HeaderValue&quot;,new String(encodedUsernamePassword));</st
         </hashTree>
       </hashTree>
     </hashTree>
-    <WorkBench guiclass="WorkBenchGui" testclass="WorkBench" testname="WorkBench" enabled="true">
-      <boolProp name="WorkBench.save">true</boolProp>
-    </WorkBench>
-    <hashTree/>
   </hashTree>
 </jmeterTestPlan>
