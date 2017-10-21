@@ -11,6 +11,7 @@ import edu.neu.csye.tasks.endpoint.model.Task;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Set;
 
 @Path("/tasks")
@@ -30,12 +31,12 @@ public interface TasksEndpointRest {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     Task update(@PathParam("taskId") String taskId, Task task);
-//
-//    @Path("/{taskId}")
-//    @DELETE
-//    @Produces(MediaType.APPLICATION_JSON)
-//    Response delete(@PathParam("taskId") int taskId);
-//
+
+    @Path("/{taskId}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    Response delete(@PathParam("taskId") String taskId);
+
 //    @Path("/{taskId}/attachments")
 //    @GET
 //    @Produces(MediaType.APPLICATION_JSON)
@@ -47,10 +48,9 @@ public interface TasksEndpointRest {
 //    @Produces(MediaType.APPLICATION_JSON)
 //    Attachment createAttachment (@PathParam("taskId") int taskId, Attachment attachments);
 //
-//    @Path("/{taskId}/attachments/{idAttachments}")
-//    @DELETE
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    Response deleteAttachment(@PathParam("taskId") int taskId, @PathParam("idAttachments") int idAttachments);
+
+    @Path("/{taskId}/attachments/{idAttachments}")
+    @DELETE
+    Response deleteAttachment(@PathParam("taskId") String taskId, @PathParam("idAttachments") String idAttachments);
 
 }

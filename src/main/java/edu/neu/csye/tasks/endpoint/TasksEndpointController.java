@@ -7,7 +7,9 @@
 
 package edu.neu.csye.tasks.endpoint;
 
+import edu.neu.csye.tasks.dataaccess.AttachmentRepository;
 import edu.neu.csye.tasks.dataaccess.TasksRepository;
+import edu.neu.csye.tasks.dataaccess.model.AttachmentEntity;
 import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
 import edu.neu.csye.tasks.endpoint.model.Task;
 import edu.neu.csye.tasks.service.TasksService;
@@ -24,6 +26,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.core.Response;
 import java.util.Set;
 
 @Component
@@ -47,6 +50,9 @@ public class TasksEndpointController implements TasksEndpointRest {
 
     @Autowired
     private TasksRepository tasksRepository;
+
+    @Autowired
+    private AttachmentRepository attachmentRepository;
 
 
     @Override
@@ -98,5 +104,40 @@ public class TasksEndpointController implements TasksEndpointRest {
         return mapper.entityToTasks(taskEntity);
     }
 
+    public Response delete(String taskId) {
+
+        if ("".equals(taskId)) {
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
+
+        UserAccountDto userAccountDto = getUser();
+
+        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
+
+        TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
+
+        tasksRepository.delete(taskEntity);
+
+        return Response.status(Response.Status.OK).build();
+
+    }
+
+    public Response deleteAttachment(String taskId, String idAttachments) {
+
+        if ("".equals(taskId)) {
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
+
+        UserAccountDto userAccountDto = getUser();
+
+        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
+
+
+        AttachmentEntity attachmentEntity = attachmentRepository.findByAttachmentId(idAttachments);
+
+        attachmentRepository.delete(attachmentEntity);
+
+        return Response.status(Response.Status.OK).build();
+    }
 
 }

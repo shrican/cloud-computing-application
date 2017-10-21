@@ -7,22 +7,23 @@
 
 package edu.neu.csye.tasks.dataaccess;
 
-import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
+import edu.neu.csye.tasks.dataaccess.model.AttachmentEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-public interface TasksRepository extends CrudRepository<TaskEntity, String> {
+public interface AttachmentRepository extends CrudRepository<AttachmentEntity, String> {
 
     @Override
     @Transactional()
-    TaskEntity save(TaskEntity entity);
+    AttachmentEntity save(AttachmentEntity entity);
 
-    @Transactional()
-    TaskEntity findByTaskId(String taskId);
 
-    @Override
-    Iterable<TaskEntity> findAll();
+    AttachmentEntity findByAttachmentId(String id);
+
 
     @Override
-    void delete(TaskEntity taskEntity);
+    Iterable<AttachmentEntity> findAll();
+
+    @Override
+    void delete(AttachmentEntity attachmentEntity);
 }

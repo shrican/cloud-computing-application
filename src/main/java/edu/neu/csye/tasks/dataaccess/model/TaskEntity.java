@@ -27,7 +27,7 @@ public class TaskEntity {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "TASK_ATTACHMENT", joinColumns = @JoinColumn(name = "taskId"), inverseJoinColumns = @JoinColumn(name = "attachmentId") )
     private Set<AttachmentEntity> attachment;
 }
