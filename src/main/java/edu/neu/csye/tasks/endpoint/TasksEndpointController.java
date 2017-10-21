@@ -42,7 +42,7 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         TaskDto taskDto = mapper.taskToDto(task);
 
-        taskDto.setUserId(userAccountDto.getId());
+        userAccountService.save(userAccountDto);
 
         return mapper.dtoToTask(service.save(taskDto));
     }

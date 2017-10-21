@@ -20,8 +20,5 @@ public class AttachmentEntity {
     @Column(name = "url")
     private String url;
 
-    @ManyToOne
-    @JoinColumn(name="taskId", nullable=false)
-    private TaskEntity task;
 }
 

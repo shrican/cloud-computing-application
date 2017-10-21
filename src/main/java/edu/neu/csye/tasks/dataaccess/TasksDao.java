@@ -33,11 +33,11 @@ public class TasksDao {
      */
     @Transactional(propagation = Propagation.MANDATORY)
     public TaskDto save(TaskDto taskDto) {
-        TaskEntity TaskEntity = tasksMapper.dtoToEntity(taskDto);
+        TaskEntity taskEntity = tasksMapper.dtoToEntity(taskDto);
 
-        TaskEntity = tasksRepository.save(TaskEntity);
+        taskEntity = tasksRepository.save(taskEntity);
 
-        return tasksMapper.entityToDto(TaskEntity);
+        return tasksMapper.entityToDto(taskEntity);
     }
 
     @Transactional(propagation = Propagation.MANDATORY)

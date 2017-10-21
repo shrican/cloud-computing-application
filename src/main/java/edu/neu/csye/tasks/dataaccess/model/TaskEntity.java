@@ -28,10 +28,7 @@ public class TaskEntity {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy="task")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "TASK_ATTACHMENT", joinColumns = @JoinColumn(name = "taskId"), inverseJoinColumns = @JoinColumn(name = "attachmentId") )
     private Set<AttachmentEntity> attachment;
-
-    @ManyToOne
-    @JoinColumn(name="id", nullable=false)
-    private UserAccountEntity userAccountEntity;
 }

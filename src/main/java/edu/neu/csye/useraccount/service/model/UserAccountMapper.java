@@ -14,7 +14,7 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
 @Component
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = UserIdMapper.class,unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserAccountMapper {
 
     UserAccountDto entityToDto(UserAccountEntity userAccountEntity);

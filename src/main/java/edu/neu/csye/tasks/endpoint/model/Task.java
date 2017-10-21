@@ -35,5 +35,4 @@ public class Task implements Serializable {
     @Size(max = 4096, message = "DESCRIPTION_TOO_LARGE")
     private String description;
 
-    private Set<Attachment> attachment;
 }

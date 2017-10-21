@@ -25,7 +25,4 @@ public class TaskDto {
 
     private String id;
     private String description;
-    private Set<AttachmentDto> attachmentDtoSet;
-    private String userId;
-
 }

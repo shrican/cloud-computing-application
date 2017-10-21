@@ -11,23 +11,27 @@ import edu.neu.csye.tasks.dataaccess.model.AttachmentEntity;
 import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
 import edu.neu.csye.tasks.endpoint.model.Attachment;
 import edu.neu.csye.tasks.endpoint.model.Task;
+import edu.neu.csye.useraccount.service.model.UserAccountMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValueMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
 @Component
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = UserAccountMapper.class,unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL)
 public interface TasksMapper {
 
-    TaskDto entityToDto(TaskEntity taskEntity);
 
     TaskEntity dtoToEntity(TaskDto taskDto);
 
     Task dtoToTask(TaskDto taskDto);
 
-    AttachmentDto entityToDto(AttachmentEntity attachmentEntity);
+    TaskDto entityToDto(TaskEntity taskEntity);
 
-    AttachmentEntity dtoToEntity(AttachmentDto attachmentDto);
+    AttachmentDto attachmentEntityToDto(AttachmentEntity attachmentEntity);
+
+    AttachmentEntity attachmentDtoToEntity(AttachmentDto attachmentDto);
 
     Attachment dtoToAttachment(AttachmentDto attachmentDto);
 
