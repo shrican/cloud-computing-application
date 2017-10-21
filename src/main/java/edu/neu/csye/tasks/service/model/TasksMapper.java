@@ -13,7 +13,6 @@ import edu.neu.csye.tasks.endpoint.model.Attachment;
 import edu.neu.csye.tasks.endpoint.model.Task;
 import edu.neu.csye.useraccount.service.model.UserAccountMapper;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.NullValueMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
@@ -22,9 +21,6 @@ import org.springframework.stereotype.Component;
 @Mapper(componentModel = "spring", uses = UserAccountMapper.class,unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL)
 public interface TasksMapper {
 
-
-    @Mapping(target = "attachments", ignore = true)
-    @Mapping(target = "taskId", ignore = true)
     TaskEntity dtoToEntity(TaskDto taskDto);
 
     Task dtoToTask(TaskDto taskDto);
