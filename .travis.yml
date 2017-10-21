@@ -19,6 +19,10 @@ after_success:
   - ls -al
   - pwd
 
+deploy:
+  - provider: s3
+
+
 notifications:
   username:
     recipients:
