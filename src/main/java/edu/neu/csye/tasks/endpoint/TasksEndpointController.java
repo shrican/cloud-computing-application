@@ -166,7 +166,9 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         task.getAttachment().add(mapper.attachmentDtoToEntity(att));
 
-        tasksRepository.save(task);
+        TaskEntity taskEntity = tasksRepository.save(task);
+
+
 
 
 //        taskDto.getAttachmentDtos().add(att);
