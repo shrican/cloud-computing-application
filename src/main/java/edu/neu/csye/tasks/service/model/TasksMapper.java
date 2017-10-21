@@ -17,6 +17,8 @@ import org.mapstruct.NullValueMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
 @Mapper(componentModel = "spring", uses = UserAccountMapper.class,unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL)
 public interface TasksMapper {
@@ -34,5 +36,7 @@ public interface TasksMapper {
     Attachment dtoToAttachment(AttachmentDto attachmentDto);
 
     TaskDto taskToDto(Task task);
+
+    Set<TaskEntity> toTaskSetEntity(Set<TaskDto> taskDtos);
 
 }
