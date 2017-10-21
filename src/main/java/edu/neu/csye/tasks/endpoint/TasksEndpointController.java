@@ -53,7 +53,7 @@ public class TasksEndpointController implements TasksEndpointRest {
         userAccountDto.getTaskDtoSet().add(taskDto);
 
         UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
-        ;
+
         userAccountEntity.getTaskEntity().add(mapper.dtoToEntity(taskDto));
         userAccountEntity = userAccountRepository.save(userAccountEntity);
 
@@ -66,7 +66,9 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         UserAccountDto userAccountDto = getUser();
 
-        return mapper.toTaskSet(userAccountDto.getTaskDtoSet());
+        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
+
+        return mapper.setEntittiesToTask(userAccountEntity.getTaskEntity());
 
     }
 
