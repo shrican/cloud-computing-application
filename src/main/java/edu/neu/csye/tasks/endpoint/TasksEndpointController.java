@@ -21,12 +21,14 @@ import edu.neu.csye.useraccount.service.UserAccountService;
 import edu.neu.csye.useraccount.service.model.UserAccountDto;
 import edu.neu.csye.useraccount.service.model.UserAccountMapper;
 import lombok.RequiredArgsConstructor;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 import java.util.Set;
 
 @Component
@@ -141,6 +143,14 @@ public class TasksEndpointController implements TasksEndpointRest {
         attachmentRepository.delete(attachmentEntity);
 
         return Response.status(Response.Status.OK).build();
+    }
+
+
+    public void createAttachment(String id, InputStream fileInputStream,
+                                 FormDataContentDisposition cd) {
+        String fileurl = service.saveUploadedFile(id, fileInputStream, cd);
+
+
     }
 
 }

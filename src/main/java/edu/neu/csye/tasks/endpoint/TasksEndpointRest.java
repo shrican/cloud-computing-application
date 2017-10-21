@@ -8,10 +8,13 @@
 package edu.neu.csye.tasks.endpoint;
 
 import edu.neu.csye.tasks.endpoint.model.Task;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 import java.util.Set;
 
 @Path("/tasks")
@@ -37,11 +40,11 @@ public interface TasksEndpointRest {
     @Produces(MediaType.APPLICATION_JSON)
     Response delete(@PathParam("taskId") String taskId);
 
-//    @Path("/{taskId}/attachments")
+//    @Path("/{id}/attachments")
 //    @GET
 //    @Produces(MediaType.APPLICATION_JSON)
-//    List<Attachment> getAttachments(@PathParam("taskId") int taskId);
-//
+//    Set<Attachment> getAttachments(@PathParam("id") String taskId);
+
 //    @Path("/{taskId}/attachments")
 //    @POST
 //    @Consumes(MediaType.APPLICATION_JSON)
@@ -52,5 +55,11 @@ public interface TasksEndpointRest {
     @Path("/{taskId}/attachments/{idAttachments}")
     @DELETE
     Response deleteAttachment(@PathParam("taskId") String taskId, @PathParam("idAttachments") String idAttachments);
+
+    @Path("/{id}/attachments")
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    void createAttachment(@PathParam("id") String id, @FormDataParam("file") InputStream fileInputStream,
+                          @FormDataParam("file") FormDataContentDisposition cdh);
 
 }
