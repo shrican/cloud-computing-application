@@ -11,26 +11,48 @@ import edu.neu.csye.tasks.dataaccess.model.AttachmentEntity;
 import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
 import edu.neu.csye.tasks.endpoint.model.Attachment;
 import edu.neu.csye.tasks.endpoint.model.Task;
+import edu.neu.csye.useraccount.service.model.UserAccountMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.NullValueMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
-@Component
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface TasksMapper {
+import java.util.Set;
 
-    TaskDto entityToDto(TaskEntity taskEntity);
+@Component
+@Mapper(componentModel = "spring", uses = UserAccountMapper.class,unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL)
+public interface TasksMapper {
 
     TaskEntity dtoToEntity(TaskDto taskDto);
 
     Task dtoToTask(TaskDto taskDto);
 
-    AttachmentDto entityToDto(AttachmentEntity attachmentEntity);
+    TaskDto entityToDto(TaskEntity taskEntity);
 
-    AttachmentEntity dtoToEntity(AttachmentDto attachmentDto);
+    AttachmentDto attachmentEntityToDto(AttachmentEntity attachmentEntity);
+
+    AttachmentEntity attachmentDtoToEntity(AttachmentDto attachmentDto);
 
     Attachment dtoToAttachment(AttachmentDto attachmentDto);
 
     TaskDto taskToDto(Task task);
+
+    Set<TaskEntity> toTaskSetEntity(Set<TaskDto> taskDtos);
+
+    Set<Task> toTaskSet(Set<TaskDto> taskDtos);
+
+    Set<TaskDto> setEntittiesToDtos(Set<TaskEntity> taskEntities);
+
+    Set<Task> setEntittiesToTask(Set<TaskEntity> taskEntities);
+
+    Task entityToTasks(TaskEntity taskEntity);
+
+    Set<AttachmentEntity> toAttSetEntity(Set<AttachmentDto> attachmentDtos);
+
+    Set<Attachment> toAttSet(Set<AttachmentDto> attachmentDtos);
+
+    Set<AttachmentDto> setAttEntittiesToDtos(Set<AttachmentEntity> attachmentEntities);
+
+    Set<Attachment> setAttEntitiesToTask(Set<AttachmentEntity> attachmentEntities);
 
 }

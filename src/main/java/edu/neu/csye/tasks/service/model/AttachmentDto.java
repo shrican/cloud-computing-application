@@ -23,5 +23,5 @@ public class AttachmentDto {
 
     private String attachmentid;
     private String url;
-
+    private String taskId;
 }

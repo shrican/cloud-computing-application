@@ -8,10 +8,10 @@
 package edu.neu.csye.useraccount.dataaccess.model;
 
 import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
-import edu.neu.csye.tasks.endpoint.model.Task;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,6 +29,13 @@ public class UserAccountEntity {
     @Column(name = "PASSWORD")
     private String password;
 
-    @OneToMany(mappedBy = "userAccountEntity")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "USERACCOUNT_TASK", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "taskId") )
     private Set<TaskEntity> taskEntity;
+
+    public UserAccountEntity() {
+        taskEntity = new HashSet<>();
+    }
+
+
 }

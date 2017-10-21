@@ -19,7 +19,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/user")
 public interface UserAccountEndpointRest {
 
-    @Path("/save")
+    @Path("/register")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)

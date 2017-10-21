@@ -12,7 +12,6 @@ import edu.neu.csye.tasks.service.model.TaskDto;
 import edu.neu.csye.tasks.service.model.TasksMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -31,16 +30,16 @@ public class TasksDao {
      * @param taskDto the dto representation of the Task
      * @return a TaskDto
      */
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional()
     public TaskDto save(TaskDto taskDto) {
-        TaskEntity TaskEntity = tasksMapper.dtoToEntity(taskDto);
+        TaskEntity taskEntity = tasksMapper.dtoToEntity(taskDto);
 
-        TaskEntity = tasksRepository.save(TaskEntity);
+        taskEntity = tasksRepository.save(taskEntity);
 
-        return tasksMapper.entityToDto(TaskEntity);
+        return tasksMapper.entityToDto(taskEntity);
     }
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional()
     public TaskDto loadTaskById(String id) {
         TaskEntity task = tasksRepository.findByTaskId(id);
         if (task == null) {
