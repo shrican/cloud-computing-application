@@ -9,6 +9,7 @@ package edu.neu.csye.tasks.endpoint;
 
 import edu.neu.csye.tasks.endpoint.model.Task;
 import edu.neu.csye.tasks.service.TasksService;
+import edu.neu.csye.tasks.service.model.TaskDto;
 import edu.neu.csye.tasks.service.model.TasksMapper;
 import edu.neu.csye.useraccount.service.UserAccountService;
 import edu.neu.csye.useraccount.service.model.UserAccountDto;
@@ -39,7 +40,9 @@ public class TasksEndpointController implements TasksEndpointRest {
     public Task create(Task task) {
         UserAccountDto userAccountDto = getUser();
 
-        userAccountService.save(userAccountDto);
+        TaskDto taskDto = mapper.taskToDto(task);
+
+        taskDto.setUserId(userAccountDto.getId());
 
         return mapper.dtoToTask(service.save(mapper.taskToDto(task)));
     }

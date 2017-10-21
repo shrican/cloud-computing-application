@@ -16,6 +16,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Defines the properties and basic validation for a request to create a task.
@@ -34,5 +35,5 @@ public class Task implements Serializable {
     @Size(max = 4096, message = "DESCRIPTION_TOO_LARGE")
     private String description;
 
-    private List<Attachment> attachment;
+    private Set<Attachment> attachment;
 }
