@@ -7,6 +7,7 @@
  **/
 package edu.neu.csye.useraccount.service.model;
 
+import edu.neu.csye.tasks.service.model.TasksMapper;
 import edu.neu.csye.useraccount.dataaccess.model.UserAccountEntity;
 import edu.neu.csye.useraccount.endpoint.model.UserAccount;
 import org.mapstruct.Mapper;
@@ -14,7 +15,7 @@ import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
 @Component
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", uses = TasksMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserAccountMapper {
 
     UserAccountDto entityToDto(UserAccountEntity userAccountEntity);

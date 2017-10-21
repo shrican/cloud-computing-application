@@ -7,14 +7,12 @@
  **/
 package edu.neu.csye.useraccount.dataaccess.model;
 
+import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "USER_ACCOUNT")
@@ -22,6 +20,7 @@ import javax.persistence.Table;
 public class UserAccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
 
     @Column(name = "USERNAME", unique = true)
@@ -29,4 +28,14 @@ public class UserAccountEntity {
 
     @Column(name = "PASSWORD")
     private String password;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "USERACCOUNT_TASK", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "taskId") )
+    private Set<TaskEntity> taskEntity;
+
+    public UserAccountEntity() {
+        taskEntity = new HashSet<>();
+    }
+
+
 }
