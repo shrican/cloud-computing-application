@@ -6,17 +6,22 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 
-    @Entity
-    @Table(name = "Attachment")
-    @Data
-    public class AttachmentEntity {
+@Entity
+@Table(name = "ATTACHMENTS")
+@Data
+public class AttachmentEntity {
 
-        @Id
-        @GeneratedValue(generator = "UUID")
-        @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-        private int attachment_id;
+    @Id
+    @Column(name = "attachmentId")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String attachmentId;
 
-        @Column(name = "url")
-        private String url;
-    }
+    @Column(name = "url")
+    private String url;
+
+    @ManyToOne
+    @JoinColumn(name="taskId", nullable=false)
+    private TaskEntity task;
 }
+

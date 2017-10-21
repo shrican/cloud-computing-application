@@ -12,6 +12,7 @@ import edu.neu.csye.tasks.endpoint.model.Task;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/tasks")
@@ -22,42 +23,36 @@ public interface TasksEndpointRest {
     @Consumes(MediaType.APPLICATION_JSON)
     Task create(Task task);
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    List<Task> get();
-
-    @Path("/{id}")
-    @PUT
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    Task update(Task task);
-
-    @Path("/{id}")
-    @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    Task delete(@PathParam(id) int id);
-
-    @Path("/{id}/attachments")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    List<Attachment> getAttachments(Attachment attachment);
-
-    @Path("/{id}/attachments")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    List<Attachment> createAttachment(Attachment attachment);
-
-    @Path("/{id}/attachments/{attachmentid}")
-    @DELETE
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    List<Attachment> deleteAttachment(@PathParam(attachmentid) int attachmentid);
-
-
-
-
-
-
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    List<Task> get();
+//
+//    @Path("/{id}")
+//    @PUT
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    Task update(@PathParam("id") int id);
+//
+//    @Path("/{id}")
+//    @DELETE
+//    @Produces(MediaType.APPLICATION_JSON)
+//    Response delete(@PathParam("id") int id);
+//
+//    @Path("/{id}/attachments")
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON)
+//    List<Attachment> getAttachments(@PathParam("id") int id);
+//
+//    @Path("/{id}/attachments")
+//    @POST
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    Attachment createAttachment (@PathParam("id") int id, Attachment attachment);
+//
+//    @Path("/{id}/attachments/{idAttachments}")
+//    @DELETE
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    Response deleteAttachment(@PathParam("id") int id, @PathParam("idAttachments") int idAttachments);
 
 }

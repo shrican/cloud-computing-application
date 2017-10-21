@@ -10,7 +10,12 @@ package edu.neu.csye.tasks.endpoint;
 import edu.neu.csye.tasks.endpoint.model.Task;
 import edu.neu.csye.tasks.service.TasksService;
 import edu.neu.csye.tasks.service.model.TasksMapper;
+import edu.neu.csye.useraccount.service.UserAccountService;
+import edu.neu.csye.useraccount.service.model.UserAccountDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -21,21 +26,35 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TasksEndpointController implements TasksEndpointRest {
 
+    @Autowired
+    private UserAccountService userAccountService;
 
+    @Autowired
     private TasksMapper mapper;
 
+    @Autowired
     private TasksService service;
 
     @Override
     public Task create(Task task) {
+        UserAccountDto userAccountDto = getUser();
 
-            //return mapper.entityToDto(service.save(mapper.taskToDto(task)));
+        userAccountService.save(userAccountDto);
 
-    return null;
+        return mapper.dtoToTask(service.save(mapper.taskToDto(task)));
     }
 
-    @Override
-    public List<Task> get() {
-        return null;
+//    @Override
+//    public List<Task> get() {
+//
+//        service.getAll()
+//
+//        return null;
+//    }
+
+    public UserAccountDto getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        return userAccountService.getUserByUsername(username);
     }
 }

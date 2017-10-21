@@ -42,15 +42,18 @@ public class TasksDao {
 
     @Transactional(propagation = Propagation.MANDATORY)
     public TaskDto loadTaskById(String id) {
-        TaskEntity task = tasksRepository.findById(id);
+        TaskEntity task = tasksRepository.findByTaskId(id);
         if (task == null) {
 
         }
         return tasksMapper.entityToDto(task);
     }
 
+//    public List<TaskDto> getAll(){
+//
+//    }
 
     public boolean existsById(String id) {
-        return tasksRepository.findById(id) != null;
+        return tasksRepository.findByTaskId(id) != null;
     }
 }

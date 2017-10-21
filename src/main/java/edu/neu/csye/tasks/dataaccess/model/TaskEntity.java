@@ -7,10 +7,12 @@
 
 package edu.neu.csye.tasks.dataaccess.model;
 
+import edu.neu.csye.useraccount.dataaccess.model.UserAccountEntity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "TASKS")
@@ -18,14 +20,18 @@ import javax.persistence.*;
 public class TaskEntity {
 
     @Id
+    @Column(name = "taskId")
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private int id;
+    private String taskId;
 
     @Column(name = "description")
     private String description;
 
-    @OneToMany
-    @JoinColumn(name="attachment_id")
-    private AttachmentEntity attachment;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="task")
+    private Set<AttachmentEntity> attachment;
+
+    @ManyToOne
+    @JoinColumn(name="id", nullable=false)
+    private UserAccountEntity userAccountEntity;
 }

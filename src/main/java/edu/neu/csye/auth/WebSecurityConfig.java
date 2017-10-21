@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/").authenticated()
-                .antMatchers("/user/register").permitAll()
+                .antMatchers("/user/save").permitAll()
                 .and()
                 .httpBasic()
                 .authenticationEntryPoint(basicAuthEntryPoint);
