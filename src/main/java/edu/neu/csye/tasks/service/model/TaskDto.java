@@ -23,9 +23,10 @@ import java.util.Set;
 @Builder
 public class TaskDto {
 
-    private String id;
+    private String taskId;
     private String description;
-    private Set<AttachmentDto> attachmentDtoSet;
+
+    private Set<AttachmentDto> attachments;
     private String userId;
 
 }

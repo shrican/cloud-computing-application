@@ -29,7 +29,7 @@ public class TaskEntity {
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy="task")
-    private Set<AttachmentEntity> attachment;
+    private Set<AttachmentEntity> attachments;
 
     @ManyToOne
     @JoinColumn(name="id", nullable=false)

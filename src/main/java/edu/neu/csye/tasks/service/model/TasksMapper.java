@@ -12,6 +12,8 @@ import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
 import edu.neu.csye.tasks.endpoint.model.Attachment;
 import edu.neu.csye.tasks.endpoint.model.Task;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValueMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,8 @@ public interface TasksMapper {
 
     TaskDto entityToDto(TaskEntity taskEntity);
 
+    @Mapping(target = "attachments", ignore = true)
+    @Mapping(target = "taskId", ignore = true)
     TaskEntity dtoToEntity(TaskDto taskDto);
 
     Task dtoToTask(TaskDto taskDto);

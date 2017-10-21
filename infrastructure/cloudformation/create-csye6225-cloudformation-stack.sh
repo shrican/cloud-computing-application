@@ -43,4 +43,4 @@ aws cloudformation create-stack --stack-name $stackName --template-body file://$
 # echo $publicIP
 # echo $domainName
 
-# aws route53 change-resource-record-sets --hosted-zone-id $hostedId --change-batch "{\"Comment\": \"DNS name for my instance.\", \"Changes\":[{\"Action\": \"UPSERT\", \"ResourceRecordSet\": { \"Name\": \""$domainName"\", \"Type\": \"A\", \"TTL\": 60, \"ResourceRecords\": [{\"Value\": \""$publicIP"\"}]}}]}"
+# aws route53 change-resource-record-sets --hosted-zone-taskId $hostedId --change-batch "{\"Comment\": \"DNS name for my instance.\", \"Changes\":[{\"Action\": \"UPSERT\", \"ResourceRecordSet\": { \"Name\": \""$domainName"\", \"Type\": \"A\", \"TTL\": 60, \"ResourceRecords\": [{\"Value\": \""$publicIP"\"}]}}]}"
