@@ -36,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").authenticated()
                 .antMatchers("/user/save").permitAll()
+                .antMatchers("/tasks").authenticated()
                 .and()
                 .httpBasic()
                 .authenticationEntryPoint(basicAuthEntryPoint);
