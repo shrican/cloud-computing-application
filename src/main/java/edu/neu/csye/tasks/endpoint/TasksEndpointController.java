@@ -11,8 +11,11 @@ import edu.neu.csye.tasks.endpoint.model.Task;
 import edu.neu.csye.tasks.service.TasksService;
 import edu.neu.csye.tasks.service.model.TaskDto;
 import edu.neu.csye.tasks.service.model.TasksMapper;
+import edu.neu.csye.useraccount.dataaccess.dao.UserAccountRepository;
+import edu.neu.csye.useraccount.dataaccess.model.UserAccountEntity;
 import edu.neu.csye.useraccount.service.UserAccountService;
 import edu.neu.csye.useraccount.service.model.UserAccountDto;
+import edu.neu.csye.useraccount.service.model.UserAccountMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -32,6 +35,13 @@ public class TasksEndpointController implements TasksEndpointRest {
     @Autowired
     private TasksService service;
 
+    @Autowired
+    private UserAccountRepository userAccountRepository;
+
+    @Autowired
+    private UserAccountMapper userAccountMapper;
+
+
     @Override
     public Task create(Task task) {
         UserAccountDto userAccountDto = getUser();
@@ -40,9 +50,12 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         userAccountDto.getTaskDtoSet().add(taskDto);
 
-        UserAccountDto userDto = userAccountService.save(userAccountDto);
+        UserAccountEntity userAccountEntity = userAccountMapper.dtoToEntity(userAccountDto);
+        userAccountEntity.getTaskEntity().add(mapper.dtoToEntity(taskDto));
+        userAccountEntity = userAccountRepository.save(userAccountEntity);
 
         return mapper.dtoToTask(taskDto);
+
     }
 
 //    @Override
