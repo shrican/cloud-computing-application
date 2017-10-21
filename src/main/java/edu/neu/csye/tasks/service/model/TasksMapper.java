@@ -23,6 +23,8 @@ import org.springframework.stereotype.Component;
 public interface TasksMapper {
 
 
+    @Mapping(target = "attachments", ignore = true)
+    @Mapping(target = "taskId", ignore = true)
     TaskEntity dtoToEntity(TaskDto taskDto);
 
     Task dtoToTask(TaskDto taskDto);

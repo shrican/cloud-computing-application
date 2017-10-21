@@ -27,32 +27,32 @@ public interface TasksEndpointRest {
 //    @Produces(MediaType.APPLICATION_JSON)
 //    List<Task> get();
 //
-//    @Path("/{id}")
+//    @Path("/{taskId}")
 //    @PUT
 //    @Consumes(MediaType.APPLICATION_JSON)
 //    @Produces(MediaType.APPLICATION_JSON)
-//    Task update(@PathParam("id") int id);
+//    Task update(@PathParam("taskId") int taskId);
 //
-//    @Path("/{id}")
+//    @Path("/{taskId}")
 //    @DELETE
 //    @Produces(MediaType.APPLICATION_JSON)
-//    Response delete(@PathParam("id") int id);
+//    Response delete(@PathParam("taskId") int taskId);
 //
-//    @Path("/{id}/attachments")
+//    @Path("/{taskId}/attachments")
 //    @GET
 //    @Produces(MediaType.APPLICATION_JSON)
-//    List<Attachment> getAttachments(@PathParam("id") int id);
+//    List<Attachment> getAttachments(@PathParam("taskId") int taskId);
 //
-//    @Path("/{id}/attachments")
+//    @Path("/{taskId}/attachments")
 //    @POST
 //    @Consumes(MediaType.APPLICATION_JSON)
 //    @Produces(MediaType.APPLICATION_JSON)
-//    Attachment createAttachment (@PathParam("id") int id, Attachment attachment);
+//    Attachment createAttachment (@PathParam("taskId") int taskId, Attachment attachments);
 //
-//    @Path("/{id}/attachments/{idAttachments}")
+//    @Path("/{taskId}/attachments/{idAttachments}")
 //    @DELETE
 //    @Consumes(MediaType.APPLICATION_JSON)
 //    @Produces(MediaType.APPLICATION_JSON)
-//    Response deleteAttachment(@PathParam("id") int id, @PathParam("idAttachments") int idAttachments);
+//    Response deleteAttachment(@PathParam("taskId") int taskId, @PathParam("idAttachments") int idAttachments);
 
 }
