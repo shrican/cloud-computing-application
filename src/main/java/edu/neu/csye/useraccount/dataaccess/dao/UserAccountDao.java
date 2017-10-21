@@ -51,6 +51,7 @@ public class UserAccountDao {
         return userAccountMapper.entityToDto(user);
     }
 
+
     public boolean existsByUsername(String username) {
         return userAccountRepository.findByUsername(username) != null;
     }
