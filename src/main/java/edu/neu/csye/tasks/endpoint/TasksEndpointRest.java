@@ -7,13 +7,11 @@
 
 package edu.neu.csye.tasks.endpoint;
 
-import edu.neu.csye.tasks.endpoint.model.Attachment;
 import edu.neu.csye.tasks.endpoint.model.Task;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.List;
+import java.util.Set;
 
 @Path("/tasks")
 public interface TasksEndpointRest {
@@ -23,9 +21,9 @@ public interface TasksEndpointRest {
     @Consumes(MediaType.APPLICATION_JSON)
     Task create(Task task);
 
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    List<Task> get();
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    Set<Task> get();
 //
 //    @Path("/{taskId}")
 //    @PUT

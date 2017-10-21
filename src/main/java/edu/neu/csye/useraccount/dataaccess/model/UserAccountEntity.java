@@ -29,7 +29,7 @@ public class UserAccountEntity {
     @Column(name = "PASSWORD")
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "USERACCOUNT_TASK", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "taskId") )
     private Set<TaskEntity> taskEntity;
 

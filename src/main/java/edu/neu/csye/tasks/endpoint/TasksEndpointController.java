@@ -22,6 +22,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
 @RequiredArgsConstructor
 public class TasksEndpointController implements TasksEndpointRest {
@@ -50,7 +52,8 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         userAccountDto.getTaskDtoSet().add(taskDto);
 
-        UserAccountEntity userAccountEntity = userAccountMapper.dtoToEntity(userAccountDto);
+        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
+        ;
         userAccountEntity.getTaskEntity().add(mapper.dtoToEntity(taskDto));
         userAccountEntity = userAccountRepository.save(userAccountEntity);
 
@@ -58,13 +61,14 @@ public class TasksEndpointController implements TasksEndpointRest {
 
     }
 
-//    @Override
-//    public List<Task> get() {
-//
-//        service.getAll()
-//
-//        return null;
-//    }
+    @Override
+    public Set<Task> get() {
+
+        UserAccountDto userAccountDto = getUser();
+
+        return mapper.toTaskSet(userAccountDto.getTaskDtoSet());
+
+    }
 
     public UserAccountDto getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
