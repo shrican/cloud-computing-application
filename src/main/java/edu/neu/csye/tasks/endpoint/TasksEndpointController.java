@@ -7,6 +7,8 @@
 
 package edu.neu.csye.tasks.endpoint;
 
+import edu.neu.csye.tasks.dataaccess.TasksRepository;
+import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
 import edu.neu.csye.tasks.endpoint.model.Task;
 import edu.neu.csye.tasks.service.TasksService;
 import edu.neu.csye.tasks.service.model.TaskDto;
@@ -43,6 +45,9 @@ public class TasksEndpointController implements TasksEndpointRest {
     @Autowired
     private UserAccountMapper userAccountMapper;
 
+    @Autowired
+    private TasksRepository tasksRepository;
+
 
     @Override
     public Task create(Task task) {
@@ -77,4 +82,21 @@ public class TasksEndpointController implements TasksEndpointRest {
         String username = authentication.getName();
         return userAccountService.getUserByUsername(username);
     }
+
+
+    public Task update(String taskId, Task task) {
+        UserAccountDto userAccountDto = getUser();
+
+        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
+
+        TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
+
+        taskEntity.setDescription(task.getDescription());
+
+        tasksRepository.save(taskEntity);
+
+        return mapper.entityToTasks(taskEntity);
+    }
+
+
 }

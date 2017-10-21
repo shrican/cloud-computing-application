@@ -7,7 +7,6 @@
 
 package edu.neu.csye.tasks.dataaccess.model;
 
-import edu.neu.csye.useraccount.dataaccess.model.UserAccountEntity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -28,7 +27,7 @@ public class TaskEntity {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true)
     @JoinTable(name = "TASK_ATTACHMENT", joinColumns = @JoinColumn(name = "taskId"), inverseJoinColumns = @JoinColumn(name = "attachmentId") )
     private Set<AttachmentEntity> attachment;
 }

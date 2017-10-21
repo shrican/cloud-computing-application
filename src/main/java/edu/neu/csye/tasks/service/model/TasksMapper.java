@@ -45,4 +45,6 @@ public interface TasksMapper {
 
     Set<Task> setEntittiesToTask(Set<TaskEntity> taskEntities);
 
+    Task entityToTasks(TaskEntity taskEntity);
+
 }

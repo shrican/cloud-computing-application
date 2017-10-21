@@ -24,12 +24,12 @@ public interface TasksEndpointRest {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     Set<Task> get();
-//
-//    @Path("/{taskId}")
-//    @PUT
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    Task update(@PathParam("taskId") int taskId);
+
+    @Path("/{taskId}")
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    Task update(@PathParam("taskId") String taskId, Task task);
 //
 //    @Path("/{taskId}")
 //    @DELETE

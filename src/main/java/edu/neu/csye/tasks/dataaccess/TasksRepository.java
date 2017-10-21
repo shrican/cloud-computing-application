@@ -7,18 +7,17 @@
 
 package edu.neu.csye.tasks.dataaccess;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface TasksRepository extends CrudRepository<TaskEntity, String> {
 
     @Override
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional()
     TaskEntity save(TaskEntity entity);
 
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional()
     TaskEntity findByTaskId(String taskId);
 
     @Override
