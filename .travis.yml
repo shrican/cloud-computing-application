@@ -29,8 +29,6 @@ deploy:
    region: us-east-1
    skip_cleanup: true
 
-
-
 notifications:
   username:
     recipients:
