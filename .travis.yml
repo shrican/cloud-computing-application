@@ -10,9 +10,11 @@ script:
   - ./gradlew build
 
 after_success:
+  - pwd
   - cd build/libs/
   - ls -al
   - cd ../..
+  - pwd
   - mkdir codedeploy
   - zip -r csye6225-fall2017.zip build/libs/ROOT.war appspec.yml restartTomcat.sh
   - ls -al
@@ -22,9 +24,6 @@ after_success:
   - cd codedeploy
   - ls -al
   - pwd
-
-before_deploy:
-  - cd ..
 
 deploy:
   -provider: s3
