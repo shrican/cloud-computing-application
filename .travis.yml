@@ -10,6 +10,9 @@ script:
   - ./gradlew build
 
 after_success:
+  - cd build/libs/
+  - ls -al
+  - cd ../..
   - mkdir codedeploy
   - zip -r csye6225-fall2017.zip build/libs/ROOT.war appspec.yml restartTomcat.sh
   - ls -al
@@ -19,6 +22,9 @@ after_success:
   - cd codedeploy
   - ls -al
   - pwd
+
+before_deploy:
+  - cd ..
 
 deploy:
   -provider: s3
@@ -35,7 +41,7 @@ deploy:
   key: csye6225-fall2017.zip
   bundle_type: zip
   application: csye6225-fall2017
-  deployment_group: csye6225-fall2017
+  deployment_group: csye6225-fall2017-group
   region: us-east-1
   secure_access_key:
     secure: FgYqfw0SFWPPX5nl4KY9aaiVSK2ZP2cBplzuqj+4iLXSVfkJs5reKA/nQ1A6C6n8dH9zkyX6kTizYINO0vDQHePDwgaKRbH959MXsxM5dMAeYm6CSkUOeGMmKfjEQt29HRTq35LNpbeDec2cxslC+W2Yfxzn8Lvtw/G8ooOChjJ3Vlly2tka3mZX0NXhStFdf7xo6zx4QZVmuVK7x8Y9Y//GhMEhmHdtXyIguULwKdo1hNUQhMi4k1S5GSjILsazJ9VGwi63IBuLGebr8+dd1Z3vNxyuGTHufEQg2od9PmMzzrKwE6FXIt0DyWxo4EYTFilIFzratj7lY5+KvuZ3cVFqVXRD/EnGext12IAUvKAFkcMvpNBlXvJywke+SVGPGEnT3TeOeNs3XCxczjWkHXMVajtqGNqqj8vlCLSzoxdM+Zr39qONnNJbGt5DGnMlhJI/46WDlgql3KD77fN+ZauA3gUX2ExnfQGEjz9II06y7DXb4twSscCNfwb45Rl71hLkv6YrwG2pjlF/DWO7z+RBe/Mpsl7iyGQ3UPiCwiBRIMXhcYA27bcaYJyZpKEyzMUE1kxM/e1XSkql8yScxMC//s/eWEuOhDCs702NhhxVDrjahOKHVgUrk3x8Z9GlKFHjulzeWcn0GGXoozm61EE+IlIpdn7dFrydtd7oCZ0=
