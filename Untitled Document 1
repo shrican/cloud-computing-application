@@ -1,0 +1,149 @@
+Readme
+
+
+
+
+# Csye6225-fall2017 - Assignment 3
+
+The application implements APIs using Java programming language and Spring boot framework with MySQL as the persistent backend data store for user account management. 
+
+## Getting Started
+
+Below are the instructions that will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+* Java JDK 1.8
+* Spring Boot
+* MySql
+* Gradle
+* Travis CI
+
+### Installation
+
+Pull the porject
+
+To https://github.com/shrican/csye6225-fall2017.git
+
+* Import existing code source from Github/folder
+
+* Import Gradle configuration along with Java JDK
+* Make/Update changes to build.gradle and travis.yml
+* Add MySQL database Configuration
+* Build Application using Travis CI 
+
+## Instructions to run unit, integration and/or load tests
+
+
+use Jmeter to run jmeter/assignment3.jmx file
+
+### List of Test Cases
+
+1. Register(): checks whether user registration is done properly.
+
+2. EnsureUserNameIsUnique(): Checks for the user name to be unique from the database.
+
+
+### Test Coding style/Pattern
+
+We have used the following frameworks:
+Spring Boot
+Spring JPA
+Hibernate
+Mapstruct
+Lombok
+Jersey
+
+We have structred our projects in to following layers
+
+Endpoint
+Dataaccess
+Service
+
+## Deployment
+1. Deploy assignemnt3.war on tomcat/
+
+2. a. Import Project in Intellij
+   b. Run BootRun task in intellij
+
+## Build with Travis CI
+
+
+* [Travis CI](https://travis-ci.com/) - Travis CI is a hosted, distributed continuous integration service used to build and test software projects hosted at GitHub.
+
+Steps for Travis CI build
+
+* LOgin to Travis CI (using github login)
+* Activate your repository
+* Flick the repository switch on
+* Add .travis.yml file to your repository
+
+travis.yml
+
+language: java
+jdk:
+  - oraclejdk8
+
+sudo: false
+install: true
+
+script:
+  - ./gradlew war
+  - ./gradlew test
+
+notifications:
+  email:
+    recipients:
+      - chandra.ra@husky.neu.edu
+      - patil.man@husky.neu.edu
+      - mudholkar.s@husky.neu.edu
+      - bhanushali.v@husky.neu.edu
+    on_success: always
+
+* Trigger your first build with a git push
+
+* Do Travis build from travisCI by manually entering the travisCI code
+
+Travis build link for the project : [Click here for the link]
+https://travis-ci.com/shrican/csye6225-fall2017/builds/55824033
+
+## Authors
+
+* **Shrikant Mudholkar** 
+* **Varsha Bhanushali**
+* **Rahul Chandra**
+* **Manish Patil**
+
+## License
+
+This project is licensed under the Northeastern University
+
+## Acknowledgments
+
+* Prof. Tejas Parikh who's initial code template was used
+* TA Jiamin and Haozhong for guidance 
+
+
+
+
+
+travis
+
+language: java
+jdk:
+  - oraclejdk8
+
+sudo: false
+install: true
+
+script:
+  - ./gradlew war
+  - ./gradlew test
+
+notifications:
+  email:
+    recipients:
+      - chandra.ra@husky.neu.edu
+      - patil.man@husky.neu.edu
+      - mudholkar.s@husky.neu.edu
+      - bhanushali.v@husky.neu.edu
+    on_success: always
