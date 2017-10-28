@@ -589,6 +589,18 @@
                 },
                 "ImageId": {
                     "Ref" :"imageId"
+                },
+                "UserData":{
+                    "Fn::Base64":{
+                        "Fn::Join" : ["", [
+                        "#!/bin/bash -v \n",
+                        "apt-get update \n",
+                        "apt-get install default-jdk -y \n",
+                        "update-alternatives --config java \n",
+                        "echo JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java\" > /etc/environment \n",
+                        "source /etc/environment \n"
+                        ] ] 
+                    }
                 }
             }
         },
@@ -724,19 +736,6 @@
             "Value":{  
                 "Ref":"EC2Instance"
             }
-        }
-    },
-    "UserData":{
-        "Fn::Base64":{
-            "Fn::Join" : ["", [
-            "#!/bin/bash -v \n",
-            "apt-get update \n",
-            "apt-get install default-jdk -y \n",
-            "update-alternatives --config java \n",
-            "echo JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java\" > /etc/environment \n",
-            "echo 'export JAVA_HOME' > /etc/environment \n",
-            "source /etc/environment \n"
-            ] ]
         }
     }
 }
