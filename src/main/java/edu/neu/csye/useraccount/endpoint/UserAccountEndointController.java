@@ -6,6 +6,7 @@ package edu.neu.csye.useraccount.endpoint;
  * Rahul Chandra, 01225683, chandra.ra@husky.neu.edu
  * Manish Patil, 001228956, patil.man@husky.neu.edu
  **/
+
 import com.google.gson.JsonObject;
 import edu.neu.csye.useraccount.endpoint.model.UserAccount;
 import edu.neu.csye.useraccount.service.UserAccountService;
@@ -24,16 +25,14 @@ public class UserAccountEndointController implements UserAccountEndpointRest {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public String register(UserAccount userAccount)
-    {
+    public String register(UserAccount userAccount) {
         JsonObject jsonObject = new JsonObject();
         userAccount.setPassword(BCrypt.hashpw(userAccount.getPassword(), BCrypt.gensalt()));
-        if(userAccountService.ensuireUsernameIsUnique(userAccount.getUsername())){
-            userAccountService.register(userAccountMapper.userAccountToDto(userAccount));
+        if (userAccountService.ensuireUsernameIsUnique(userAccount.getUsername())) {
+            userAccountService.save(userAccountMapper.userAccountToDto(userAccount));
             jsonObject.addProperty("message", "Registration Successful");
 
-        }
-        else {
+        } else {
             jsonObject.addProperty("message", "Username exixst");
         }
 

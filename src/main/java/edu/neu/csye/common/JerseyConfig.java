@@ -7,12 +7,14 @@
  **/
 package edu.neu.csye.common;
 
+import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.neu.csye.tasks.endpoint.TasksEndpointController;
 import edu.neu.csye.useraccount.endpoint.HomeEndpointController;
 import edu.neu.csye.useraccount.endpoint.UserAccountEndointController;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Bean;
-import com.fasterxml.jackson.core.JsonParser.Feature;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,6 +23,8 @@ public class JerseyConfig extends ResourceConfig {
     public JerseyConfig() {
         super.register(UserAccountEndointController.class);
         super.register(HomeEndpointController.class);
+        super.register(TasksEndpointController.class);
+        super.register(MultiPartFeature.class);
     }
 
     @Bean
