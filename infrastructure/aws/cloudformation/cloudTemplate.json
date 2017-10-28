@@ -69,6 +69,10 @@
             "Type": "AWS::EC2::KeyPair::KeyName",
             "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
         },
+        "imageId":{  
+            "Description":"Image Id",
+            "Type":"AWS::EC2::Image::Id"
+        },
         "hostedZoneId":{  
             "Description":"Hosted Zone Id",
             "Type":"String"
@@ -583,22 +587,20 @@
                 "KeyName":{  
                     "Ref":"KeyName"
                 },
-                "ImageId":{  
-                    "Fn::FindInMap":[  
-                        "AWSRegionArch2AMI",
-                        {  
-                            "Ref":"AWS::Region"
-                        },
-                        {  
-                            "Fn::FindInMap":[  
-                                "AWSInstanceType2Arch",
-                                {  
-                                    "Ref":"InstanceType"
-                                },
-                                "Arch"
-                            ]
-                        }
-                    ]
+                "ImageId": {
+                    "Ref" :"imageId"
+                },
+                "UserData":{
+                    "Fn::Base64":{
+                        "Fn::Join" : ["", [
+                        "#!/bin/bash -v \n",
+                        "apt-get update \n",
+                        "apt-get install default-jdk -y \n",
+                        "update-alternatives --config java \n",
+                        "echo JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java\" > /etc/environment \n",
+                        "source /etc/environment \n"
+                        ] ] 
+                    }
                 }
             }
         },
