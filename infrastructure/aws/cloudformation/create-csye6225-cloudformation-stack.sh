@@ -33,15 +33,16 @@ bucketName=${dnsName}csye6225.com
 echo "S3Bucket Name" $bucketName
 aws cloudformation create-stack --stack-name $stackName --template-body file://$templateFileName --enable-termination-protection --parameters ParameterKey=InstanceType,ParameterValue=$3 ParameterKey=KeyName,ParameterValue=$4 ParameterKey=hostedZoneId,ParameterValue=$hostedZoneId ParameterKey=dnsName,ParameterValue=$dnsName  ParameterKey=recordSetType,ParameterValue=$recordSetType ParameterKey=recordSetTTL,ParameterValue=$recordSetTTL ParameterKey=securityGroupName,ParameterValue=$securityGroupName ParameterKey=vpcId,ParameterValue=$vpcId ParameterKey=subnetId1,ParameterValue=$subnetId1 ParameterKey=subnetId2,ParameterValue=$subnetId2 ParameterKey=bucketName,ParameterValue=$bucketName ParameterKey=imageId,ParameterValue=$imageId
 
-stackStatus=$(aws cloudformation describe-stacks --stack-name cloudStack --query "Stacks[*].StackStatus[]" --output text)
+stackStatus=$(aws cloudformation describe-stacks --stack-name $stackName --query "Stacks[*].StackStatus[]" --output text)
+echo $stackStatus
 
 while [ $stackStatus != "CREATE_COMPLETE" ]
 	do
-		echo "Creation of $stack_name stack is in progress"
-		stackStatus=$(aws cloudformation describe-stacks --stack-name cloudStack --query "Stacks[*].StackStatus[]" --output text)
-		echo "Current Status of $stack_name stack is $stackStatus"
-		sleep 10
+		echo "Creation of $stackName stack is in progress"
+		echo "Current Status of $stackName stack is $stackStatus"
+		sleep 30
+		stackStatus=$(aws cloudformation describe-stacks --stack-name $stackName --query "Stacks[*].StackStatus[]" --output text)
 	done
 
-echo "$stack_name created successfully !!!"
+echo "$stackName created successfully !!!"
 
