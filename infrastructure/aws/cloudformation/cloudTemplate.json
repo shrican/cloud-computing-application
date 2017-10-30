@@ -598,7 +598,17 @@
                         "apt-get install default-jdk -y \n",
                         "update-alternatives --config java \n",
                         "echo JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java\" > /etc/environment \n",
-                        "source /etc/environment \n"
+                        "source /etc/environment \n",
+			"groupadd tomcat \n",
+			"apt-get install tomcat8 -y \n",
+                        "# Installing CodeDeploy Agent \n",
+                        "apt-get install python-pip -y \n",
+                        "apt-get install ruby -y \n",
+                        "apt-get install wget -y \n",
+                        "cd /home/ubuntu \n",
+                        "wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
+                        "chmod +x ./install \n",
+                        "./install auto \n"
                         ] ] 
                     }
                 }
