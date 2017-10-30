@@ -28,16 +28,14 @@ after_success:
 deploy:
   -provider: s3
   access_key_id: $access_key_id
-  secure_access_key:
-    secure: $secure_access_key
+  secure_access_key: $secure_access_key
   local_dir: codedeploy
   bucket: $bucket_name
   region: us-east-1
   skip_cleanup: true
   -provider: codedeploy
   access_key_id: $access_key_id
-  secure_access_key:
-    secure: $secure_access_key
+  secure_access_key: $secure_access_key
   bucket: $bucket_name
   key: csye6225-fall2017.zip
   bundle_type: zip
