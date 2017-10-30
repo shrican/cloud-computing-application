@@ -7,6 +7,9 @@
 
 package edu.neu.csye.tasks.endpoint;
 
+import edu.neu.csye.tasks.dataaccess.model.AttachmentEntity;
+import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
+import edu.neu.csye.tasks.endpoint.model.Attachment;
 import edu.neu.csye.tasks.endpoint.model.Task;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -23,7 +26,7 @@ public interface TasksEndpointRest {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Task create(Task task);
+    Task create(TaskEntity task);
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -40,17 +43,11 @@ public interface TasksEndpointRest {
     @Produces(MediaType.APPLICATION_JSON)
     Response delete(@PathParam("taskId") String taskId);
 
-//    @Path("/{id}/attachments")
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    Set<Attachment> getAttachments(@PathParam("id") String taskId);
+    @Path("/{taskId}/attachments")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    Set<Attachment> getAttachments(@PathParam("taskId") String taskId);
 
-//    @Path("/{taskId}/attachments")
-//    @POST
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    Attachment createAttachment (@PathParam("taskId") int taskId, Attachment attachments);
-//
 
     @Path("/{taskId}/attachments/{idAttachments}")
     @DELETE
@@ -59,7 +56,8 @@ public interface TasksEndpointRest {
     @Path("/{id}/attachments")
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    void createAttachment(@PathParam("id") String id, @FormDataParam("file") InputStream fileInputStream,
-                          @FormDataParam("file") FormDataContentDisposition cdh);
+    @Produces(MediaType.APPLICATION_JSON)
+    AttachmentEntity createAttachment(@PathParam("id") String id, @FormDataParam("file") InputStream fileInputStream,
+                                      @FormDataParam("file") FormDataContentDisposition cdh);
 
 }

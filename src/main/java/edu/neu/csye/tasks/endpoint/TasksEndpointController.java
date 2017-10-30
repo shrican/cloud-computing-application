@@ -11,6 +11,7 @@ import edu.neu.csye.tasks.dataaccess.AttachmentRepository;
 import edu.neu.csye.tasks.dataaccess.TasksRepository;
 import edu.neu.csye.tasks.dataaccess.model.AttachmentEntity;
 import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
+import edu.neu.csye.tasks.endpoint.model.Attachment;
 import edu.neu.csye.tasks.endpoint.model.Task;
 import edu.neu.csye.tasks.service.TasksService;
 import edu.neu.csye.tasks.service.model.AttachmentDto;
@@ -24,9 +25,15 @@ import edu.neu.csye.useraccount.service.model.UserAccountMapper;
 import lombok.RequiredArgsConstructor;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
@@ -59,20 +66,17 @@ public class TasksEndpointController implements TasksEndpointRest {
 
 
     @Override
-    public Task create(Task task) {
+    public Task create(TaskEntity task) {
+
         UserAccountDto userAccountDto = getUser();
-
-        TaskDto taskDto = mapper.taskToDto(task);
-
-        userAccountDto.getTaskDtoSet().add(taskDto);
-
         UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
 
-        userAccountEntity.getTaskEntity().add(mapper.dtoToEntity(taskDto));
+        userAccountEntity.getTaskEntity().add(task);
         userAccountEntity = userAccountRepository.save(userAccountEntity);
 
-        return mapper.dtoToTask(taskDto);
+        TaskEntity updatedTask = userAccountEntity.getTaskEntity().stream().filter(filteredTask -> filteredTask.getDescription().equals(task.getDescription())).findFirst().orElse(task);
 
+        return mapper.entityToTasks(updatedTask);
     }
 
     @Override
@@ -95,7 +99,9 @@ public class TasksEndpointController implements TasksEndpointRest {
 
     public Task update(String taskId, Task task) {
         UserAccountDto userAccountDto = getUser();
-
+        if(!isUserAuthorized(taskId)) {
+            sendViaException();
+        }
         UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
 
         TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
@@ -113,18 +119,22 @@ public class TasksEndpointController implements TasksEndpointRest {
             return Response.status(Response.Status.NO_CONTENT).build();
         }
 
+
         UserAccountDto userAccountDto = getUser();
 
         UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
 
         TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
 
+        if(userAccountEntity.getTaskEntity().contains(taskEntity)) {
+            userAccountEntity.getTaskEntity().remove(taskEntity);
 
-        userAccountEntity.getTaskEntity().remove(taskEntity);
+            userAccountRepository.save(userAccountEntity);
 
-        userAccountRepository.save(userAccountEntity);
-
-        return Response.status(Response.Status.OK).build();
+            return Response.status(Response.Status.FORBIDDEN).build(); }
+        else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
 
     }
 
@@ -151,16 +161,14 @@ public class TasksEndpointController implements TasksEndpointRest {
     }
 
 
-    public void createAttachment(String id, InputStream fileInputStream,
-                                 FormDataContentDisposition cd) {
+    public AttachmentEntity createAttachment(String id, InputStream fileInputStream,
+                                             FormDataContentDisposition cd) {
 
         UserAccountDto userAccountDto = getUser();
 
         UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
 
-
         String fileurl = service.saveUploadedFile(id, fileInputStream, cd);
-
 
         TaskEntity task = tasksRepository.findByTaskId(id);
         TaskDto taskDto = mapper.entityToDto(task);
@@ -172,18 +180,39 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         TaskEntity taskEntity = tasksRepository.save(task);
 
+        AttachmentEntity updatedAtt = task.getAttachment().stream().filter(filteredAtt -> filteredAtt.getUrl().equals(fileurl)).findFirst().orElse(mapper.attachmentDtoToEntity(att));
 
-
-
-//        taskDto.getAttachmentDtos().add(att);
-//
-//        userAccountDto.getTaskDtoSet().add(mapper.entityToDto());
-//
-//        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
-//
-//        userAccountEntity.getTaskEntity().add(mapper.dtoToEntity(taskDto));
-//        userAccountEntity = userAccountRepository.save(userAccountEntity);
+        return updatedAtt;
 
     }
 
+    @Override
+    public Set<Attachment> getAttachments(String taskId) {
+        //UserAccountDto userAccountDto = getUser();
+
+        TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
+        System.out.println(taskEntity);
+
+        return mapper.setEntitiestoAttSet(taskEntity.getAttachment());
+    }
+
+    public boolean isUserAuthorized(String taskId){
+
+        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        if(userAccountEntity.getTaskEntity().stream().filter(task -> task.getTaskId().equals(taskId)).findFirst().orElse(null)!=null){
+            return true;
+        }
+        return false;
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    class ForbiddenException extends RuntimeException {}
+
+    @RequestMapping(value = "/exception", method = RequestMethod.GET)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity sendViaException() {
+        throw new ForbiddenException();
+    }
 }
