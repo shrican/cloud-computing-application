@@ -33,14 +33,15 @@ bucketName=${dnsName}csye6225.com
 echo "S3Bucket Name" $bucketName
 aws cloudformation create-stack --stack-name $stackName --template-body file://$templateFileName --enable-termination-protection --parameters ParameterKey=InstanceType,ParameterValue=$3 ParameterKey=KeyName,ParameterValue=$4 ParameterKey=hostedZoneId,ParameterValue=$hostedZoneId ParameterKey=dnsName,ParameterValue=$dnsName  ParameterKey=recordSetType,ParameterValue=$recordSetType ParameterKey=recordSetTTL,ParameterValue=$recordSetTTL ParameterKey=securityGroupName,ParameterValue=$securityGroupName ParameterKey=vpcId,ParameterValue=$vpcId ParameterKey=subnetId1,ParameterValue=$subnetId1 ParameterKey=subnetId2,ParameterValue=$subnetId2 ParameterKey=bucketName,ParameterValue=$bucketName ParameterKey=imageId,ParameterValue=$imageId
 
-# export instanceId=$(aws ec2 describe-instances --query "Reservations[0].Instances[0].InstanceId" --output text)
-# export hostedId=$(aws route53 list-hosted-zones-by-name --query "HostedZones[0].Id" --output text | cut -d "/" -f3)
-# publicIP=$(aws ec2 describe-instances --instance-ids $instanceId --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
-# export domainName=$(aws route53 list-hosted-zones-by-name --query "HostedZones[0].Name" --output text)
+stackStatus=$(aws cloudformation describe-stacks --stack-name cloudStack --query "Stacks[*].StackStatus[]" --output text)
 
-# echo $instanceId
-# echo $hostedId
-# echo $publicIP
-# echo $domainName
+while [ $stackStatus != "CREATE_COMPLETE" ]
+	do
+		echo "Creation of $stack_name stack is in progress"
+		stackStatus=$(aws cloudformation describe-stacks --stack-name cloudStack --query "Stacks[*].StackStatus[]" --output text)
+		echo "Current Status of $stack_name stack is $stackStatus"
+		sleep 10
+	done
 
-# aws route53 change-resource-record-sets --hosted-zone-taskId $hostedId --change-batch "{\"Comment\": \"DNS name for my instance.\", \"Changes\":[{\"Action\": \"UPSERT\", \"ResourceRecordSet\": { \"Name\": \""$domainName"\", \"Type\": \"A\", \"TTL\": 60, \"ResourceRecords\": [{\"Value\": \""$publicIP"\"}]}}]}"
+echo "$stack_name created successfully !!!"
+
