@@ -55,4 +55,6 @@ public interface TasksMapper {
 
     Set<Attachment> setAttEntitiesToTask(Set<AttachmentEntity> attachmentEntities);
 
+    Set<Attachment> setEntitiestoAttSet(Set<AttachmentEntity> attachmentEntities);
+
 }
