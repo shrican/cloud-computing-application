@@ -153,7 +153,7 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
 
-        taskEntity.getAttachments().remove(attachmentEntity);
+        taskEntity.getAttachment().remove(attachmentEntity);
 
         tasksRepository.save(taskEntity);
 
@@ -176,11 +176,11 @@ public class TasksEndpointController implements TasksEndpointRest {
         AttachmentDto att = new AttachmentDto();
         att.setUrl(fileurl);
 
-        task.getAttachments().add(mapper.attachmentDtoToEntity(att));
+        task.getAttachment().add(mapper.attachmentDtoToEntity(att));
 
         TaskEntity taskEntity = tasksRepository.save(task);
 
-        AttachmentEntity updatedAtt = task.getAttachments().stream().filter(filteredAtt -> filteredAtt.getUrl().equals(fileurl)).findFirst().orElse(mapper.attachmentDtoToEntity(att));
+        AttachmentEntity updatedAtt = task.getAttachment().stream().filter(filteredAtt -> filteredAtt.getUrl().equals(fileurl)).findFirst().orElse(mapper.attachmentDtoToEntity(att));
 
         return updatedAtt;
 
@@ -193,7 +193,7 @@ public class TasksEndpointController implements TasksEndpointRest {
         TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
         System.out.println(taskEntity);
 
-        return mapper.setEntitiestoAttSet(taskEntity.getAttachments());
+        return mapper.setEntitiestoAttSet(taskEntity.getAttachment());
     }
 
     public boolean isUserAuthorized(String taskId){
