@@ -5,8 +5,44 @@ jdk:
 sudo: false
 install: true
 
+#this will run test cases and generate war file.
 script:
-  - ./gradlew war
+  - ./gradlew build
+
+after_success:
+  - pwd
+  - cd build/libs/
+  - ls -al
+  - cd ../..
+  - pwd
+  - mkdir codedeploy
+  - zip -r csye6225-fall2017.zip build/libs/ROOT.war appspec.yml restartTomcat8.sh
+  - ls -al
+  - mv csye6225-fall2017.zip codedeploy/
+  - ls -al
+  - pwd
+  - cd codedeploy
+  - ls -al
+  - pwd
+
+deploy:
+  -provider: s3
+  access_key_id: $access_key_id
+  secure_access_key: $secure_access_key
+  local_dir: codedeploy
+  bucket: $bucket_name
+  region: us-east-1
+  skip_cleanup: true
+  -provider: codedeploy
+  access_key_id: $access_key_id
+  secure_access_key: $secure_access_key
+  bucket: $bucket_name
+  key: csye6225-fall2017.zip
+  bundle_type: zip
+  application: csye6225-fall2017
+  deployment_group: csye6225-fall2017-group
+  region: us-east-1
+  wait-until-deplyed: true
 
 notifications:
   username:
