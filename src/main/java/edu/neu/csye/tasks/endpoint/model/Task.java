@@ -29,7 +29,7 @@ public class Task implements Serializable {
 
     private static final long serialVersionUID = -7588073602465822378L;
 
-    private String id;
+    private String taskId;
 
     @NotBlank(message = "DESCRIPTION CANT BE BLANK")
     @Size(max = 4096, message = "DESCRIPTION_TOO_LARGE")
