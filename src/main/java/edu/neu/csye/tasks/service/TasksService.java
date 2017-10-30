@@ -21,6 +21,7 @@ import java.io.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -46,9 +47,10 @@ public class TasksService {
     @Autowired
     private final TasksMapper tasksMapper;
 
-    private static String bucketName     = "*** Provide bucket name ***";
-    private static String keyName        = "*** Provide key ***";
-    private static String uploadFileName = "*** Provide file name ***";
+    private static String bucketName     = "csye6225-fall2017-bhanushaliv.me.csye6225.com";
+    private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    private static String keyName        = "File" + timestamp.toString();
+
 
     /**
      * Registers a user.
@@ -85,7 +87,7 @@ public class TasksService {
             outpuStream.flush();
             outpuStream.close();
             //upload file to s3
-            uploadToS3();
+            uploadToS3(filePath);
         } catch (IOException iox) {
             iox.printStackTrace();
         } finally {
@@ -101,12 +103,12 @@ public class TasksService {
     }
 
 
-	public static void uploadToS3() throws IOException {
+	public static void uploadToS3(String filepath) throws IOException {
 
         AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
         try {
             System.out.println("Uploading a new object to S3 from a file\n");
-            File file = new File(uploadFileName);
+            File file = new File(filepath);
             s3client.putObject(new PutObjectRequest(
             		                 bucketName, keyName, file));
 
