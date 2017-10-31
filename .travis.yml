@@ -25,6 +25,11 @@ after_success:
   - ls -al
   - pwd
 
+before_deploy:
+  - cd ..
+  - pwd
+  - ls -al
+
 deploy:
   -provider: s3
   access_key_id: $access_key_id
