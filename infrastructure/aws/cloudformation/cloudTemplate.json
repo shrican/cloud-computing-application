@@ -186,7 +186,10 @@
                     "Ref":"KeyName"
                 },
                 "ImageId": {
-                    "Ref" :"imageId"
+                    "Ref":"imageId"
+                },
+                "IamInstanceProfile": {
+                    "Ref":"instanceProfile"
                 },
                 "UserData":{
                     "Fn::Base64":{
