@@ -7,7 +7,9 @@ install: true
 
 #this will run test cases and generate war file.
 script:
-- ./gradlew build
+  - ./gradlew build
+  - ./gradlew test --info
+  - ./gradlew war
 
 after_success:
 - pwd
@@ -51,3 +53,6 @@ notifications:
   username:
     recipients:
       - patil.man@husky.neu.edu
+      - mudholkar.s@husky.neu.edu
+      - bhanushali.v@husky.neu.edu
+      - chandra.ra@husky.neu.edu
