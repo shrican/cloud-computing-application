@@ -24,6 +24,9 @@ after_success:
 - cd codedeploy
 - ls -al
 - pwd
+- cd ..
+- pwd
+- ls -al
 
 deploy:
 - provider: s3
@@ -39,8 +42,8 @@ deploy:
   bucket: $bucket_name
   key: csye6225-fall2017.zip
   bundle_type: zip
-  application: csye6225-fall2017
-  deployment_group: csye6225-fall2017-group
+  application: csye6225
+  deployment_group: csye6225
   region: us-east-1
   wait-until-deplyed: true
 
