@@ -29,6 +29,5 @@ nbdist/
 /.idea/
 /.idea/modules.xml
 /.idea/workspace.xml
-csye6225.log
 /.idea/modules/csye6225-fall2017.iml
 /src/test/test.iml
