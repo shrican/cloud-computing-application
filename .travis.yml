@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 
 sudo: false
 install: true
@@ -12,37 +12,40 @@ script:
   - ./gradlew war
 
 after_success:
-  - pwd
-  - cd build/libs/
-  - ls -al
-  - cd ../..
-  - pwd
-  - mkdir codedeploy
-  - zip -r csye6225-fall2017.zip build/libs/ROOT.war appspec.yml restartTomcat8.sh
-  - ls -al
-  - mv csye6225-fall2017.zip codedeploy/
-  - ls -al
-  - pwd
-  - cd codedeploy
-  - ls -al
-  - pwd
+- pwd
+- cd build/libs/
+- ls -al
+- cd ../..
+- pwd
+- mkdir codedeploy
+- zip -r csye6225-fall2017.zip build/libs/ROOT.war appspec.yml restartTomcat8.sh csye6225.log
+- ls -al
+- mv csye6225-fall2017.zip codedeploy/
+- ls -al
+- pwd
+- cd codedeploy
+- ls -al
+- pwd
+- cd ..
+- pwd
+- ls -al
 
 deploy:
-  -provider: s3
+- provider: s3
   access_key_id: $access_key_id
-  secure_access_key: $secure_access_key
+  secret_access_key: $secret_access_key
   local_dir: codedeploy
   bucket: $bucket_name
   region: us-east-1
   skip_cleanup: true
-  -provider: codedeploy
+- provider: codedeploy
   access_key_id: $access_key_id
-  secure_access_key: $secure_access_key
+  secret_access_key: $secret_access_key
   bucket: $bucket_name
   key: csye6225-fall2017.zip
   bundle_type: zip
   application: csye6225
-  deployment_group: csye6225-fall2017-group
+  deployment_group: csye6225
   region: us-east-1
   wait-until-deplyed: true
 

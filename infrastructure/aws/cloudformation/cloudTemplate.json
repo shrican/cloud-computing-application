@@ -186,7 +186,10 @@
                     "Ref":"KeyName"
                 },
                 "ImageId": {
-                    "Ref" :"imageId"
+                    "Ref":"imageId"
+                },
+                "IamInstanceProfile": {
+                    "Ref":"instanceProfile"
                 },
                 "UserData":{
                     "Fn::Base64":{
@@ -195,10 +198,16 @@
                             "apt-get update \n",
                             "apt-get install default-jdk -y \n",
                             "update-alternatives --config java \n",
-                            "echo JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java\" > /etc/environment \n",
+                            "echo 'JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java\"' > /etc/environment \n",
                             "source /etc/environment \n",
-                			"groupadd tomcat \n",
-                			"apt-get install tomcat8 -y \n",
+                			
+                			"sudo apt-get install tomcat8 -y \n",
+                            "echo '#!/bin/sh' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                            {"Fn::Join":["",[
+                            "echo 'JAVA_OPTS=$JAVA_OPTS -Dspring.datasource.url=\"jdbc:mysql://",
+                            {"Fn::GetAtt":["DBInstance","Endpoint.Address"]},":3306/csye6225\"\"'>> /usr/share/tomcat8/bin/setenv.sh \n"]]},
+                            "echo 'JAVA_OPTS=”$JAVA_OPTS -Dspring.datasource.username=\"",{"Ref":"DBUser"},"\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                            "echo 'JAVA_OPTS=”$JAVA_OPTS -Dspring.datasource.password=\"",{"Ref":"DBPassword"},"\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
                             "# Installing CodeDeploy Agent \n",
                             "apt-get install python-pip -y \n",
                             "apt-get install ruby -y \n",
@@ -336,7 +345,139 @@
                 "Type" : "AWS::S3::Bucket",
                 "Properties" : { "BucketName" : { "Ref":"bucketName"}
             }
+        },
+      "instanceProfile": {
+        "Type": "AWS::IAM::InstanceProfile",
+        "Properties": {
+          "Roles": [{
+            "Ref": "CodeDeployEC2ServiceRole"
+          }]
         }
+      },
+      "CodeDeployEC2ServiceRole": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+          "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "ec2.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }]
+          },
+          "Path": "/"
+        }
+      },
+      "CodeDeployEC2S3": {
+        "Type": "AWS::IAM::Policy",
+        "Properties": {
+          "PolicyName": "CodeDeployEC2S3",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Action": [
+                "s3:Get*",
+                "s3:List*"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }]
+          },
+          "Roles": [{
+            "Ref": "CodeDeployEC2ServiceRole"
+          }]
+        }
+      },
+      "CodeDeployServiceRole":{
+        "Type":"AWS::IAM::Role",
+        "Properties":{
+          "AssumeRolePolicyDocument":{
+            "Version":"2012-10-17",
+            "Statement":[
+              {
+                "Effect":"Allow",
+                "Principal":{
+                  "Service":[
+                    "ec2.amazonaws.com"
+                  ]
+                },
+                "Action":[
+                  "sts:AssumeRole"
+                ]
+              }
+            ]
+          },
+          "Path":"/"
+        }
+      },
+      "AWSCodeDeployRole":{
+        "Type":"AWS::IAM::Policy",
+        "Properties":{
+          "PolicyName":"AWSCodeDeployRole",
+          "PolicyDocument":{
+            "Version":"2012-10-17",
+            "Statement":[
+              {
+                "Effect":"Allow",
+                "Action":[
+                  "autoscaling:CompleteLifecycleAction",
+                  "autoscaling:DeleteLifecycleHook",
+                  "autoscaling:DescribeAutoScalingGroups",
+                  "autoscaling:DescribeLifecycleHooks",
+                  "autoscaling:PutLifecycleHook",
+                  "autoscaling:RecordLifecycleActionHeartbeat",
+                  "autoscaling:CreateAutoScalingGroup",
+                  "autoscaling:UpdateAutoScalingGroup",
+                  "autoscaling:EnableMetricsCollection",
+                  "autoscaling:DescribeAutoScalingGroups",
+                  "autoscaling:DescribePolicies",
+                  "autoscaling:DescribeScheduledActions",
+                  "autoscaling:DescribeNotificationConfigurations",
+                  "autoscaling:DescribeLifecycleHooks",
+                  "autoscaling:SuspendProcesses",
+                  "autoscaling:ResumeProcesses",
+                  "autoscaling:AttachLoadBalancers",
+                  "autoscaling:PutScalingPolicy",
+                  "autoscaling:PutScheduledUpdateGroupAction",
+                  "autoscaling:PutNotificationConfiguration",
+                  "autoscaling:PutLifecycleHook",
+                  "autoscaling:DescribeScalingActivities",
+                  "autoscaling:DeleteAutoScalingGroup",
+                  "ec2:DescribeInstances",
+                  "ec2:DescribeInstanceStatus",
+                  "ec2:TerminateInstances",
+                  "tag:GetTags",
+                  "tag:GetResources",
+                  "sns:Publish",
+                  "cloudwatch:DescribeAlarms",
+                  "cloudwatch:PutMetricAlarm",
+                  "elasticloadbalancing:DescribeLoadBalancers",
+                  "elasticloadbalancing:DescribeInstanceHealth",
+                  "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+                  "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+                  "elasticloadbalancing:DescribeTargetGroups",
+                  "elasticloadbalancing:DescribeTargetHealth",
+                  "elasticloadbalancing:RegisterTargets",
+                  "elasticloadbalancing:DeregisterTargets"
+                ],
+                "Resource":"*"
+              }
+            ]
+          },
+          "Roles":[
+            {
+              "Ref":"CodeDeployServiceRole"
+            }
+          ]
+        }
+      }
+
     },
     "Outputs":{  
         "InstanceId":{  
