@@ -9,8 +9,6 @@ package edu.neu.csye.controllers;
 
 
 import com.google.gson.JsonObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,7 +21,7 @@ import java.util.Date;
 @Controller
 public class HomeController {
 
-    private final static Logger logger = LoggerFactory.getLogger(HomeController.class);
+    //private final static Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @ResponseBody
     public String welcome() {
