@@ -23,7 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 
 
@@ -68,34 +70,37 @@ public class TasksService {
     // public AttachmentDto save(AttachmentDto attachmentDto) {return tasksDao.save(attachmentDto)}
 
     public String saveUploadedFile(String id, InputStream fileInputStream, FormDataContentDisposition cd) {
-        OutputStream outpuStream = null;
-        String fileName = cd.getFileName();
-        System.out.println("File Name: " + cd.getFileName());
-        String filePath = FOLDER_PATH + fileName;
-
+//        OutputStream outpuStream = null;
+//        String fileName = cd.getFileName();
+//        System.out.println("File Name: " + cd.getFileName());
+//        String filePath = FOLDER_PATH + fileName;
+//
         try {
-            int read = 0;
-            byte[] bytes = new byte[1024];
-            outpuStream = new FileOutputStream(new File(filePath));
-            while ((read = fileInputStream.read(bytes)) != -1) {
-                outpuStream.write(bytes, 0, read);
-            }
-            outpuStream.flush();
-            outpuStream.close();
+//            int read = 0;
+//            byte[] bytes = new byte[1024];
+//            outpuStream = new FileOutputStream(new File(filePath));
+//            while ((read = fileInputStream.read(bytes)) != -1) {
+//                outpuStream.write(bytes, 0, read);
+//            }
+//            outpuStream.flush();
+//            outpuStream.close();
             //upload file to s3
-            uploadToS3(filePath);
-        } catch (IOException iox) {
-            iox.printStackTrace();
-        } finally {
-            if (outpuStream != null) {
-                try {
-                    outpuStream.close();
-                } catch (Exception ex) {
-                }
-            }
+            uploadToS3(cd.getFileName());
+        } catch (IOException iox)
 
+        {
+            iox.printStackTrace();
         }
-        return filePath;
+//        } finally {
+//            if (outpuStream != null) {
+//                try {
+//                    outpuStream.close();
+//                } catch (Exception ex) {
+//                }
+//            }
+//
+//        }
+        return cd.getFileName();
     }
 
 
