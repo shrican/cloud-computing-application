@@ -6,8 +6,8 @@ files:
     destination: /home/ubuntu
   - source: ./restartTomcat8.sh
     destination: /home/ubuntu
-  - source: ./build/libs/ROOT.war
-    destination: /var/lib/tomcat8/webapps
+  - source: ./csye6225.log
+    destination: /home/ubuntu
 
 hooks:
   AfterInstall:
