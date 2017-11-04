@@ -39,6 +39,8 @@ import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.Set;
 
+import static edu.neu.csye.tasks.service.TasksService.deletefroms3;
+
 @Component
 @RequiredArgsConstructor
 public class TasksEndpointController implements TasksEndpointRest {
@@ -146,16 +148,18 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         UserAccountDto userAccountDto = getUser();
 
-        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
+       // UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
 
 
         AttachmentEntity attachmentEntity = attachmentRepository.findByAttachmentId(idAttachments);
-
+        deletefroms3(attachmentEntity.getUrl());
         TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
 
         taskEntity.getAttachment().remove(attachmentEntity);
 
         tasksRepository.save(taskEntity);
+
+
 
         return Response.status(Response.Status.OK).build();
     }
