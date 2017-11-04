@@ -45,7 +45,7 @@ public class TasksService {
     @Autowired
     private final TasksMapper tasksMapper;
 
-    private static String bucketName = "csye6225-fall2017-mudholkars.me.csye6225.com";
+    private static String bucketName = "csye6225-fall2017-bhanushaliv.me.csye6225.com";
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     private static String keyName = "File" + timestamp.toString();
 
