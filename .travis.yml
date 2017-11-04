@@ -49,7 +49,7 @@ deploy:
   application: csye6225
   deployment_group: csye6225
   region: us-east-1
-  wait-until-deplyed: true
+  wait-until-deployed: true
   on:
     all_branches: true
 
