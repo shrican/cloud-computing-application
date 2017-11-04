@@ -47,12 +47,13 @@ public class TasksService {
     private final TasksMapper tasksMapper;
     //private static String keyName = "File" + timestamp.toString();
 
-    public static void uploadToS3(String filepath) throws IOException {
+    public void uploadToS3(String filepath) throws IOException {
 
         AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
         try {
             System.out.println("Uploading a new object to S3 from a file\n");
             File file = new File(filepath);
+            String bucketName = System.getProperty("bucketName");
             s3client.putObject(new PutObjectRequest(
                     bucketName, filepath + timestamp, file));
 
@@ -76,7 +77,7 @@ public class TasksService {
         }
     }
 
-    public static void deletefroms3(String keyname) {
+    public void deletefroms3(String keyname) {
         AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
         try {
             s3client.deleteObject(new DeleteObjectRequest(bucketName, keyname));

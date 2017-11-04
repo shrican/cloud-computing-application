@@ -39,7 +39,6 @@ import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.Set;
 
-import static edu.neu.csye.tasks.service.TasksService.deletefroms3;
 
 @Component
 @RequiredArgsConstructor
@@ -152,7 +151,7 @@ public class TasksEndpointController implements TasksEndpointRest {
 
 
         AttachmentEntity attachmentEntity = attachmentRepository.findByAttachmentId(idAttachments);
-        deletefroms3(attachmentEntity.getUrl());
+        service.deletefroms3(attachmentEntity.getUrl());
         TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
 
         taskEntity.getAttachment().remove(attachmentEntity);
