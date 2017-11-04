@@ -231,6 +231,11 @@
                   "Ref": "DBPassword"
                 },
                 "\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                "echo 'JAVA_OPTS=\"$JAVA_OPTS -DbucketName=\"",
+                {
+                  "Ref": "bucketName"
+                },
+                "\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
                 "chmod +x /usr/share/tomcat8/bin/setenv.sh \n",
                 "# Installing CodeDeploy Agent \n",
                 "apt-get install python-pip -y \n",
