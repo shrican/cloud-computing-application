@@ -38,51 +38,14 @@ import java.sql.Timestamp;
 @Transactional
 public class TasksService {
 
-    private final String FOLDER_PATH = "";
-
-    @Autowired
-    private final TasksDao tasksDao;
-
-    @Autowired
-    private final TasksMapper tasksMapper;
-
     private static String bucketName = "csye6225-fall2017-mudholkars.me.csye6225.com";
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    private final String FOLDER_PATH = "";
+    @Autowired
+    private final TasksDao tasksDao;
+    @Autowired
+    private final TasksMapper tasksMapper;
     //private static String keyName = "File" + timestamp.toString();
-
-
-    /**
-     * Registers a user.
-     *
-     * @param taskDto the data about the user account
-     * @return the userAccount that was updated
-     */
-    public TaskDto save(TaskDto taskDto) {
-        return tasksDao.save(taskDto);
-    }
-
-    public Task loadTaskById(String id) {
-
-        TaskDto task = tasksDao.loadTaskById(id);
-
-        return tasksMapper.dtoToTask(task);
-    }
-
-
-    public String saveUploadedFile(String id, InputStream fileInputStream, FormDataContentDisposition cd) {
-
-        try {
-
-            //upload file to s3
-            uploadToS3(cd.getFileName());
-        } catch (IOException iox)
-
-        {
-            iox.printStackTrace();
-        }
-        return cd.getFileName();
-    }
-
 
     public static void uploadToS3(String filepath) throws IOException {
 
@@ -91,7 +54,7 @@ public class TasksService {
             System.out.println("Uploading a new object to S3 from a file\n");
             File file = new File(filepath);
             s3client.putObject(new PutObjectRequest(
-                    bucketName, filepath+timestamp, file));
+                    bucketName, filepath + timestamp, file));
 
         } catch (AmazonServiceException ase) {
             System.out.println("Caught an AmazonServiceException, which " +
@@ -113,7 +76,7 @@ public class TasksService {
         }
     }
 
-    public static void deletefroms3(String keyname){
+    public static void deletefroms3(String keyname) {
         AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
         try {
             s3client.deleteObject(new DeleteObjectRequest(bucketName, keyname));
@@ -129,6 +92,37 @@ public class TasksService {
             System.out.println("Error Message: " + ace.getMessage());
         }
 
+    }
+
+    /**
+     * Registers a user.
+     *
+     * @param taskDto the data about the user account
+     * @return the userAccount that was updated
+     */
+    public TaskDto save(TaskDto taskDto) {
+        return tasksDao.save(taskDto);
+    }
+
+    public Task loadTaskById(String id) {
+
+        TaskDto task = tasksDao.loadTaskById(id);
+
+        return tasksMapper.dtoToTask(task);
+    }
+
+    public String saveUploadedFile(String id, InputStream fileInputStream, FormDataContentDisposition cd) {
+
+        try {
+
+            //upload file to s3
+            uploadToS3(cd.getFileName());
+        } catch (IOException iox)
+
+        {
+            iox.printStackTrace();
+        }
+        return cd.getFileName();
     }
 
 }
