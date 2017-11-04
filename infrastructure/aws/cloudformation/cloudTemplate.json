@@ -204,6 +204,7 @@
                 "source /etc/environment \n",
                 "sudo apt-get install tomcat8 -y \n",
                 "sudo chmod 777 /var/lib/tomcat8 \n",
+                "sudo chmod 777 ~/csye6225.log \n",
                 "echo '#!/bin/sh' >> /usr/share/tomcat8/bin/setenv.sh \n",
                 {
                   "Fn::Join": [
