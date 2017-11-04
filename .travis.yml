@@ -49,6 +49,8 @@ deploy:
   application: csye6225
   deployment_group: csye6225
   region: us-east-1
+  on:
+    all_branches: true
   wait-until-deplyed: true
   on:
     all_branches: true
