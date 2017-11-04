@@ -376,6 +376,7 @@
     "myS3Bucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
+        "AccessControl": "PublicReadWrite",
         "BucketName": {
           "Ref": "bucketName"
         }
