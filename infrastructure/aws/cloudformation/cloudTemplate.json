@@ -202,7 +202,7 @@
                             "source /etc/environment \n",
                 			
                 			"sudo apt-get install tomcat8 -y \n",
-                            "sudo chmod 755 /var/lib/tomcat8 \n",
+                            "sudo chmod 777 /var/lib/tomcat8 \n",
                             "echo '#!/bin/sh' >> /usr/share/tomcat8/bin/setenv.sh \n",
                             {"Fn::Join":["",[
                             "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.url=\"jdbc:mysql://",
@@ -397,7 +397,8 @@
             "Statement": [{
               "Action": [
                 "s3:Get*",
-                "s3:List*"
+                "s3:List*",
+                "s3:Put*"
               ],
               "Effect": "Allow",
               "Resource": "*"
