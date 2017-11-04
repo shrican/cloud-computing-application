@@ -106,7 +106,7 @@
             "Type":"String"
         },
         "DBName":{  
-            "Default":"MyDatabase",
+            "Default":"csye6225",
             "Description":"The database name",
             "Type":"String",
             "MinLength":"1",
@@ -202,12 +202,14 @@
                             "source /etc/environment \n",
                 			
                 			"sudo apt-get install tomcat8 -y \n",
+                            "sudo chmod 755 /var/lib/tomcat8 \n",
                             "echo '#!/bin/sh' >> /usr/share/tomcat8/bin/setenv.sh \n",
                             {"Fn::Join":["",[
-                            "echo 'JAVA_OPTS=$JAVA_OPTS -Dspring.datasource.url=\"jdbc:mysql://",
+                            "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.url=\"jdbc:mysql://",
                             {"Fn::GetAtt":["DBInstance","Endpoint.Address"]},":3306/csye6225\"\"'>> /usr/share/tomcat8/bin/setenv.sh \n"]]},
-                            "echo 'JAVA_OPTS=$JAVA_OPTS -Dspring.datasource.username=\"",{"Ref":"DBUser"},"\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
-                            "echo 'JAVA_OPTS=$JAVA_OPTS -Dspring.datasource.password=\"",{"Ref":"DBPassword"},"\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                            "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.username=\"",{"Ref":"DBUser"},"\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                            "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.password=\"",{"Ref":"DBPassword"},"\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                            "chmod +x /usr/share/tomcat8/bin/setenv.sh \n",
                             "# Installing CodeDeploy Agent \n",
                             "apt-get install python-pip -y \n",
                             "apt-get install ruby -y \n",
@@ -357,6 +359,10 @@
       "CodeDeployEC2ServiceRole": {
         "Type": "AWS::IAM::Role",
         "Properties": {
+	  "ManagedPolicyArns":[
+            "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
+            "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+          ],
           "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
             "Statement": [{
