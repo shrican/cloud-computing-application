@@ -39,6 +39,7 @@ import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.Set;
 
+
 @Component
 @RequiredArgsConstructor
 public class TasksEndpointController implements TasksEndpointRest {
@@ -99,7 +100,7 @@ public class TasksEndpointController implements TasksEndpointRest {
 
     public Task update(String taskId, Task task) {
         UserAccountDto userAccountDto = getUser();
-        if(!isUserAuthorized(taskId)) {
+        if (!isUserAuthorized(taskId)) {
             sendViaException();
         }
         UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
@@ -126,13 +127,13 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
 
-        if(userAccountEntity.getTaskEntity().contains(taskEntity)) {
+        if (userAccountEntity.getTaskEntity().contains(taskEntity)) {
             userAccountEntity.getTaskEntity().remove(taskEntity);
 
             userAccountRepository.save(userAccountEntity);
 
-            return Response.status(Response.Status.FORBIDDEN).build(); }
-        else {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        } else {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
@@ -146,16 +147,17 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         UserAccountDto userAccountDto = getUser();
 
-        UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
+        // UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
 
 
         AttachmentEntity attachmentEntity = attachmentRepository.findByAttachmentId(idAttachments);
-
+        service.deletefroms3(attachmentEntity.getUrl());
         TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
 
         taskEntity.getAttachment().remove(attachmentEntity);
 
         tasksRepository.save(taskEntity);
+
 
         return Response.status(Response.Status.OK).build();
     }
@@ -180,7 +182,7 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         TaskEntity taskEntity = tasksRepository.save(task);
 
-        AttachmentEntity updatedAtt = task.getAttachment().stream().filter(filteredAtt -> filteredAtt.getUrl().equals(fileurl)).findFirst().orElse(mapper.attachmentDtoToEntity(att));
+        AttachmentEntity updatedAtt = taskEntity.getAttachment().stream().filter(filteredAtt -> filteredAtt.getUrl().equals(fileurl)).findFirst().orElse(mapper.attachmentDtoToEntity(att));
 
         return updatedAtt;
 
@@ -196,23 +198,24 @@ public class TasksEndpointController implements TasksEndpointRest {
         return mapper.setEntitiestoAttSet(taskEntity.getAttachment());
     }
 
-    public boolean isUserAuthorized(String taskId){
+    public boolean isUserAuthorized(String taskId) {
 
         UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        if(userAccountEntity.getTaskEntity().stream().filter(task -> task.getTaskId().equals(taskId)).findFirst().orElse(null)!=null){
+        if (userAccountEntity.getTaskEntity().stream().filter(task -> task.getTaskId().equals(taskId)).findFirst().orElse(null) != null) {
             return true;
         }
         return false;
     }
-
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    class ForbiddenException extends RuntimeException {}
 
     @RequestMapping(value = "/exception", method = RequestMethod.GET)
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity sendViaException() {
         throw new ForbiddenException();
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    class ForbiddenException extends RuntimeException {
     }
 }

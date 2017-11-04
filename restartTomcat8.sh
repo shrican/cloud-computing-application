@@ -1,6 +1,8 @@
 #!/bin/bash
 
-sudo service tomcat8 stop
+sudo systemctl stop tomcat8 
+cd ~
+sudo chmod 777 csye6225.log
 cd /var/lib/tomcat8/webapps
 sudo rm -rf ROOT
-sudo service tomcat8 start
+sudo systemctl start tomcat8

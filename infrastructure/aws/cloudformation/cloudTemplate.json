@@ -1,365 +1,413 @@
 {
-    "AWSTemplateFormatVersion":"2010-09-09",
-    "Description":"CSYE6225-FALL2017 AWS CloudFormation Template.",
-    "Parameters":{  
-        "InstanceType":{  
-            "Description":"WebServer EC2 instance type",
-            "Type":"String",
-            "Default":"t2.micro",
-            "AllowedValues":[  
-                "t1.micro",
-                "t2.nano",
-                "t2.micro",
-                "t2.small",
-                "t2.medium",
-                "t2.large",
-                "m1.small",
-                "m1.medium",
-                "m1.large",
-                "m1.xlarge",
-                "m2.xlarge",
-                "m2.2xlarge",
-                "m2.4xlarge",
-                "m3.medium",
-                "m3.large",
-                "m3.xlarge",
-                "m3.2xlarge",
-                "m4.large",
-                "m4.xlarge",
-                "m4.2xlarge",
-                "m4.4xlarge",
-                "m4.10xlarge",
-                "c1.medium",
-                "c1.xlarge",
-                "c3.large",
-                "c3.xlarge",
-                "c3.2xlarge",
-                "c3.4xlarge",
-                "c3.8xlarge",
-                "c4.large",
-                "c4.xlarge",
-                "c4.2xlarge",
-                "c4.4xlarge",
-                "c4.8xlarge",
-                "g2.2xlarge",
-                "g2.8xlarge",
-                "r3.large",
-                "r3.xlarge",
-                "r3.2xlarge",
-                "r3.4xlarge",
-                "r3.8xlarge",
-                "i2.xlarge",
-                "i2.2xlarge",
-                "i2.4xlarge",
-                "i2.8xlarge",
-                "d2.xlarge",
-                "d2.2xlarge",
-                "d2.4xlarge",
-                "d2.8xlarge",
-                "hi1.4xlarge",
-                "hs1.8xlarge",
-                "cr1.8xlarge",
-                "cc2.8xlarge",
-                "cg1.4xlarge"
-            ],
-            "ConstraintDescription":"must be a valid EC2 instance type."
-        },
-        "KeyName": {
-            "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances",
-            "Type": "AWS::EC2::KeyPair::KeyName",
-            "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
-        },
-        "imageId":{  
-            "Description":"Image Id",
-            "Type":"AWS::EC2::Image::Id"
-        },
-        "hostedZoneId":{  
-            "Description":"Hosted Zone Id",
-            "Type":"String"
-        },
-        "securityGroupName":{  
-            "Description":"Security Group name",
-            "Type":"String"
-        },
-        "dnsName":{  
-            "Description":"DNS name",
-            "Type":"String"
-        },
-        "recordSetType":{  
-            "Description":"Record set type",
-            "Type":"String"
-        },
-        "recordSetTTL":{  
-            "Description":"Record set TTL",
-            "Type":"String"
-        },
-        "vpcId":{  
-            "Description":"vpc id to create Subnet",
-            "Type":"AWS::EC2::VPC::Id"
-        },
-        "subnetId1":{  
-            "Description":"Subnet Id1 to create Subnet",
-            "Type":"String"
-        },
-        "subnetId2":{  
-            "Description":"Subnet Id2 to create Subnet",
-            "Type":"String"
-        },
-        "DBName":{  
-            "Default":"MyDatabase",
-            "Description":"The database name",
-            "Type":"String",
-            "MinLength":"1",
-            "MaxLength":"64",
-            "AllowedPattern":"[a-zA-Z][a-zA-Z0-9]*",
-            "ConstraintDescription":"must begin with a letter and contain only alphanumeric characters."
-        },
-        "DBUser":{  
-            "Default":"csye6225master",
-            "NoEcho":"true",
-            "Description":"The database admin account username",
-            "Type":"String",
-            "MinLength":"1",
-            "MaxLength":"16",
-            "AllowedPattern":"[a-zA-Z][a-zA-Z0-9]*",
-            "ConstraintDescription":"must begin with a letter and contain only alphanumeric characters."
-        },
-        "DBPassword":{  
-            "Default":"csye6225password",
-            "NoEcho":"true",
-            "Description":"The database admin account password",
-            "Type":"String",
-            "MinLength":"8",
-            "MaxLength":"41",
-            "AllowedPattern":"[a-zA-Z0-9]*",
-            "ConstraintDescription":"must contain only alphanumeric characters."
-        },
-        "bucketName":{
-            "Type":"String",
-            "Description":"bucketName for S3 Bucket"
-        },
-        "SSHLocation":{  
-            "Description":"The IP address range that can be used to SSH to the EC2 instances",
-            "Type":"String",
-            "MinLength":"9",
-            "MaxLength":"18",
-            "Default":"0.0.0.0/0",
-            "AllowedPattern":"(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
-            "ConstraintDescription":"must be a valid IP CIDR range of the form x.x.x.x/x."
-        }
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "CSYE6225-FALL2017 AWS CloudFormation Template.",
+  "Parameters": {
+    "InstanceType": {
+      "Description": "WebServer EC2 instance type",
+      "Type": "String",
+      "Default": "t2.micro",
+      "AllowedValues": [
+        "t1.micro",
+        "t2.nano",
+        "t2.micro",
+        "t2.small",
+        "t2.medium",
+        "t2.large",
+        "m1.small",
+        "m1.medium",
+        "m1.large",
+        "m1.xlarge",
+        "m2.xlarge",
+        "m2.2xlarge",
+        "m2.4xlarge",
+        "m3.medium",
+        "m3.large",
+        "m3.xlarge",
+        "m3.2xlarge",
+        "m4.large",
+        "m4.xlarge",
+        "m4.2xlarge",
+        "m4.4xlarge",
+        "m4.10xlarge",
+        "c1.medium",
+        "c1.xlarge",
+        "c3.large",
+        "c3.xlarge",
+        "c3.2xlarge",
+        "c3.4xlarge",
+        "c3.8xlarge",
+        "c4.large",
+        "c4.xlarge",
+        "c4.2xlarge",
+        "c4.4xlarge",
+        "c4.8xlarge",
+        "g2.2xlarge",
+        "g2.8xlarge",
+        "r3.large",
+        "r3.xlarge",
+        "r3.2xlarge",
+        "r3.4xlarge",
+        "r3.8xlarge",
+        "i2.xlarge",
+        "i2.2xlarge",
+        "i2.4xlarge",
+        "i2.8xlarge",
+        "d2.xlarge",
+        "d2.2xlarge",
+        "d2.4xlarge",
+        "d2.8xlarge",
+        "hi1.4xlarge",
+        "hs1.8xlarge",
+        "cr1.8xlarge",
+        "cc2.8xlarge",
+        "cg1.4xlarge"
+      ],
+      "ConstraintDescription": "must be a valid EC2 instance type."
     },
-    "Resources":{  
-        "DynamoDBTable":{  
-            "Type":"AWS::DynamoDB::Table",
-            "Properties":{  
-                "AttributeDefinitions":[  
-                    {  
-                        "AttributeName":"TaskId",
-                        "AttributeType":"S"
-                    }
-                ],
-                "KeySchema":[  
-                    {  
-                        "AttributeName":"TaskId",
-                        "KeyType":"HASH"
-                    }
-                ],
-                "ProvisionedThroughput":{  
-                    "ReadCapacityUnits":"5",
-                    "WriteCapacityUnits":"5"
-                },
-                "TableName":"csye6225"
-            }
+    "KeyName": {
+      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instances",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+    },
+    "imageId": {
+      "Description": "Image Id",
+      "Type": "AWS::EC2::Image::Id"
+    },
+    "hostedZoneId": {
+      "Description": "Hosted Zone Id",
+      "Type": "String"
+    },
+    "securityGroupName": {
+      "Description": "Security Group name",
+      "Type": "String"
+    },
+    "dnsName": {
+      "Description": "DNS name",
+      "Type": "String"
+    },
+    "recordSetType": {
+      "Description": "Record set type",
+      "Type": "String"
+    },
+    "recordSetTTL": {
+      "Description": "Record set TTL",
+      "Type": "String"
+    },
+    "vpcId": {
+      "Description": "vpc id to create Subnet",
+      "Type": "AWS::EC2::VPC::Id"
+    },
+    "subnetId1": {
+      "Description": "Subnet Id1 to create Subnet",
+      "Type": "String"
+    },
+    "subnetId2": {
+      "Description": "Subnet Id2 to create Subnet",
+      "Type": "String"
+    },
+    "DBName": {
+      "Default": "csye6225",
+      "Description": "The database name",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "64",
+      "AllowedPattern": "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription": "must begin with a letter and contain only alphanumeric characters."
+    },
+    "DBUser": {
+      "Default": "csye6225master",
+      "NoEcho": "true",
+      "Description": "The database admin account username",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "16",
+      "AllowedPattern": "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription": "must begin with a letter and contain only alphanumeric characters."
+    },
+    "DBPassword": {
+      "Default": "csye6225password",
+      "NoEcho": "true",
+      "Description": "The database admin account password",
+      "Type": "String",
+      "MinLength": "8",
+      "MaxLength": "41",
+      "AllowedPattern": "[a-zA-Z0-9]*",
+      "ConstraintDescription": "must contain only alphanumeric characters."
+    },
+    "bucketName": {
+      "Type": "String",
+      "Description": "bucketName for S3 Bucket"
+    },
+    "SSHLocation": {
+      "Description": "The IP address range that can be used to SSH to the EC2 instances",
+      "Type": "String",
+      "MinLength": "9",
+      "MaxLength": "18",
+      "Default": "0.0.0.0/0",
+      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+      "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
+    }
+  },
+  "Resources": {
+    "DynamoDBTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "TaskId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "TaskId",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "5",
+          "WriteCapacityUnits": "5"
         },
-        "EC2Instance":{  
-            "Type":"AWS::EC2::Instance",
-            "Properties":{
-                "InstanceType":{  
-                    "Ref":"InstanceType"
-                },
-                "SecurityGroups":[  
-                    {  
-                        "Ref":"csye6225webapp"
-                    }
-                ],
-                "KeyName":{  
-                    "Ref":"KeyName"
-                },
-                "ImageId": {
-                    "Ref":"imageId"
-                },
-                "IamInstanceProfile": {
-                    "Ref":"instanceProfile"
-                },
-                "UserData":{
-                    "Fn::Base64":{
-                        "Fn::Join" : ["", [
-                            "#!/bin/bash -v \n",
-                            "apt-get update \n",
-                            "apt-get install default-jdk -y \n",
-                            "update-alternatives --config java \n",
-                            "echo 'JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java\"' > /etc/environment \n",
-                            "source /etc/environment \n",
-                			
-                			"sudo apt-get install tomcat8 -y \n",
-                            "echo '#!/bin/sh' >> /usr/share/tomcat8/bin/setenv.sh \n",
-                            {"Fn::Join":["",[
-                            "echo 'JAVA_OPTS=$JAVA_OPTS -Dspring.datasource.url=\"jdbc:mysql://",
-                            {"Fn::GetAtt":["DBInstance","Endpoint.Address"]},":3306/csye6225\"\"'>> /usr/share/tomcat8/bin/setenv.sh \n"]]},
-                            "echo 'JAVA_OPTS=”$JAVA_OPTS -Dspring.datasource.username=\"",{"Ref":"DBUser"},"\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
-                            "echo 'JAVA_OPTS=”$JAVA_OPTS -Dspring.datasource.password=\"",{"Ref":"DBPassword"},"\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
-                            "# Installing CodeDeploy Agent \n",
-                            "apt-get install python-pip -y \n",
-                            "apt-get install ruby -y \n",
-                            "apt-get install wget -y \n",
-                            "cd /home/ubuntu \n",
-                            "wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
-                            "chmod +x ./install \n",
-                            "./install auto \n"
-                        ] ] 
-                    }
-                }
-            }
+        "TableName": "csye6225"
+      }
+    },
+    "EC2Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "InstanceType": {
+          "Ref": "InstanceType"
         },
-        "csye6225webapp":{  
-            "Type":"AWS::EC2::SecurityGroup",
-            "Properties":{  
-                "GroupName":{  
-                    "Ref":"securityGroupName"
-                },
-                "GroupDescription":"Enable SSH access",
-                "SecurityGroupIngress":[  
-                    {  
-                        "IpProtocol":"tcp",
-                        "FromPort":"22",
-                        "ToPort":"22",
-                        "CidrIp":{  
-                            "Ref":"SSHLocation"
-                        }
-                    },
-                    {  
-                        "IpProtocol":"tcp",
-                        "FromPort":"80",
-                        "ToPort":"80",
-                        "CidrIp":{  
-                            "Ref":"SSHLocation"
-                        }
-                    },
-                    {  
-                        "IpProtocol":"tcp",
-                        "FromPort":"443",
-                        "ToPort":"443",
-                        "CidrIp":{  
-                            "Ref":"SSHLocation"
-                        }
-                    }
-                ]
-            }
+        "SecurityGroups": [
+          {
+            "Ref": "csye6225webapp"
+          }
+        ],
+        "KeyName": {
+          "Ref": "KeyName"
         },
-        "myRecordSet":{  
-            "Type":"AWS::Route53::RecordSet",
-            "Properties":{  
-                "HostedZoneId":{  
-                    "Ref":"hostedZoneId"
-                },
-                "Comment":"DNS name for my instance.",
-                "Name":{  
-                    "Ref":"dnsName"
-                },
-                "Type":{  
-                    "Ref":"recordSetType"
-                },
-                "TTL":{  
-                    "Ref":"recordSetTTL"
-                },
-                "ResourceRecords":[  
-                    {  
-                        "Fn::GetAtt":[  
-                            "EC2Instance",
-                            "PublicIp"
+        "ImageId": {
+          "Ref": "imageId"
+        },
+        "IamInstanceProfile": {
+          "Ref": "instanceProfile"
+        },
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash -v \n",
+                "apt-get update \n",
+                "apt-get install default-jdk -y \n",
+                "update-alternatives --config java \n",
+                "echo 'JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java\"' > /etc/environment \n",
+                "source /etc/environment \n",
+                "sudo apt-get install tomcat8 -y \n",
+                "sudo chmod 777 /var/lib/tomcat8 \n",
+                "sudo chmod 777 ~/csye6225.log \n",
+                "echo '#!/bin/sh' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.url=\"jdbc:mysql://",
+                      {
+                        "Fn::GetAtt": [
+                          "DBInstance",
+                          "Endpoint.Address"
                         ]
-                    }
-                ]
-            }
-        },
-        "DBInstance":{  
-            "Type":"AWS::RDS::DBInstance",
-            "Properties":{  
-                "DBName":{  
-                    "Ref":"DBName"
+                      },
+                      ":3306/csye6225\"\"'>> /usr/share/tomcat8/bin/setenv.sh \n"
+                    ]
+                  ]
                 },
-                "Engine":"MySQL",
-                "EngineVersion":"5.6.35",
-                "DBInstanceClass":"db.t2.medium",
-                "MultiAZ":"false",
-                "DBInstanceIdentifier":"csye6225-fall2017",
-                "MasterUsername":{  
-                    "Ref":"DBUser"
+                "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.username=\"",
+                {
+                  "Ref": "DBUser"
                 },
-                "MasterUserPassword":{  
-                    "Ref":"DBPassword"
+                "\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.password=\"",
+                {
+                  "Ref": "DBPassword"
                 },
-                "AllocatedStorage":"10",
-                "DBSubnetGroupName":{  
-                    "Ref":"myDBSubnetGroup"
+                "\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                "echo 'JAVA_OPTS=\"$JAVA_OPTS -DbucketName=\"",
+                {
+                  "Ref": "bucketName"
                 },
-                "DBSecurityGroups":[  
-                    {  
-                        "Ref":"MyDBSecurityGroup"
-                    }
-                ]
-            }
-        },
-        "myDBSubnetGroup":{  
-            "Type":"AWS::RDS::DBSubnetGroup",
-            "Properties":{  
-                "DBSubnetGroupDescription":"DB subnet Group",
-                "SubnetIds":[  
-                    {  
-                        "Ref":"subnetId1"
-                    },
-                    {  
-                        "Ref":"subnetId2"
-                    }
-                ]
-            }
-        },
-        "MyDBSecurityGroup":{  
-            "Type":"AWS::RDS::DBSecurityGroup",
-            "Properties":{
-                "DBSecurityGroupIngress":[  
-                    {  
-                        "EC2SecurityGroupId":{  
-                            "Fn::GetAtt":[  
-                                "csye6225webapp",
-                                "GroupId"
-                            ]
-                        }
-                    }
-                ],
-                "GroupDescription":"DB SecurityGroup"
-            }
-        },
-        "myS3Bucket" : 
-            {
-                "Type" : "AWS::S3::Bucket",
-                "Properties" : { "BucketName" : { "Ref":"bucketName"}
-            }
-        },
-      "instanceProfile": {
-        "Type": "AWS::IAM::InstanceProfile",
-        "Properties": {
-          "Roles": [{
-            "Ref": "CodeDeployEC2ServiceRole"
-          }]
+                "\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                "chmod +x /usr/share/tomcat8/bin/setenv.sh \n",
+                "# Installing CodeDeploy Agent \n",
+                "apt-get install python-pip -y \n",
+                "apt-get install ruby -y \n",
+                "apt-get install wget -y \n",
+                "cd /home/ubuntu \n",
+                "wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
+                "chmod +x ./install \n",
+                "./install auto \n"
+              ]
+            ]
+          }
         }
-      },
-      "CodeDeployEC2ServiceRole": {
-        "Type": "AWS::IAM::Role",
-        "Properties": {
-          "AssumeRolePolicyDocument": {
-            "Version": "2012-10-17",
-            "Statement": [{
+      }
+    },
+    "csye6225webapp": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupName": {
+          "Ref": "securityGroupName"
+        },
+        "GroupDescription": "Enable SSH access",
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "22",
+            "ToPort": "22",
+            "CidrIp": {
+              "Ref": "SSHLocation"
+            }
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "80",
+            "ToPort": "80",
+            "CidrIp": {
+              "Ref": "SSHLocation"
+            }
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "443",
+            "ToPort": "443",
+            "CidrIp": {
+              "Ref": "SSHLocation"
+            }
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "8080",
+            "ToPort": "8080",
+            "CidrIp": {
+              "Ref": "SSHLocation"
+            }
+          }
+        ]
+      }
+    },
+    "myRecordSet": {
+      "Type": "AWS::Route53::RecordSet",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "hostedZoneId"
+        },
+        "Comment": "DNS name for my instance.",
+        "Name": {
+          "Ref": "dnsName"
+        },
+        "Type": {
+          "Ref": "recordSetType"
+        },
+        "TTL": {
+          "Ref": "recordSetTTL"
+        },
+        "ResourceRecords": [
+          {
+            "Fn::GetAtt": [
+              "EC2Instance",
+              "PublicIp"
+            ]
+          }
+        ]
+      }
+    },
+    "DBInstance": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "DBName": {
+          "Ref": "DBName"
+        },
+        "Engine": "MySQL",
+        "EngineVersion": "5.6.35",
+        "DBInstanceClass": "db.t2.medium",
+        "MultiAZ": "false",
+        "DBInstanceIdentifier": "csye6225-fall2017",
+        "MasterUsername": {
+          "Ref": "DBUser"
+        },
+        "MasterUserPassword": {
+          "Ref": "DBPassword"
+        },
+        "AllocatedStorage": "10",
+        "DBSubnetGroupName": {
+          "Ref": "myDBSubnetGroup"
+        },
+        "DBSecurityGroups": [
+          {
+            "Ref": "MyDBSecurityGroup"
+          }
+        ]
+      }
+    },
+    "myDBSubnetGroup": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "DB subnet Group",
+        "SubnetIds": [
+          {
+            "Ref": "subnetId1"
+          },
+          {
+            "Ref": "subnetId2"
+          }
+        ]
+      }
+    },
+    "MyDBSecurityGroup": {
+      "Type": "AWS::RDS::DBSecurityGroup",
+      "Properties": {
+        "DBSecurityGroupIngress": [
+          {
+            "EC2SecurityGroupId": {
+              "Fn::GetAtt": [
+                "csye6225webapp",
+                "GroupId"
+              ]
+            }
+          }
+        ],
+        "GroupDescription": "DB SecurityGroup"
+      }
+    },
+    "myS3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "PublicReadWrite",
+        "BucketName": {
+          "Ref": "bucketName"
+        }
+      }
+    },
+    "instanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "CodeDeployEC2ServiceRole"
+          }
+        ]
+      }
+    },
+    "CodeDeployEC2ServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
+          "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        ],
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
               "Effect": "Allow",
               "Principal": {
                 "Service": [
@@ -369,122 +417,126 @@
               "Action": [
                 "sts:AssumeRole"
               ]
-            }]
-          },
-          "Path": "/"
-        }
-      },
-      "CodeDeployEC2S3": {
-        "Type": "AWS::IAM::Policy",
-        "Properties": {
-          "PolicyName": "CodeDeployEC2S3",
-          "PolicyDocument": {
-            "Version": "2012-10-17",
-            "Statement": [{
+            }
+          ]
+        },
+        "Path": "/"
+      }
+    },
+    "CodeDeployEC2S3": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "CodeDeployEC2S3",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
               "Action": [
                 "s3:Get*",
                 "s3:List*"
               ],
               "Effect": "Allow",
               "Resource": "*"
-            }]
-          },
-          "Roles": [{
-            "Ref": "CodeDeployEC2ServiceRole"
-          }]
-        }
-      },
-      "CodeDeployServiceRole":{
-        "Type":"AWS::IAM::Role",
-        "Properties":{
-          "AssumeRolePolicyDocument":{
-            "Version":"2012-10-17",
-            "Statement":[
-              {
-                "Effect":"Allow",
-                "Principal":{
-                  "Service":[
-                    "ec2.amazonaws.com"
-                  ]
-                },
-                "Action":[
-                  "sts:AssumeRole"
-                ]
-              }
-            ]
-          },
-          "Path":"/"
-        }
-      },
-      "AWSCodeDeployRole":{
-        "Type":"AWS::IAM::Policy",
-        "Properties":{
-          "PolicyName":"AWSCodeDeployRole",
-          "PolicyDocument":{
-            "Version":"2012-10-17",
-            "Statement":[
-              {
-                "Effect":"Allow",
-                "Action":[
-                  "autoscaling:CompleteLifecycleAction",
-                  "autoscaling:DeleteLifecycleHook",
-                  "autoscaling:DescribeAutoScalingGroups",
-                  "autoscaling:DescribeLifecycleHooks",
-                  "autoscaling:PutLifecycleHook",
-                  "autoscaling:RecordLifecycleActionHeartbeat",
-                  "autoscaling:CreateAutoScalingGroup",
-                  "autoscaling:UpdateAutoScalingGroup",
-                  "autoscaling:EnableMetricsCollection",
-                  "autoscaling:DescribeAutoScalingGroups",
-                  "autoscaling:DescribePolicies",
-                  "autoscaling:DescribeScheduledActions",
-                  "autoscaling:DescribeNotificationConfigurations",
-                  "autoscaling:DescribeLifecycleHooks",
-                  "autoscaling:SuspendProcesses",
-                  "autoscaling:ResumeProcesses",
-                  "autoscaling:AttachLoadBalancers",
-                  "autoscaling:PutScalingPolicy",
-                  "autoscaling:PutScheduledUpdateGroupAction",
-                  "autoscaling:PutNotificationConfiguration",
-                  "autoscaling:PutLifecycleHook",
-                  "autoscaling:DescribeScalingActivities",
-                  "autoscaling:DeleteAutoScalingGroup",
-                  "ec2:DescribeInstances",
-                  "ec2:DescribeInstanceStatus",
-                  "ec2:TerminateInstances",
-                  "tag:GetTags",
-                  "tag:GetResources",
-                  "sns:Publish",
-                  "cloudwatch:DescribeAlarms",
-                  "cloudwatch:PutMetricAlarm",
-                  "elasticloadbalancing:DescribeLoadBalancers",
-                  "elasticloadbalancing:DescribeInstanceHealth",
-                  "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
-                  "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
-                  "elasticloadbalancing:DescribeTargetGroups",
-                  "elasticloadbalancing:DescribeTargetHealth",
-                  "elasticloadbalancing:RegisterTargets",
-                  "elasticloadbalancing:DeregisterTargets"
-                ],
-                "Resource":"*"
-              }
-            ]
-          },
-          "Roles":[
-            {
-              "Ref":"CodeDeployServiceRole"
             }
           ]
-        }
+        },
+        "Roles": [
+          {
+            "Ref": "CodeDeployEC2ServiceRole"
+          }
+        ]
       }
-
     },
-    "Outputs":{  
-        "InstanceId":{  
-            "Description":"InstanceId of the newly created EC2 instance",
-            "Value":{  
-                "Ref":"EC2Instance"
+    "CodeDeployServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "ec2.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
             }
-        }
+          ]
+        },
+        "Path": "/"
+      }
+    },
+    "AWSCodeDeployRole": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "AWSCodeDeployRole",
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "autoscaling:CompleteLifecycleAction",
+                "autoscaling:DeleteLifecycleHook",
+                "autoscaling:DescribeAutoScalingGroups",
+                "autoscaling:DescribeLifecycleHooks",
+                "autoscaling:PutLifecycleHook",
+                "autoscaling:RecordLifecycleActionHeartbeat",
+                "autoscaling:CreateAutoScalingGroup",
+                "autoscaling:UpdateAutoScalingGroup",
+                "autoscaling:EnableMetricsCollection",
+                "autoscaling:DescribeAutoScalingGroups",
+                "autoscaling:DescribePolicies",
+                "autoscaling:DescribeScheduledActions",
+                "autoscaling:DescribeNotificationConfigurations",
+                "autoscaling:DescribeLifecycleHooks",
+                "autoscaling:SuspendProcesses",
+                "autoscaling:ResumeProcesses",
+                "autoscaling:AttachLoadBalancers",
+                "autoscaling:PutScalingPolicy",
+                "autoscaling:PutScheduledUpdateGroupAction",
+                "autoscaling:PutNotificationConfiguration",
+                "autoscaling:PutLifecycleHook",
+                "autoscaling:DescribeScalingActivities",
+                "autoscaling:DeleteAutoScalingGroup",
+                "ec2:DescribeInstances",
+                "ec2:DescribeInstanceStatus",
+                "ec2:TerminateInstances",
+                "tag:GetTags",
+                "tag:GetResources",
+                "sns:Publish",
+                "cloudwatch:DescribeAlarms",
+                "cloudwatch:PutMetricAlarm",
+                "elasticloadbalancing:DescribeLoadBalancers",
+                "elasticloadbalancing:DescribeInstanceHealth",
+                "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+                "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+                "elasticloadbalancing:DescribeTargetGroups",
+                "elasticloadbalancing:DescribeTargetHealth",
+                "elasticloadbalancing:RegisterTargets",
+                "elasticloadbalancing:DeregisterTargets"
+              ],
+              "Resource": "*"
+            }
+          ]
+        },
+        "Roles": [
+          {
+            "Ref": "CodeDeployServiceRole"
+          }
+        ]
+      }
     }
+  },
+  "Outputs": {
+    "InstanceId": {
+      "Description": "InstanceId of the newly created EC2 instance",
+      "Value": {
+        "Ref": "EC2Instance"
+      }
+    }
+  }
 }
