@@ -85,7 +85,7 @@ public class TasksService {
 //            outpuStream.flush();
 //            outpuStream.close();
             //upload file to s3
-            uploadToS3(cd.getFileName());
+             uploadToS3(cd.getFileName());
         } catch (IOException iox)
 
         {
