@@ -427,7 +427,8 @@
             {
               "Action": [
                 "s3:Get*",
-                "s3:List*"
+                "s3:List*",
+                "s3:Put*"
               ],
               "Effect": "Allow",
               "Resource": "*"
