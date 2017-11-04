@@ -12,6 +12,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import edu.neu.csye.tasks.dataaccess.TasksDao;
 import edu.neu.csye.tasks.endpoint.model.Task;
@@ -47,7 +48,7 @@ public class TasksService {
 
     private static String bucketName = "csye6225-fall2017-bhanushaliv.me.csye6225.com";
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    private static String keyName = "File" + timestamp.toString();
+    //private static String keyName = "File" + timestamp.toString();
 
 
     /**
@@ -100,7 +101,7 @@ public class TasksService {
 //            }
 //
 //        }
-        return cd.getFileName();
+        return cd.getFileName()+timestamp;
     }
 
 
@@ -111,7 +112,7 @@ public class TasksService {
             System.out.println("Uploading a new object to S3 from a file\n");
             File file = new File(filepath);
             s3client.putObject(new PutObjectRequest(
-                    bucketName, keyName, file));
+                    bucketName, filepath+timestamp, file));
 
         } catch (AmazonServiceException ase) {
             System.out.println("Caught an AmazonServiceException, which " +
@@ -131,6 +132,24 @@ public class TasksService {
                     "such as not being able to access the network.");
             System.out.println("Error Message: " + ace.getMessage());
         }
+    }
+
+    public static void deletefroms3(String keyname){
+        AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+        try {
+            s3client.deleteObject(new DeleteObjectRequest(bucketName, keyname));
+        } catch (AmazonServiceException ase) {
+            System.out.println("Caught an AmazonServiceException.");
+            System.out.println("Error Message:    " + ase.getMessage());
+            System.out.println("HTTP Status Code: " + ase.getStatusCode());
+            System.out.println("AWS Error Code:   " + ase.getErrorCode());
+            System.out.println("Error Type:       " + ase.getErrorType());
+            System.out.println("Request ID:       " + ase.getRequestId());
+        } catch (AmazonClientException ace) {
+            System.out.println("Caught an AmazonClientException.");
+            System.out.println("Error Message: " + ace.getMessage());
+        }
+
     }
 
 }
