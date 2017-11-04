@@ -38,7 +38,7 @@ import java.sql.Timestamp;
 @Transactional
 public class TasksService {
 
-    private static String bucketName = "csye6225-fall2017-mudholkars.me.csye6225.com";
+    private static String bucketName = System.getProperty("bucketName");
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     private final String FOLDER_PATH = "";
     @Autowired
