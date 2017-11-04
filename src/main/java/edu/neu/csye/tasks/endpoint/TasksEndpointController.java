@@ -180,7 +180,7 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         TaskEntity taskEntity = tasksRepository.save(task);
 
-        AttachmentEntity updatedAtt = task.getAttachment().stream().filter(filteredAtt -> filteredAtt.getUrl().equals(fileurl)).findFirst().orElse(mapper.attachmentDtoToEntity(att));
+        AttachmentEntity updatedAtt = taskEntity.getAttachment().stream().filter(filteredAtt -> filteredAtt.getUrl().equals(fileurl)).findFirst().orElse(mapper.attachmentDtoToEntity(att));
 
         return updatedAtt;
 
