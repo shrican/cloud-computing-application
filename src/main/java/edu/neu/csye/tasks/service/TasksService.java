@@ -9,9 +9,11 @@ package edu.neu.csye.tasks.service;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import edu.neu.csye.tasks.dataaccess.TasksDao;
@@ -49,7 +51,9 @@ public class TasksService {
 
     public void uploadToS3(String filepath) throws IOException {
 
-        AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+        AmazonS3 s3client = AmazonS3ClientBuilder.standard()
+                .withCredentials(new InstanceProfileCredentialsProvider(false))
+                .build();
         try {
             System.out.println("Uploading a new object to S3 from a file\n");
             File file = new File(filepath);
