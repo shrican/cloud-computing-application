@@ -26,9 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.sql.Timestamp;
 
 
@@ -57,6 +55,7 @@ public class TasksService {
         try {
             System.out.println("Uploading a new object to S3 from a file\n");
             File file = new File(filepath);
+
             String bucketName = System.getProperty("bucketName");
             s3client.putObject(new PutObjectRequest(
                     bucketName, filepath + timestamp, file));
@@ -116,18 +115,36 @@ public class TasksService {
         return tasksMapper.dtoToTask(task);
     }
 
+
     public String saveUploadedFile(String id, InputStream fileInputStream, FormDataContentDisposition cd) {
+        OutputStream outpuStream = null;
+        String fileName = cd.getFileName();
+        System.out.println("File Name: " + cd.getFileName());
+        String filePath = FOLDER_PATH + fileName;
+        System.out.println("File path: " + filePath);
 
         try {
-
-            //upload file to s3
+            int read = 0;
+            byte[] bytes = new byte[1024];
+            outpuStream = new FileOutputStream(new File(filePath));
+            while ((read = fileInputStream.read(bytes)) != -1) {
+                outpuStream.write(bytes, 0, read);
+            }
+            outpuStream.flush();
+            outpuStream.close();
             uploadToS3(cd.getFileName());
-        } catch (IOException iox)
-
-        {
+        } catch (IOException iox) {
             iox.printStackTrace();
+        } finally {
+            if (outpuStream != null) {
+                try {
+                    outpuStream.close();
+                } catch (Exception ex) {
+                }
+            }
+
         }
-        return cd.getFileName();
+        return filePath;
     }
 
 }
