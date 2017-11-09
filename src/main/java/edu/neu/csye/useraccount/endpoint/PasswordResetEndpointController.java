@@ -10,7 +10,7 @@ package edu.neu.csye.useraccount.endpoint;
 import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.iotdata.model.PublishRequest;
+import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.PublishResult;
 import com.google.gson.JsonObject;
@@ -58,12 +58,6 @@ public class PasswordResetEndpointController implements PasswordResetEndpointRes
 
         }
 
-
-
-
-
-        return Response.status(Response.Status.CREATED).build();
-    }
 
     public UserAccountDto getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
