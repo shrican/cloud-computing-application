@@ -7,6 +7,12 @@ package edu.neu.csye.useraccount.endpoint;
  * Manish Patil, 001228956, patil.man@husky.neu.edu
  **/
 
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.sns.model.PublishRequest;
+import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sns.model.PublishResult;
 import com.google.gson.JsonObject;
 import edu.neu.csye.tasks.dataaccess.model.ResetTokenEntity;
 import edu.neu.csye.useraccount.dataaccess.dao.UserAccountRepository;
@@ -39,11 +45,19 @@ public class PasswordResetEndpointController implements PasswordResetEndpointRes
 
         userAccountEntity.setResetEntity(resetToken);
 
-        //logic to get uuid and use as token
+                AmazonSNSClient snsClient = new AmazonSNSClient(new InstanceProfileCredentialsProvider());
+                snsClient.setRegion(Region.getRegion(Regions.US_EAST_1));
+                //get topic arn
+                String topicArn= snsClient.createTopic("password_reset").getTopicArn();
+                PublishRequest publishRequest = new PublishRequest(topicArn, userAccountEntity.getUsername());
+                PublishResult publishResult = snsClient.publish(publishRequest);
+                //print MessageId of message published to SNS topic
+                System.out.println("Password reset message sent!");
 
+            return Response.status(Response.Status.OK).build();
 
-        return Response.status(Response.Status.CREATED).build();
-    }
+        }
+
 
     public UserAccountDto getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
