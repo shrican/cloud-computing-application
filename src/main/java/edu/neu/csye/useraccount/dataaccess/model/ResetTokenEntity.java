@@ -26,4 +26,9 @@ public class ResetTokenEntity {
 
     @Column(name = "resetLink")
     private String resetLink;
+
+    @Column(name = "emailId")
+    private String emailId;
+
+
 }
