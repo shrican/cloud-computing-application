@@ -378,6 +378,12 @@
         "GroupDescription": "DB SecurityGroup"
       }
     },
+    "SNS" : {
+      "Type" : "AWS::SNS::Topic",
+      "Properties" : {
+        "TopicName" : "password_reset"
+      }
+    },
     "myS3Bucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
