@@ -378,6 +378,35 @@
         "GroupDescription": "DB SecurityGroup"
       }
     },
+    "LambdaExceutionRole":{
+      "Type":"AWS::IAM::Role",
+      "Properties":{
+        "AssumeRolePolicyDocument":{
+          "Version":"2012-10-17",
+          "Statement":[
+            {
+              "Effect":"Allow",
+              "Principal":{
+                "Service":[
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action":[
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "ManagedPolicyArns":["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"],
+        "RoleName":"lambda-sns-execution-role"
+      }
+    },
+    "SNS" : {
+      "Type" : "AWS::SNS::Topic",
+      "Properties" : {
+        "TopicName" : "password_reset"
+      }
+    },
     "myS3Bucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
