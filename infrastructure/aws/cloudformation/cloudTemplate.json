@@ -168,6 +168,11 @@
           "ReadCapacityUnits": "5",
           "WriteCapacityUnits": "5"
         },
+        "TimeToLiveSpecification":
+        {
+          "AttributeName" : "TTL" ,
+          "Enabled" : "TRUE"
+        },
         "TableName": "csye6225"
       }
     },
@@ -397,7 +402,10 @@
             }
           ]
         },
-        "ManagedPolicyArns":["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"],
+        "ManagedPolicyArns":["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSESFullAccess"],
         "RoleName":"lambda-sns-execution-role"
       }
     },
