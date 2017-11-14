@@ -152,23 +152,33 @@
     "DynamoDBTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
-        "AttributeDefinitions": [
+        "AttributeDefinitions" : [
           {
-            "AttributeName": "TaskId",
-            "AttributeType": "S"
-          }
-        ],
-        "KeySchema": [
+            "AttributeName" :  "id",
+            "AttributeType" :  "S"
+          }],
+        "KeySchema" : [
           {
-            "AttributeName": "TaskId",
-            "KeyType": "HASH"
-          }
-        ],
-        "ProvisionedThroughput": {
-          "ReadCapacityUnits": "5",
-          "WriteCapacityUnits": "5"
+            "AttributeName" :  "id",
+            "KeyType" :  "HASH"
+          }],
+        "ProvisionedThroughput" :
+        {
+          "ReadCapacityUnits" :  "5",
+          "WriteCapacityUnits" :  "5"
         },
-        "TableName": "csye6225"
+        "TimeToLiveSpecification":
+        {
+          "AttributeName" : "TTL" ,
+          "Enabled" : "TRUE"
+        },
+        "TableName" :  "csye6225"
+      }
+    },
+    "myBucket": {
+      "Type":  "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName" :  {"Ref": "bucketName"}
       }
     },
     "EC2Instance": {
@@ -397,7 +407,10 @@
             }
           ]
         },
-        "ManagedPolicyArns":["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"],
+        "ManagedPolicyArns":["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSESFullAccess"],
         "RoleName":"lambda-sns-execution-role"
       }
     },
@@ -431,7 +444,9 @@
       "Properties": {
         "ManagedPolicyArns": [
           "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
-          "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+          "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+          "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
         ],
         "AssumeRolePolicyDocument": {
           "Version": "2012-10-17",
