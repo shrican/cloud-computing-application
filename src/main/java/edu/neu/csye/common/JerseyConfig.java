@@ -25,6 +25,7 @@ public class JerseyConfig extends ResourceConfig {
         super.register(UserAccountEndointController.class);
         super.register(HomeEndpointController.class);
         super.register(TasksEndpointController.class);
+        super.register(PasswordResetEndpointController.class);
         super.register(MultiPartFeature.class);
         super.register(PasswordResetEndpointController.class);
 
