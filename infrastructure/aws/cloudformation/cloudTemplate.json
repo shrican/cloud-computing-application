@@ -420,15 +420,6 @@
         "TopicName" : "password_reset"
       }
     },
-    "myS3Bucket": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "PublicReadWrite",
-        "BucketName": {
-          "Ref": "bucketName"
-        }
-      }
-    },
     "instanceProfile": {
       "Type": "AWS::IAM::InstanceProfile",
       "Properties": {
