@@ -8,8 +8,6 @@
 package edu.neu.csye.useraccount.endpoint;
 
 import edu.neu.csye.tasks.dataaccess.model.ResetTokenEntity;
-import edu.neu.csye.useraccount.endpoint.model.PasswordResetToken;
-import edu.neu.csye.useraccount.endpoint.model.UserAccount;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -18,11 +16,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/forgot-password")
+@Path("/")
 public interface PasswordResetEndpointRest {
 
+    @Path("/forgot-password")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     Response sendResetToken(ResetTokenEntity passwordReset);
+    
 }
