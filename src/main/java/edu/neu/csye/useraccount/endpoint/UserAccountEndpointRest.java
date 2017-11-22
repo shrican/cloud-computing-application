@@ -8,7 +8,6 @@
 package edu.neu.csye.useraccount.endpoint;
 
 import edu.neu.csye.useraccount.endpoint.model.UserAccount;
-import edu.neu.csye.useraccount.service.model.UserAccountDto;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;

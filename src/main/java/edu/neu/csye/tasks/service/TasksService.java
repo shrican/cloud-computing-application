@@ -147,18 +147,4 @@ public class TasksService {
         return filePath;
     }
 
-//    public String saveUploadedFile(String id, InputStream fileInputStream, FormDataContentDisposition cd) {
-//
-//        try {
-//
-//            //upload file to s3
-//            uploadToS3(cd.getFileName());
-//        } catch (IOException iox)
-//
-//        {
-//            iox.printStackTrace();
-//        }
-//        return cd.getFileName();
-//    }
-
 }
