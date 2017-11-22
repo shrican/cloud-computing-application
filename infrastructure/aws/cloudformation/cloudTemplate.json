@@ -405,6 +405,26 @@
         ]
       }
     },
+    "subnetId1":{
+      "Type":"AWS::EC2::Subnet",
+      "Properties":{
+        "VpcId":{
+          "Ref":"vpcid"
+        },
+        "AvailabilityZone":"us-east-1a",
+        "CidrBlock":"172.31.120.0/26"
+      }
+    },
+    "subnetId2":{
+      "Type":"AWS::EC2::Subnet",
+      "Properties":{
+        "VpcId":{
+          "Ref":"vpcid"
+        },
+        "AvailabilityZone":"us-east-1a",
+        "CidrBlock":"172.31.100.0/26"
+      }
+    },
     "myDBSubnetGroup": {
       "Type": "AWS::RDS::DBSubnetGroup",
       "Properties": {
