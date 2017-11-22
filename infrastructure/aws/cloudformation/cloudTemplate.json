@@ -254,7 +254,49 @@
                 "cd /home/ubuntu \n",
                 "wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
                 "chmod +x ./install \n",
-                "./install auto \n"
+                "./install auto \n",
+                "cd /home/ubuntu \n",
+                              "curl -O https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
+                              "chmod +x ./install \n",
+                              "./install auto \n",
+                              "apt-get update -y \n",
+                              "apt-get install python -y \n",
+                  "echo '[general]' > /tmp/apacheaccess.conf \n",
+                 
+                  "echo 'state_file= /var/awslogs/state' >> /tmp/apacheaccess.conf \n",
+                  "echo '[/var/logs/awslogs.log]' >> /tmp/apacheaccess.conf \n",
+                  "echo 'datetime_format = %d/%b/%Y:%H:%M:%S' >> /tmp/apacheaccess.conf \n",
+                  "echo 'file = /var/logs/awslogs.log' >> /tmp/apacheaccess.conf \n",
+                "echo 'buffer_duration = 5000' >> /tmp/apacheaccess.conf \n",
+                "echo 'log_stream_name = test' >> /tmp/apacheaccess.conf \n",
+                "echo 'initial_position = start_of_file' >> /tmp/apacheaccess.conf \n",
+                "echo 'log_group_name = \"",
+                              {
+                                 "Ref":"WebServerLogGroup"
+                              },
+                              "\"\"' >> /tmp/apacheaccess.conf \n",
+               
+               
+                              "wget https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py \n",
+                              "python awslogs-agent-setup.py -n -r ", { "Ref" : "AWS::Region" }, " -c /tmp/apacheaccess.conf || error_exit 'Failed to run CloudWatch Logs agent setup'\n",
+                  "cd /etc/systemd/system \n",
+                       
+                        "echo '[Unit]' > /etc/systemd/system/awslogs.service \n",
+                        "echo 'Description=Service for CloudWatch Logs agent' >> /etc/systemd/system/awslogs.service \n",
+                        "echo 'After=rc-local.service' >> /etc/systemd/system/awslogs.service \n",
+
+                        "echo '[Service]' >> /etc/systemd/system/awslogs.service \n",
+                        "echo 'Type=simple' >> /etc/systemd/system/awslogs.service \n",
+                        "echo 'Restart=always' >> /etc/systemd/system/awslogs.service \n",
+                        "echo 'KillMode=process' >> /etc/systemd/system/awslogs.service \n",
+                        "echo 'TimeoutSec=infinity' >> /etc/systemd/system/awslogs.service \n",
+                        "echo 'PIDFile=/var/awslogs/state/awslogs.pid' >> /etc/systemd/system/awslogs.service \n",
+                        "echo 'ExecStart=/var/awslogs/bin/awslogs-agent-launcher.sh --start --background --pidfile $PIDFILE --user awslogs --chuid awslogs &amp;' >> /etc/systemd/system/awslogs.service \n",
+
+                        "echo '[Install]' >> /etc/systemd/system/awslogs.service \n",
+                        "echo 'WantedBy=multi-user.target' >> /etc/systemd/system/awslogs.service \n",
+            "systemctl start awslogs.service \n"
+
               ]
             ]
           }
@@ -302,6 +344,12 @@
             }
           }
         ]
+      }
+    },
+    "WebServerLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+                "RetentionInDays": 7
       }
     },
     "myRecordSet": {
@@ -425,7 +473,8 @@
       "Properties": {
         "Roles": [
           {
-            "Ref": "CodeDeployEC2ServiceRole"
+            "Ref": "CodeDeployEC2ServiceRole",
+            "Ref":"CloudWatchRole"
           }
         ]
       }
@@ -457,6 +506,58 @@
         },
         "Path": "/"
       }
+    },
+    "CloudWatchRole":{
+         "Type":"AWS::IAM::Role",
+         "Properties":{
+            "AssumeRolePolicyDocument":{
+               "Version":"2012-10-17",
+               "Statement":[
+                  {
+                     "Effect":"Allow",
+                     "Principal":{
+                        "Service":[
+                           "ec2.amazonaws.com"
+                        ]
+                     },
+                     "Action":[
+                        "sts:AssumeRole"
+                     ]
+                  }
+               ]
+            },
+            "Path":"/"
+         }
+    },
+    "CloudWatchPolicy":{
+         "Type":"AWS::IAM::Policy",
+         "Properties":{
+            "PolicyName":"CloudWatchLogsPolicy",
+            "PolicyDocument":{
+               "Version": "2012-10-17",
+               "Statement": [
+                  {
+                     "Effect": "Allow",
+                     "Action": [
+                        "logs:Create*",
+                        "logs:CreateLogStream",
+                        "logs:PutLogEvents",
+                        "logs:DescribeLogStreams",
+                        "s3:GetObject"
+                     ],
+                     "Resource": [
+                        "arn:aws:logs:*:*:*",
+                        "arn:aws:s3:::*"
+                     ]
+                  }
+               ]
+            },
+            "Roles":[
+               {
+                  "Ref":"CloudWatchRole"
+               }
+            ]
+         }
     },
     "CodeDeployEC2S3": {
       "Type": "AWS::IAM::Policy",
