@@ -8,6 +8,8 @@ files:
     destination: /home/ubuntu
   - source: ./csye6225.log
     destination: /home/ubuntu
+  - source: ./infrastucture/aws/cloudwatch/awslogs.conf
+    destination: /home/ubuntu
   - source: ./build/libs/ROOT.war
     destination: /var/lib/tomcat8/webapps
 
