@@ -475,7 +475,7 @@
         "Roles": [
           {
             "Ref": "CodeDeployEC2ServiceRole",
-            "Ref": "CloudWatchRole"
+            "Ref": "CloudWatchRole",
           }
         ]
       }
@@ -527,6 +527,12 @@
             }
           ]
         },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSESFullAccess"
+        ],
         "Path": "/"
       }
     },
