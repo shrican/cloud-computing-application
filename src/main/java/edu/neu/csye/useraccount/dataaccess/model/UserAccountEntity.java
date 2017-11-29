@@ -29,6 +29,7 @@ public class UserAccountEntity {
 
     @Column(name = "PASSWORD")
     private String password;
+    
 
     @Column(name = "email")
     private String email;
