@@ -267,7 +267,7 @@
                 "echo 'state_file= /var/awslogs/agent-state' >> /tmp/apacheaccess.conf \n\n",
                 "echo '[/var/logs/awslogs.log]' >> /tmp/apacheaccess.conf \n",
                 "echo 'datetime_format = %d/%b/%Y:%H:%M:%S' >> /tmp/apacheaccess.conf \n",
-                "echo 'file = /var/log/awslogs.log' >> /tmp/apacheaccess.conf \n",
+                "echo 'file = /var/log/tomcat8/catalina.out' >> /tmp/apacheaccess.conf \n",
                 "echo 'buffer_duration = 5000' >> /tmp/apacheaccess.conf \n",
                 "echo 'log_stream_name = test' >> /tmp/apacheaccess.conf \n",
                 "echo 'initial_position = start_of_file' >> /tmp/apacheaccess.conf \n",
