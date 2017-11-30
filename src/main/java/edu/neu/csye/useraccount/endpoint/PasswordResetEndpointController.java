@@ -43,7 +43,7 @@ public class PasswordResetEndpointController implements PasswordResetEndpointRes
         UserAccountDto userAccountDto = getUser();
         UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
 
-        userAccountEntity.setResetEntity(resetToken);
+        //userAccountEntity.setResetEntity(resetToken);
 
                 AmazonSNSClient snsClient = new AmazonSNSClient(new InstanceProfileCredentialsProvider());
                 snsClient.setRegion(Region.getRegion(Regions.US_EAST_1));
