@@ -475,7 +475,7 @@
         "Roles": [
           {
             "Ref": "CodeDeployEC2ServiceRole",
-            "Ref": "CloudWatchRole",
+            "Ref": "CloudWatchRole"
           }
         ]
       }
