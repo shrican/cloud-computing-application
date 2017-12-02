@@ -21,10 +21,12 @@ export vpcId=$(aws ec2 describe-vpcs --query "Vpcs[0].VpcId" --output text)
 
 export subnetId1=$(aws ec2 describe-subnets --filters "Name=availability-zone, Values=us-east-1a" --query "Subnets[0].SubnetId" --output text)
 export subnetId2=$(aws ec2 describe-subnets --filters "Name=availability-zone, Values=us-east-1b" --query "Subnets[0].SubnetId" --output text)
+export subnetId3=$(aws ec2 describe-subnets --filters "Name=availability-zone, Values=us-east-1f" --query "Subnets[0].SubnetId" --output text)
 
 echo "VpcId" $vpcId
 echo "SubnetId-1" $subnetId1
 echo "SubnetId-2" $subnetId2
+echo "SubnetId-2" $subnetId3
 echo "TemplateFile Name" $templateFileName
 securityGroupName=csye6225-webapp
 imageId=ami-cd0f5cb6

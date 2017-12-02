@@ -467,36 +467,6 @@
         }
       }
     },
-    "Subnet1": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "vpcId"
-        },
-        "CidrBlock": "172.31.128.0/20",
-        "AvailabilityZone": "us-east-1e"
-      }
-    },
-    "Subnet2": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "vpcId"
-        },
-        "CidrBlock": "172.31.112.0/20",
-        "AvailabilityZone": "us-east-1b"
-      }
-    },
-    "Subnet3": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "vpcId"
-        },
-        "CidrBlock": "172.31.100.0/20",
-        "AvailabilityZone": "us-east-1f"
-      }
-    },
     "DBSubnetGroup": {
       "Type": "AWS::RDS::DBSubnetGroup",
       "Properties": {
