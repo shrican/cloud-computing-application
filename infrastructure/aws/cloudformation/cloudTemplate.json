@@ -106,7 +106,7 @@
       "Type": "String"
     },
     "subnetId3": {
-      "Description": "Subnet Id2 to create Subnet",
+      "Description": "Subnet Id3 to create Subnet",
       "Type": "String"
     },
     "DBName": {
