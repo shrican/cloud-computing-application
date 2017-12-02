@@ -307,6 +307,32 @@
         }
       }
     },
+    "MyServerGroup": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "VPCZoneIdentifier": [
+          {
+            "Ref": "Subnet1"
+          },
+          {
+            "Ref": "Subnet2"
+          },
+          {
+            "Ref": "Subnet3"
+          }
+        ],
+        "LaunchConfigurationName": {
+          "Ref": "EC2Instance"
+        },
+        "MinSize": "3",
+        "MaxSize": "3",
+        "TargetGroupARNs": [
+          {
+            "Ref": "ALBTargetGroup"
+          }
+        ]
+      }
+    },
     "csye6225webapp": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
@@ -480,7 +506,7 @@
         "Roles": [
           {
             "Ref": "CodeDeployEC2ServiceRole",
-            "Ref": "CloudWatchRole",
+            "Ref": "CloudWatchRole"
           }
         ]
       }
@@ -677,6 +703,53 @@
           }
         ]
       }
+    },
+    "ELBListener": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": {
+        "Certificates": [
+          {
+            "CertificateArn": "	arn:aws:acm:us-east-1:542780065948:certificate/618ab223-1b0a-4419-83df-4e322397bc7c"
+          }
+        ],
+        "DefaultActions": [
+          {
+            "Type": "forward",
+            "TargetGroupArn": {
+              "Ref": "ELBTargetGroup"
+            }
+          }
+        ],
+        "LoadBalancerArn": {
+          "Ref": "ApplicationLoadBalancer"
+        },
+        "Port": "443",
+        "Protocol": "HTTPS"
+      }
+    },
+    "ELBTargetGroup": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "name",
+            "Value": "csye6225"
+          }
+        ],
+        "HealthCheckIntervalSeconds": 60,
+        "UnhealthyThresholdCount": 10,
+        "HealthCheckPath": "/",
+        "Name": "CsyeTargetGroup",
+        "TargetType": "instance",
+        "Port": 443,
+        "Protocol": "HTTPS",
+        "VpcId": {
+          "Ref": "vpcId"
+        }
+      },
+      "DependsOn": [
+        "ApplicationLoadBalancer"
+      ]
     }
   },
   "Outputs": {
