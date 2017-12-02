@@ -105,6 +105,10 @@
       "Description": "Subnet Id2 to create Subnet",
       "Type": "String"
     },
+    "subnetId3": {
+      "Description": "Subnet Id2 to create Subnet",
+      "Type": "String"
+    },
     "DBName": {
       "Default": "csye6225",
       "Description": "The database name",
@@ -146,6 +150,10 @@
       "Default": "0.0.0.0/0",
       "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
+    },
+    "InstanceCount" : {
+      "Description" : "Number of instances to start",
+      "Type" : "String"
     }
   },
   "Resources": {
@@ -184,7 +192,7 @@
       }
     },
     "EC2Instance": {
-      "Type": "AWS::EC2::Instance",
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
         "InstanceType": {
           "Ref": "InstanceType"
@@ -303,33 +311,32 @@
         }
       }
     },
-
     "MyServerGroup": {
       "Type": "AWS::AutoScaling::AutoScalingGroup",
       "Properties": {
-        "VPCZoneIdentifier" :[{"Ref": "Subnet1"},{"Ref": "Subnet2"},{"Ref": "Subnet3"}],
-        "LaunchConfigurationName": {"Ref": "EC2Instance"},
+        "VPCZoneIdentifier": [
+          {
+            "Ref": "Subnet1"
+          },
+          {
+            "Ref": "Subnet2"
+          },
+          {
+            "Ref": "Subnet3"
+          }
+        ],
+        "LaunchConfigurationName": {
+          "Ref": "EC2Instance"
+        },
         "MinSize": "3",
         "MaxSize": "3",
-        "TargetGroupARNs": [{"Ref": "ALBTargetGroup"}]
+        "TargetGroupARNs": [
+          {
+            "Ref": "ALBTargetGroup"
+          }
+        ]
       }
     },
-
-
-    "ALBListener": {
-      "Type": "AWS::ElasticLoadBalancingV2::Listener",
-      "Properties": {
-        "Certificates":[{"CertificateArn" :"arn:aws:acm:us-east-1:644761415555:certificate/14d7f790-6d0c-477c-983a-40f8d866e60a"}],
-        "DefaultActions": [{
-          "Type": "forward",
-          "TargetGroupArn": {"Ref": "ALBTargetGroup"}
-        }],
-        "LoadBalancerArn": {"Ref": "ApplicationLoadBalancer"},
-        "Port": "443",
-        "Protocol": "HTTPS"
-      }
-    },
-
     "csye6225webapp": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
@@ -433,16 +440,50 @@
         ]
       }
     },
-    "myDBSubnetGroup": {
+    "MyDNSRecord": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "RecordSets": [
+          {
+            "Name": {
+              "Ref": "dnsName"
+            },
+            "Type": "A",
+            "AliasTarget": {
+              "HostedZoneId": {
+                "Fn::GetAtt": [
+                  "ApplicationLoadBalancer",
+                  "CanonicalHostedZoneID"
+                ]
+              },
+              "DNSName": {
+                "Fn::GetAtt": [
+                  "ApplicationLoadBalancer",
+                  "DNSName"
+                ]
+              }
+            }
+          }
+        ],
+        "Comment": "DNS name for my instance.",
+        "HostedZoneName": {
+          "Ref": "originalDomain"
+        }
+      }
+    },
+    "DBSubnetGroup": {
       "Type": "AWS::RDS::DBSubnetGroup",
       "Properties": {
-        "DBSubnetGroupDescription": "DB subnet Group",
+        "DBSubnetGroupDescription": "description",
         "SubnetIds": [
           {
-            "Ref": "subnetId1"
+            "Ref": "Subnet1"
           },
           {
-            "Ref": "subnetId2"
+            "Ref": "Subnet2"
+          },
+          {
+            "Ref": "Subnet3"
           }
         ]
       }
@@ -700,6 +741,83 @@
           }
         ]
       }
+    },
+    "ApplicationLoadBalancer": {
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+      "Properties": {
+        "Scheme": "internal",
+        "Tags": [
+          {
+            "Key": "name",
+            "Value": "csye6225"
+          }
+        ],
+        "Type": "application",
+        "IpAddressType": "ipv4",
+        "Subnets": [
+          {
+            "Ref": "subnet1"
+          },
+          {
+            "Ref": "subnet2"
+          },
+          {
+            "Ref": "subnet3"
+          }
+        ],
+        "SecurityGroups": [
+          {
+            "Ref": "csye6225webapp"
+          }
+        ]
+      }
+    },
+    "ELBListener": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": {
+        "Certificates": [
+          {
+            "CertificateArn": "	arn:aws:acm:us-east-1:542780065948:certificate/618ab223-1b0a-4419-83df-4e322397bc7c"
+          }
+        ],
+        "DefaultActions": [
+          {
+            "Type": "forward",
+            "TargetGroupArn": {
+              "Ref": "ELBTargetGroup"
+            }
+          }
+        ],
+        "LoadBalancerArn": {
+          "Ref": "ApplicationLoadBalancer"
+        },
+        "Port": "443",
+        "Protocol": "HTTPS"
+      }
+    },
+    "ELBTargetGroup": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "name",
+            "Value": "csye6225"
+          }
+        ],
+        "HealthCheckIntervalSeconds": 60,
+        "UnhealthyThresholdCount": 10,
+        "HealthCheckPath": "/",
+        "Name": "CsyeTargetGroup",
+        "TargetType": "instance",
+        "Port": 443,
+        "Protocol": "HTTPS",
+        "VpcId": {
+          "Ref": "vpcId"
+        }
+      },
+      "DependsOn": [
+        "ApplicationLoadBalancer"
+      ]
     }
   },
   "Outputs": {
