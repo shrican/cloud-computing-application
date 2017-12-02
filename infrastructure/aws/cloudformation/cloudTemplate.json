@@ -105,6 +105,10 @@
       "Description": "Subnet Id2 to create Subnet",
       "Type": "String"
     },
+    "subnetId3": {
+      "Description": "Subnet Id2 to create Subnet",
+      "Type": "String"
+    },
     "DBName": {
       "Default": "csye6225",
       "Description": "The database name",
@@ -467,36 +471,6 @@
         }
       }
     },
-    "Subnet1": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "vpcId"
-        },
-        "CidrBlock": "172.31.128.0/20",
-        "AvailabilityZone": "us-east-1e"
-      }
-    },
-    "Subnet2": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "vpcId"
-        },
-        "CidrBlock": "172.31.112.0/20",
-        "AvailabilityZone": "us-east-1b"
-      }
-    },
-    "Subnet3": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "vpcId"
-        },
-        "CidrBlock": "172.31.100.0/20",
-        "AvailabilityZone": "us-east-1f"
-      }
-    },
     "DBSubnetGroup": {
       "Type": "AWS::RDS::DBSubnetGroup",
       "Properties": {
@@ -782,13 +756,13 @@
         "IpAddressType": "ipv4",
         "Subnets": [
           {
-            "Ref": "Subnet1"
+            "Ref": "subnet1"
           },
           {
-            "Ref": "Subnet2"
+            "Ref": "subnet2"
           },
           {
-            "Ref": "Subnet3"
+            "Ref": "subnet3"
           }
         ],
         "SecurityGroups": [
