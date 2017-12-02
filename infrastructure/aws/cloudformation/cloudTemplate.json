@@ -436,6 +436,37 @@
         ]
       }
     },
+    "MyDNSRecord": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "RecordSets": [
+          {
+            "Name": {
+              "Ref": "dnsName"
+            },
+            "Type": "A",
+            "AliasTarget": {
+              "HostedZoneId": {
+                "Fn::GetAtt": [
+                  "ApplicationLoadBalancer",
+                  "CanonicalHostedZoneID"
+                ]
+              },
+              "DNSName": {
+                "Fn::GetAtt": [
+                  "ApplicationLoadBalancer",
+                  "DNSName"
+                ]
+              }
+            }
+          }
+        ],
+        "Comment": "DNS name for my instance.",
+        "HostedZoneName": {
+          "Ref": "originalDomain"
+        }
+      }
+    },
     "Subnet1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
