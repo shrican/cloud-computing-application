@@ -188,7 +188,7 @@
       }
     },
     "EC2Instance": {
-      "Type": "AWS::EC2::Instance",
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
         "InstanceType": {
           "Ref": "InstanceType"
