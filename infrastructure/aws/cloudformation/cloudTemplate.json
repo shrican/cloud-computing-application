@@ -296,6 +296,7 @@
                 "echo '[Install]' >> /etc/systemd/system/awslogs.service \n",
                 "echo 'WantedBy=multi-user.target' >> /etc/systemd/system/awslogs.service \n",
                 "systemctl start awslogs.service \n"
+                
               ]
             ]
           }
