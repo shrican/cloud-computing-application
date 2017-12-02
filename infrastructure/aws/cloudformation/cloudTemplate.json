@@ -303,6 +303,33 @@
         }
       }
     },
+
+    "MyServerGroup": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "VPCZoneIdentifier" :[{"Ref": "Subnet1"},{"Ref": "Subnet2"},{"Ref": "Subnet3"}],
+        "LaunchConfigurationName": {"Ref": "EC2Instance"},
+        "MinSize": "3",
+        "MaxSize": "3",
+        "TargetGroupARNs": [{"Ref": "ALBTargetGroup"}]
+      }
+    },
+
+
+    "ALBListener": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": {
+        "Certificates":[{"CertificateArn" :"arn:aws:acm:us-east-1:644761415555:certificate/14d7f790-6d0c-477c-983a-40f8d866e60a"}],
+        "DefaultActions": [{
+          "Type": "forward",
+          "TargetGroupArn": {"Ref": "ALBTargetGroup"}
+        }],
+        "LoadBalancerArn": {"Ref": "ApplicationLoadBalancer"},
+        "Port": "443",
+        "Protocol": "HTTPS"
+      }
+    },
+
     "csye6225webapp": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
