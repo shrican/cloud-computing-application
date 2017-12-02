@@ -264,18 +264,18 @@
                 "apt-get update -y \n",
                 "apt-get install python -y \n",
                 "echo '[general]' > /tmp/apacheaccess.conf \n",
-                "echo 'state_file= /var/awslogs/state' >> /tmp/apacheaccess.conf \n",
+                "echo 'state_file= /var/awslogs/agent-state' >> /tmp/apacheaccess.conf \n\n",
                 "echo '[/var/logs/awslogs.log]' >> /tmp/apacheaccess.conf \n",
                 "echo 'datetime_format = %d/%b/%Y:%H:%M:%S' >> /tmp/apacheaccess.conf \n",
-                "echo 'file = /var/logs/awslogs.log' >> /tmp/apacheaccess.conf \n",
+                "echo 'file = /var/log/tomcat8/catalina.out' >> /tmp/apacheaccess.conf \n",
                 "echo 'buffer_duration = 5000' >> /tmp/apacheaccess.conf \n",
                 "echo 'log_stream_name = test' >> /tmp/apacheaccess.conf \n",
                 "echo 'initial_position = start_of_file' >> /tmp/apacheaccess.conf \n",
-                "echo 'log_group_name = \"",
+                "echo 'log_group_name = ",
                 {
                   "Ref": "WebServerLogGroup"
                 },
-                "\"\"' >> /tmp/apacheaccess.conf \n",
+                "' >> /tmp/apacheaccess.conf \n",
                 "wget https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py \n",
                 "python awslogs-agent-setup.py -n -r ",
                 {
@@ -296,6 +296,7 @@
                 "echo '[Install]' >> /etc/systemd/system/awslogs.service \n",
                 "echo 'WantedBy=multi-user.target' >> /etc/systemd/system/awslogs.service \n",
                 "systemctl start awslogs.service \n"
+                
               ]
             ]
           }
@@ -405,26 +406,6 @@
         ]
       }
     },
-    "subnetId1":{
-      "Type":"AWS::EC2::Subnet",
-      "Properties":{
-        "VpcId":{
-          "Ref":"vpcid"
-        },
-        "AvailabilityZone":"us-east-1a",
-        "CidrBlock":"172.31.120.0/26"
-      }
-    },
-    "subnetId2":{
-      "Type":"AWS::EC2::Subnet",
-      "Properties":{
-        "VpcId":{
-          "Ref":"vpcid"
-        },
-        "AvailabilityZone":"us-east-1a",
-        "CidrBlock":"172.31.100.0/26"
-      }
-    },
     "myDBSubnetGroup": {
       "Type": "AWS::RDS::DBSubnetGroup",
       "Properties": {
@@ -495,7 +476,7 @@
         "Roles": [
           {
             "Ref": "CodeDeployEC2ServiceRole",
-            "Ref": "CloudWatchRole"
+            "Ref": "CloudWatchRole",
           }
         ]
       }
@@ -547,6 +528,12 @@
             }
           ]
         },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSESFullAccess"
+        ],
         "Path": "/"
       }
     },
@@ -685,28 +672,6 @@
             "Ref": "CodeDeployServiceRole"
           }
         ]
-      }
-    },
-    "LogRole": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:DescribeLogStreams"
-              ],
-              "Resource": [
-                "arn:aws:logs:*:*:*"
-              ]
-            }
-          ]
-        }
       }
     }
   },
