@@ -14,8 +14,6 @@ hostedZoneId=$5
 dnsName=$6
 recordSetType=$7
 recordSetTTL=$8
-volumeType=$9
-volumeSize=$10
 
 export vpcId=$(aws ec2 describe-vpcs --query "Vpcs[0].VpcId" --output text)
 
@@ -35,7 +33,7 @@ DBUser=csye6225master
 DBPassword=csye6225password
 
 echo "S3Bucket Name" $bucketName
-aws cloudformation create-stack --stack-name $stackName --template-body file://$templateFileName --enable-termination-protection --parameters ParameterKey=InstanceType,ParameterValue=$3 ParameterKey=KeyName,ParameterValue=$4 ParameterKey=hostedZoneId,ParameterValue=$hostedZoneId ParameterKey=dnsName,ParameterValue=$dnsName  ParameterKey=recordSetType,ParameterValue=$recordSetType ParameterKey=recordSetTTL,ParameterValue=$recordSetTTL ParameterKey=securityGroupName,ParameterValue=$securityGroupName ParameterKey=vpcId,ParameterValue=$vpcId ParameterKey=subnetId1,ParameterValue=$subnetId1 ParameterKey=subnetId2,ParameterValue=$subnetId2 ParameterKey=subnetId3,ParameterValue=$subnetId3 ParameterKey=bucketName,ParameterValue=$bucketName ParameterKey=imageId,ParameterValue=$imageId ParameterKey=DBUser,ParameterValue=$DBUser ParameterKey=DBPassword,ParameterValue=$DBPassword ParameterKey=InstanceCount,ParameterValue=3 --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
+aws cloudformation create-stack --stack-name $stackName --template-body file://$templateFileName --enable-termination-protection --parameters ParameterKey=InstanceType,ParameterValue=$3 ParameterKey=KeyName,ParameterValue=$4 ParameterKey=hostedZoneId,ParameterValue=$hostedZoneId ParameterKey=dnsName,ParameterValue=$dnsName  ParameterKey=recordSetType,ParameterValue=$recordSetType ParameterKey=recordSetTTL,ParameterValue=$recordSetTTL ParameterKey=securityGroupName,ParameterValue=$securityGroupName ParameterKey=vpcId,ParameterValue=$vpcId ParameterKey=subnetId1,ParameterValue=$subnetId1 ParameterKey=subnetId2,ParameterValue=$subnetId2 ParameterKey=subnetId3,ParameterValue=$subnetId3 ParameterKey=bucketName,ParameterValue=$bucketName ParameterKey=imageId,ParameterValue=$imageId ParameterKey=DBUser,ParameterValue=$DBUser ParameterKey=DBPassword,ParameterValue=$DBPassword ParameterKey=mySSLarn,ParameterValue=$9 --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
 
 stackStatus=$(aws cloudformation describe-stacks --stack-name $stackName --query "Stacks[*].StackStatus[]" --output text)
 echo $stackStatus
