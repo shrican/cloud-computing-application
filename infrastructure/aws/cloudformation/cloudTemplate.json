@@ -316,13 +316,13 @@
       "Properties": {
         "VPCZoneIdentifier": [
           {
-            "Ref": "Subnet1"
+            "Ref": "subnetId1"
           },
           {
-            "Ref": "Subnet2"
+            "Ref": "subnetId2"
           },
           {
-            "Ref": "Subnet3"
+            "Ref": "subnetId3"
           }
         ],
         "LaunchConfigurationName": {
@@ -332,7 +332,7 @@
         "MaxSize": "3",
         "TargetGroupARNs": [
           {
-            "Ref": "ALBTargetGroup"
+            "Ref": "ELBTargetGroup"
           }
         ]
       }
@@ -386,32 +386,7 @@
         "RetentionInDays": 7
       }
     },
-    "myRecordSet": {
-      "Type": "AWS::Route53::RecordSet",
-      "Properties": {
-        "HostedZoneId": {
-          "Ref": "hostedZoneId"
-        },
-        "Comment": "DNS name for my instance.",
-        "Name": {
-          "Ref": "dnsName"
-        },
-        "Type": {
-          "Ref": "recordSetType"
-        },
-        "TTL": {
-          "Ref": "recordSetTTL"
-        },
-        "ResourceRecords": [
-          {
-            "Fn::GetAtt": [
-              "EC2Instance",
-              "PublicIp"
-            ]
-          }
-        ]
-      }
-    },
+
     "DBInstance": {
       "Type": "AWS::RDS::DBInstance",
       "Properties": {
@@ -431,7 +406,7 @@
         },
         "AllocatedStorage": "10",
         "DBSubnetGroupName": {
-          "Ref": "myDBSubnetGroup"
+          "Ref": "DBSubnetGroup"
         },
         "DBSecurityGroups": [
           {
@@ -465,10 +440,7 @@
             }
           }
         ],
-        "Comment": "DNS name for my instance.",
-        "HostedZoneName": {
-          "Ref": "originalDomain"
-        }
+        "Comment": "DNS name for my instance."
       }
     },
     "DBSubnetGroup": {
@@ -477,13 +449,13 @@
         "DBSubnetGroupDescription": "description",
         "SubnetIds": [
           {
-            "Ref": "Subnet1"
+            "Ref": "subnetId1"
           },
           {
-            "Ref": "Subnet2"
+            "Ref": "subnetId2"
           },
           {
-            "Ref": "Subnet3"
+            "Ref": "subnetId3"
           }
         ]
       }
@@ -756,13 +728,13 @@
         "IpAddressType": "ipv4",
         "Subnets": [
           {
-            "Ref": "subnet1"
+            "Ref": "subnetId1"
           },
           {
-            "Ref": "subnet2"
+            "Ref": "subnetId2"
           },
           {
-            "Ref": "subnet3"
+            "Ref": "subnetId3"
           }
         ],
         "SecurityGroups": [
@@ -777,7 +749,7 @@
       "Properties": {
         "Certificates": [
           {
-            "CertificateArn": "	arn:aws:acm:us-east-1:542780065948:certificate/618ab223-1b0a-4419-83df-4e322397bc7c"
+            "CertificateArn": "arn:aws:acm:us-east-1:444312497528:certificate/0086b1ad-e724-4df1-98b7-1d9edfbcd102"
           }
         ],
         "DefaultActions": [
