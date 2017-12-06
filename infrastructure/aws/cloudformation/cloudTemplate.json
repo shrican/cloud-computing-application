@@ -440,7 +440,10 @@
             }
           }
         ],
-        "Comment": "DNS name for my instance."
+        "Comment": "DNS name for my instance.",
+        "HostedZoneId": {
+          "Ref": "hostedZoneId"
+        }
       }
     },
     "DBSubnetGroup": {
@@ -717,15 +720,8 @@
     "ApplicationLoadBalancer": {
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
       "Properties": {
-        "Scheme": "internal",
-        "Tags": [
-          {
-            "Key": "name",
-            "Value": "csye6225"
-          }
-        ],
-        "Type": "application",
-        "IpAddressType": "ipv4",
+        "Name": "Application-LoadBalancer",
+        "Scheme": "internet-facing",
         "Subnets": [
           {
             "Ref": "subnetId1"
@@ -739,7 +735,10 @@
         ],
         "SecurityGroups": [
           {
-            "Ref": "csye6225webapp"
+            "Fn::GetAtt": [
+            "csye6225webapp",
+            "GroupId"
+          ]
           }
         ]
       }
