@@ -1,4 +1,4 @@
-# Csye6225-fall2017 - Assignment 9
+# Csye6225-fall2017
 
 The application implements APIs using Java programming language and Spring boot framework with MySQL as the persistent backend data store for user account management. 
 
@@ -24,26 +24,27 @@ Below are the instructions that will get you a copy of the project up and runnin
 
 ## Instructions to run unit, integration and/or load tests
 
-Explain how to run the automated tests for this system
+For running the test cases: 
+Change the property `spring.profiles.active` in application properties to test
+This will run the Junit tests on travisCI.
+
+* .jmx for Jmeter testing
+* travis.yml for travis-ci testing
+* JUnits for unit testing
 
 ### List of Test Cases
 
 
 ```
-Example : ** Add code **
+UserAccountEndpointControllerTest 
+UserAccountServiceTest 
+ensuireUsernameIsUnique
 
-
-```
-
-### Test Coding style/Pattern
-
-```
-Example : ** Add code **
 ```
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+We are using Travis CI along with CodeDeploy to deploy the web project on AWS EC2 instance
 
 ## Build with Travis CI
 
@@ -51,7 +52,7 @@ Add additional notes about how to deploy this on a live system
 
 Steps for Travis CI build
 
-* LOgin to Travis CI (using github login)
+* Login to Travis CI (using github login)
 * Activate your repository
 * Flick the repository switch on
 * Add .travis.yml file to your repository
@@ -74,4 +75,3 @@ This project is licensed under the Northeastern University
 
 * Prof. Tejas Parikh who's initial code template was used
 * TA Jiamin and Haozhong for guidance 
-
