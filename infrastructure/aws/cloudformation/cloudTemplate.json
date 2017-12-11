@@ -105,6 +105,10 @@
       "Description": "Subnet Id2 to create Subnet",
       "Type": "String"
     },
+    "subnetId3": {
+      "Description": "Subnet Id3 to create Subnet",
+      "Type": "String"
+    },
     "DBName": {
       "Default": "csye6225",
       "Description": "The database name",
@@ -146,6 +150,10 @@
       "Default": "0.0.0.0/0",
       "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
       "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
+    },
+    "mySSLarn": {
+      "Description": "Arn generated after issuing SSL Certificate from ACM",
+      "Type": "String"
     }
   },
   "Resources": {
@@ -183,17 +191,23 @@
         }
       }
     },
-    "EC2Instance": {
+    "EC2Instance1": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
         "InstanceType": {
           "Ref": "InstanceType"
         },
-        "SecurityGroups": [
+        "SecurityGroupIds": [
           {
-            "Ref": "csye6225webapp"
+            "Fn::GetAtt": [
+              "csye6225webapp",
+              "GroupId"
+            ]
           }
         ],
+        "SubnetId": {
+          "Ref": "subnetId1"
+        },
         "KeyName": {
           "Ref": "KeyName"
         },
@@ -296,7 +310,256 @@
                 "echo '[Install]' >> /etc/systemd/system/awslogs.service \n",
                 "echo 'WantedBy=multi-user.target' >> /etc/systemd/system/awslogs.service \n",
                 "systemctl start awslogs.service \n"
-                
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "EC2Instance2": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "InstanceType": {
+          "Ref": "InstanceType"
+        },
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "csye6225webapp",
+              "GroupId"
+            ]
+          }
+        ],
+        "SubnetId": {
+          "Ref": "subnetId2"
+        },
+        "KeyName": {
+          "Ref": "KeyName"
+        },
+        "ImageId": {
+          "Ref": "imageId"
+        },
+        "IamInstanceProfile": {
+          "Ref": "instanceProfile"
+        },
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash -v \n",
+                "apt-get update \n",
+                "apt-get install default-jdk -y \n",
+                "update-alternatives --config java \n",
+                "echo 'JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java\"' > /etc/environment \n",
+                "source /etc/environment \n",
+                "sudo apt-get install tomcat8 -y \n",
+                "sudo chmod 777 /var/lib/tomcat8 \n",
+                "sudo chmod 777 ~/csye6225.log \n",
+                "echo '#!/bin/sh' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.url=\"jdbc:mysql://",
+                      {
+                        "Fn::GetAtt": [
+                          "DBInstance",
+                          "Endpoint.Address"
+                        ]
+                      },
+                      ":3306/csye6225\"\"'>> /usr/share/tomcat8/bin/setenv.sh \n"
+                    ]
+                  ]
+                },
+                "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.username=\"",
+                {
+                  "Ref": "DBUser"
+                },
+                "\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.password=\"",
+                {
+                  "Ref": "DBPassword"
+                },
+                "\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                "echo 'JAVA_OPTS=\"$JAVA_OPTS -DbucketName=\"",
+                {
+                  "Ref": "bucketName"
+                },
+                "\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                "chmod +x /usr/share/tomcat8/bin/setenv.sh \n",
+                "# Installing CodeDeploy Agent \n",
+                "apt-get install python-pip -y \n",
+                "apt-get install ruby -y \n",
+                "apt-get install wget -y \n",
+                "cd /home/ubuntu \n",
+                "wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
+                "chmod +x ./install \n",
+                "./install auto \n",
+                "cd /home/ubuntu \n",
+                "curl -O https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
+                "chmod +x ./install \n",
+                "./install auto \n",
+                "apt-get update -y \n",
+                "apt-get install python -y \n",
+                "echo '[general]' > /tmp/apacheaccess.conf \n",
+                "echo 'state_file= /var/awslogs/agent-state' >> /tmp/apacheaccess.conf \n\n",
+                "echo '[/var/logs/awslogs.log]' >> /tmp/apacheaccess.conf \n",
+                "echo 'datetime_format = %d/%b/%Y:%H:%M:%S' >> /tmp/apacheaccess.conf \n",
+                "echo 'file = /var/log/tomcat8/catalina.out' >> /tmp/apacheaccess.conf \n",
+                "echo 'buffer_duration = 5000' >> /tmp/apacheaccess.conf \n",
+                "echo 'log_stream_name = test' >> /tmp/apacheaccess.conf \n",
+                "echo 'initial_position = start_of_file' >> /tmp/apacheaccess.conf \n",
+                "echo 'log_group_name = ",
+                {
+                  "Ref": "WebServerLogGroup"
+                },
+                "' >> /tmp/apacheaccess.conf \n",
+                "wget https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py \n",
+                "python awslogs-agent-setup.py -n -r ",
+                {
+                  "Ref": "AWS::Region"
+                },
+                " -c /tmp/apacheaccess.conf || error_exit 'Failed to run CloudWatch Logs agent setup'\n",
+                "cd /etc/systemd/system \n",
+                "echo '[Unit]' > /etc/systemd/system/awslogs.service \n",
+                "echo 'Description=Service for CloudWatch Logs agent' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'After=rc-local.service' >> /etc/systemd/system/awslogs.service \n",
+                "echo '[Service]' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'Type=simple' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'Restart=always' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'KillMode=process' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'TimeoutSec=infinity' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'PIDFile=/var/awslogs/state/awslogs.pid' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'ExecStart=/var/awslogs/bin/awslogs-agent-launcher.sh --start --background --pidfile $PIDFILE --user awslogs --chuid awslogs &amp;' >> /etc/systemd/system/awslogs.service \n",
+                "echo '[Install]' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'WantedBy=multi-user.target' >> /etc/systemd/system/awslogs.service \n",
+                "systemctl start awslogs.service \n"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "EC2Instance3": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "InstanceType": {
+          "Ref": "InstanceType"
+        },
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "csye6225webapp",
+              "GroupId"
+            ]
+          }
+        ],
+        "SubnetId": {
+          "Ref": "subnetId3"
+        },
+        "KeyName": {
+          "Ref": "KeyName"
+        },
+        "ImageId": {
+          "Ref": "imageId"
+        },
+        "IamInstanceProfile": {
+          "Ref": "instanceProfile"
+        },
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash -v \n",
+                "apt-get update \n",
+                "apt-get install default-jdk -y \n",
+                "update-alternatives --config java \n",
+                "echo 'JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java\"' > /etc/environment \n",
+                "source /etc/environment \n",
+                "sudo apt-get install tomcat8 -y \n",
+                "sudo chmod 777 /var/lib/tomcat8 \n",
+                "sudo chmod 777 ~/csye6225.log \n",
+                "echo '#!/bin/sh' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.url=\"jdbc:mysql://",
+                      {
+                        "Fn::GetAtt": [
+                          "DBInstance",
+                          "Endpoint.Address"
+                        ]
+                      },
+                      ":3306/csye6225\"\"'>> /usr/share/tomcat8/bin/setenv.sh \n"
+                    ]
+                  ]
+                },
+                "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.username=\"",
+                {
+                  "Ref": "DBUser"
+                },
+                "\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                "echo 'JAVA_OPTS=\"$JAVA_OPTS -Dspring.datasource.password=\"",
+                {
+                  "Ref": "DBPassword"
+                },
+                "\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                "echo 'JAVA_OPTS=\"$JAVA_OPTS -DbucketName=\"",
+                {
+                  "Ref": "bucketName"
+                },
+                "\"\"' >> /usr/share/tomcat8/bin/setenv.sh \n",
+                "chmod +x /usr/share/tomcat8/bin/setenv.sh \n",
+                "# Installing CodeDeploy Agent \n",
+                "apt-get install python-pip -y \n",
+                "apt-get install ruby -y \n",
+                "apt-get install wget -y \n",
+                "cd /home/ubuntu \n",
+                "wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
+                "chmod +x ./install \n",
+                "./install auto \n",
+                "cd /home/ubuntu \n",
+                "curl -O https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install \n",
+                "chmod +x ./install \n",
+                "./install auto \n",
+                "apt-get update -y \n",
+                "apt-get install python -y \n",
+                "echo '[general]' > /tmp/apacheaccess.conf \n",
+                "echo 'state_file= /var/awslogs/agent-state' >> /tmp/apacheaccess.conf \n\n",
+                "echo '[/var/logs/awslogs.log]' >> /tmp/apacheaccess.conf \n",
+                "echo 'datetime_format = %d/%b/%Y:%H:%M:%S' >> /tmp/apacheaccess.conf \n",
+                "echo 'file = /var/log/tomcat8/catalina.out' >> /tmp/apacheaccess.conf \n",
+                "echo 'buffer_duration = 5000' >> /tmp/apacheaccess.conf \n",
+                "echo 'log_stream_name = test' >> /tmp/apacheaccess.conf \n",
+                "echo 'initial_position = start_of_file' >> /tmp/apacheaccess.conf \n",
+                "echo 'log_group_name = ",
+                {
+                  "Ref": "WebServerLogGroup"
+                },
+                "' >> /tmp/apacheaccess.conf \n",
+                "wget https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py \n",
+                "python awslogs-agent-setup.py -n -r ",
+                {
+                  "Ref": "AWS::Region"
+                },
+                " -c /tmp/apacheaccess.conf || error_exit 'Failed to run CloudWatch Logs agent setup'\n",
+                "cd /etc/systemd/system \n",
+                "echo '[Unit]' > /etc/systemd/system/awslogs.service \n",
+                "echo 'Description=Service for CloudWatch Logs agent' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'After=rc-local.service' >> /etc/systemd/system/awslogs.service \n",
+                "echo '[Service]' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'Type=simple' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'Restart=always' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'KillMode=process' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'TimeoutSec=infinity' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'PIDFile=/var/awslogs/state/awslogs.pid' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'ExecStart=/var/awslogs/bin/awslogs-agent-launcher.sh --start --background --pidfile $PIDFILE --user awslogs --chuid awslogs &amp;' >> /etc/systemd/system/awslogs.service \n",
+                "echo '[Install]' >> /etc/systemd/system/awslogs.service \n",
+                "echo 'WantedBy=multi-user.target' >> /etc/systemd/system/awslogs.service \n",
+                "systemctl start awslogs.service \n"
               ]
             ]
           }
@@ -309,7 +572,10 @@
         "GroupName": {
           "Ref": "securityGroupName"
         },
-        "GroupDescription": "Enable SSH access",
+        "GroupDescription": "Enable HTTP access via port 80, SSH access via port 22",
+        "VpcId": {
+          "Ref": "vpcId"
+        },
         "SecurityGroupIngress": [
           {
             "IpProtocol": "tcp",
@@ -352,32 +618,6 @@
         "RetentionInDays": 7
       }
     },
-    "myRecordSet": {
-      "Type": "AWS::Route53::RecordSet",
-      "Properties": {
-        "HostedZoneId": {
-          "Ref": "hostedZoneId"
-        },
-        "Comment": "DNS name for my instance.",
-        "Name": {
-          "Ref": "dnsName"
-        },
-        "Type": {
-          "Ref": "recordSetType"
-        },
-        "TTL": {
-          "Ref": "recordSetTTL"
-        },
-        "ResourceRecords": [
-          {
-            "Fn::GetAtt": [
-              "EC2Instance",
-              "PublicIp"
-            ]
-          }
-        ]
-      }
-    },
     "DBInstance": {
       "Type": "AWS::RDS::DBInstance",
       "Properties": {
@@ -397,7 +637,7 @@
         },
         "AllocatedStorage": "10",
         "DBSubnetGroupName": {
-          "Ref": "myDBSubnetGroup"
+          "Ref": "DBSubnetGroup"
         },
         "DBSecurityGroups": [
           {
@@ -406,16 +646,50 @@
         ]
       }
     },
-    "myDBSubnetGroup": {
+    "MyDNSRecord": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "hostedZoneId"
+        },
+        "RecordSets": [
+          {
+            "Name": {
+              "Ref": "dnsName"
+            },
+            "Type": "A",
+            "AliasTarget": {
+              "HostedZoneId": {
+                "Fn::GetAtt": [
+                  "ApplicationLoadBalancer",
+                  "CanonicalHostedZoneID"
+                ]
+              },
+              "DNSName": {
+                "Fn::GetAtt": [
+                  "ApplicationLoadBalancer",
+                  "DNSName"
+                ]
+              }
+            }
+          }
+        ],
+        "Comment": "DNS name for my instance."
+      }
+    },
+    "DBSubnetGroup": {
       "Type": "AWS::RDS::DBSubnetGroup",
       "Properties": {
-        "DBSubnetGroupDescription": "DB subnet Group",
+        "DBSubnetGroupDescription": "description",
         "SubnetIds": [
           {
             "Ref": "subnetId1"
           },
           {
             "Ref": "subnetId2"
+          },
+          {
+            "Ref": "subnetId3"
           }
         ]
       }
@@ -476,7 +750,7 @@
         "Roles": [
           {
             "Ref": "CodeDeployEC2ServiceRole",
-            "Ref": "CloudWatchRole",
+            "Ref": "CloudWatchRole"
           }
         ]
       }
@@ -673,13 +947,105 @@
           }
         ]
       }
+    },
+    "ApplicationLoadBalancer": {
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "name",
+            "Value": "csye6225"
+          }
+        ],
+        "Type": "application",
+        "IpAddressType": "ipv4",
+        "Subnets": [
+          {
+            "Ref": "subnetId1"
+          },
+          {
+            "Ref": "subnetId2"
+          },
+          {
+            "Ref": "subnetId3"
+          }
+        ],
+        "SecurityGroups": [
+          {
+            "Ref": "csye6225webapp"
+          }
+        ]
+      }
+    },
+    "ELBListener": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": {
+        "Certificates": [
+          {
+            "CertificateArn": {
+              "Ref": "mySSLarn"
+            }
+          }
+        ],
+        "DefaultActions": [
+          {
+            "Type": "forward",
+            "TargetGroupArn": {
+              "Ref": "ELBTargetGroup"
+            }
+          }
+        ],
+        "LoadBalancerArn": {
+          "Ref": "ApplicationLoadBalancer"
+        },
+        "Port": "443",
+        "Protocol": "HTTPS"
+      }
+    },
+    "ELBTargetGroup": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "HealthCheckIntervalSeconds": 60,
+        "UnhealthyThresholdCount": 10,
+        "HealthCheckPath": "/",
+        "Name": "CsyeTargetGroup",
+        "TargetType": "instance",
+        "Port": 8080,
+        "Protocol": "HTTP",
+        "VpcId": {
+          "Ref": "vpcId"
+        },
+        "Targets": [
+          {
+            "Id": {
+              "Ref": "EC2Instance1"
+            },
+            "Port": "8080"
+          },
+          {
+            "Id": {
+              "Ref": "EC2Instance2"
+            },
+            "Port": "8080"
+          },
+          {
+            "Id": {
+              "Ref": "EC2Instance3"
+            },
+            "Port": "8080"
+          }
+        ]
+      },
+      "DependsOn": [
+        "ApplicationLoadBalancer"
+      ]
     }
   },
   "Outputs": {
     "InstanceId": {
       "Description": "InstanceId of the newly created EC2 instance",
       "Value": {
-        "Ref": "EC2Instance"
+        "Ref": "EC2Instance1"
       }
     }
   }

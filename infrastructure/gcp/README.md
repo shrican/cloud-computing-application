@@ -6,6 +6,8 @@
 ### Getting Started
 
 	Install and setup your VM instance for google cloud platform.
+	link:
+	https://cloud.google.com/deployment-manager/docs/step-by-step-guide/
 
 ### Prerequisites
 
@@ -29,8 +31,16 @@
 		gcloud init
 
 ### Executing Commands
+	open vm.yaml file
+	 > replace csye-6225-webapp-183602 with your project_ID 
+	 > save file
+	make sure deployment-manager API is enabled
+	
+	gcloud deployment-manager deployments create firstDeployment --config vm.yaml
+	gcloud deployment-manager deployments describe deployment-1
+	gcloud deployment-manager resources list --deployment deployment-1
+	gcloud deployment-manager deployments delete deployment-1
 
-	gcloud compute instances create csye-6225-project --zone us-east1-b --machine-type f1-micro --project csye-6225-webapp-183602
     
 ### Author and Team Members
 
