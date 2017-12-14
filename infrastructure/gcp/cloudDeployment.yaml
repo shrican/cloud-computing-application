@@ -20,5 +20,8 @@ resources:
   type: vm1-template.jinja
 - name: a-new-network
   type: compute.v1.network
+- name: firewall-rule
+  type: firewall-template.jinja
+
   properties:
     IPv4Range: 10.0.0.1/16
