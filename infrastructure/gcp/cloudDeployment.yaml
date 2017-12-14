@@ -14,6 +14,8 @@
 
 imports:
 - path: vm1-template.jinja
+- path: firewall-template.jinja
+
 
 resources:
 - name: vm-1
