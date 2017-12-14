@@ -34,6 +34,7 @@ public class UserAccountEntity {
     @Column(name = "email")
     private String email;
 
+
     @OneToOne (cascade=CascadeType.ALL)
     @JoinColumn(name="DEPT_ID", unique= true, nullable=true, insertable=true, updatable=true)
     private ResetTokenEntity resetEntity;
