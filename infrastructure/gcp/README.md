@@ -36,10 +36,10 @@
 	 > save file
 	make sure deployment-manager API is enabled
 	
-	gcloud deployment-manager deployments create vm-1 --config cloudDeployment.yaml
+	gcloud deployment-manager deployments create firstDeployment --config cloudDeployment.yaml
 	gcloud deployment-manager deployments describe vm-1
 	gcloud deployment-manager resources list --deployment vm-1
-	gcloud deployment-manager deployments delete vm-1
+	gcloud deployment-manager deployments delete deployment-1
 
     
 ### Author and Team Members
