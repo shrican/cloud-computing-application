@@ -31,3 +31,25 @@ resources:
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo apt-get update
+
+          apt-get update
+          apt-get install default-jdk -y
+          update-alternatives --config java
+          echo 'JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java\"' > /etc/environment
+          source /etc/environment
+          sudo apt-get install tomcat8 -y
+          sudo chmod 777 /var/lib/tomcat8
+          sudo chmod 777 ~/csye6225.log
+          sudo apt-get install apache2 php7.0
+
+          curl -sSO https://repo.stackdriver.com/stack-install.sh
+          sudo bash stack-install.sh --write-gcm
+
+          curl -sSO https://dl.google.com/cloudagents/install-logging-agent.sh
+          sudo bash install-logging-agent.sh
