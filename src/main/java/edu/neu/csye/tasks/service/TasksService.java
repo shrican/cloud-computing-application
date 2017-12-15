@@ -112,7 +112,6 @@ public class TasksService {
     }
 
     public Task loadTaskById(String id) {
-
         TaskDto task = tasksDao.loadTaskById(id);
 
         return tasksMapper.dtoToTask(task);
