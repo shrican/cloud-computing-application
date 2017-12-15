@@ -79,7 +79,7 @@ public class TasksService {
                     "such as not being able to access the network.");
             System.out.println("Error Message: " + ace.getMessage());
         }
-
+        System.out.println("https://s3.amazonaws.com/"+bucketName+"/"+filepath + timestamp);
         return "https://s3.amazonaws.com/"+bucketName+"/"+filepath + timestamp;
     }
 
@@ -112,7 +112,6 @@ public class TasksService {
     }
 
     public Task loadTaskById(String id) {
-
         TaskDto task = tasksDao.loadTaskById(id);
 
         return tasksMapper.dtoToTask(task);
@@ -123,13 +122,13 @@ public class TasksService {
         OutputStream outpuStream = null;
         String fileName = cd.getFileName();
         System.out.println("File Name: " + cd.getFileName());
-        String filePath="";
+        String filePath = "";
 
 
         try {
             int read = 0;
             byte[] bytes = new byte[1024];
-            outpuStream = new FileOutputStream(new File(filePath));
+            outpuStream = new FileOutputStream(new File(fileName));
             while ((read = fileInputStream.read(bytes)) != -1) {
                 outpuStream.write(bytes, 0, read);
             }
