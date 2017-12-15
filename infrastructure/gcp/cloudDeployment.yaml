@@ -22,6 +22,8 @@ resources:
   type: vm1-template.jinja
 - name: a-new-network
   type: compute.v1.network
+- name: cloud-function
+  type: function-template.jinja
 - name: firewall-rule
   type: firewall-template.jinja
 

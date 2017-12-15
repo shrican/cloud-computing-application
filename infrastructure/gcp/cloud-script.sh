@@ -41,13 +41,14 @@ gcloud compute target-pools add-instances csye6225-target-pool --instances cloud
 gcloud compute forwarding-rules create forwading-rule --region us-east1 --ports 80 --address external-ip-1 --target-pool csye6225-target-pool
 
 #Create Bucket
-gsutil mb -p "csye-final-project-mudho" -c "regional" -l "us-east1" gs://"csye6225bucket"
+gsutil mb -p "csye-final-project-mud" -c "regional" -l us-east1 gs://csye6225bucket/
 
 #create bigtable
-gcloud beta bigtable instances create csye-final-project-bigtable --cluster=csye6225-final-project-cluster --cluster-zone=us-east1-d --description=test --cluster-num-nodes=3
+gcloud beta bigtable instances create csye-final-bigtable --cluster=csye6225-final-cluster --cluster-zone=us-east1-b --description=test-final-project --cluster-num-nodes=3
+
 
 #create rds instance
-gcloud sql instances create sql-instance --tier=db-g1-small --region=us-east1
+gcloud sql instances create sql-instance123 --tier=db-g1-small --region=us-east1
 while true; do
 InstanceStatus=`gcloud sql instances describe sql-instance | grep RUNNABLE`
 echo $InstanceStatus
@@ -66,16 +67,16 @@ endIndex=`expr ${#StaticIpTemp} - 1`
 StaticIP=`echo $StaticIp | cut -c 12-$endIndex`
 
 #Create a Managed Zone
-gcloud dns managed-zones create csye6225HostedZone --dns-name csye6225-fall2017-mudholkars.me. --description zoneDescription
+gcloud dns managed-zones create csye6225zone --dns-name csye6225-fall2017-mudholkars.me. --description zoneDescription
 
 #Starting Transaction
-gcloud dns record-sets transaction start -z=csye6225HostedZone
+gcloud dns record-sets transaction start -z=csye6225zone
 
 #Create Resource Record Set
-gcloud dns record-sets transaction add --zone csye6225HostedZone --name=csye6225-fall2017-mudholkars.me. --ttl=60 --type=A $StaticIP
+gcloud dns record-sets transaction add --zone csye6225zone --name=csye6225-fall2017-mudholkars.me. --ttl=60 --type=A $StaticIP
 
 #Executing a transaction
-gcloud dns record-sets transaction execute -z=csye6225HostedZone
+gcloud dns record-sets transaction execute -z=csye6225zone
 
 
 #Create SNS Topic
@@ -84,3 +85,9 @@ gcloud beta pubsub topics create csye6225topic
 #Create Google Cloud Function
 #gcloud beta functions deploy helloWorld --stage-bucket csye6225bucket --trigger-http --trigger-topic=csye6225topic
 gcloud beta functions deploy helloWorld --stage-bucket csye6225bucket --trigger-http
+
+
+gcloud beta pubsub topics create myTopic
+gcloud beta pubsub subscriptions create --topic myTopic mySubscription
+gcloud beta pubsub topics publish myTopic "hello"
+gcloud beta pubsub subscriptions pull --auto-ack mySubscription
