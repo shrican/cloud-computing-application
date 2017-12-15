@@ -7,7 +7,6 @@
  **/
 package edu.neu.csye.useraccount.dataaccess.model;
 
-import edu.neu.csye.tasks.dataaccess.model.ResetTokenEntity;
 import edu.neu.csye.tasks.dataaccess.model.TaskEntity;
 import lombok.Data;
 
@@ -34,10 +33,6 @@ public class UserAccountEntity {
     @Column(name = "email")
     private String email;
 
-
-    @OneToOne (cascade=CascadeType.ALL)
-    @JoinColumn(name="DEPT_ID", unique= true, nullable=true, insertable=true, updatable=true)
-    private ResetTokenEntity resetEntity;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "USERACCOUNT_TASK", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "taskId") )
