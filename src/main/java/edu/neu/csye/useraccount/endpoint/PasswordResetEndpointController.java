@@ -54,7 +54,6 @@ public class PasswordResetEndpointController implements PasswordResetEndpointRes
 
         }
 
-
     public UserAccountDto getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
