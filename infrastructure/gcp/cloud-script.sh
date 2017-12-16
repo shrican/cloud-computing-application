@@ -48,18 +48,18 @@ gcloud beta bigtable instances create csye-final-bigtable --cluster=csye6225-fin
 
 
 #create rds instance
-gcloud sql instances create sql-instance123 --tier=db-g1-small --region=us-east1
+gcloud sql instances create sql-instance5 --tier=db-g1-small --region=us-east1
 while true; do
-InstanceStatus=`gcloud sql instances describe sql-instance | grep RUNNABLE`
+InstanceStatus=`gcloud sql instances describe sql-instance5 | grep RUNNABLE`
 echo $InstanceStatus
 if [[ "$InstanceStatus" == "state: RUNNABLE" ]];
 then
 break
 fi
 done
-gcloud sql databases create mySchema --instance=sql-instance
-cloud sql users set-password root % --instance sql-instance --password=root
-gcloud sql users create user % --instance sql-instance --password=password
+gcloud sql databases create mySchema --instance=sql-instance5
+cloud sql users set-password root % --instance sql-instance5 --password=root_access
+gcloud sql users create user1 % --instance sql-instance5 --password=rootPassword
 
 #Getting a Static IP for the Load Balancer
 StaticIpTemp=`gcloud compute forwarding-rules describe forwading-rule --region us-east1 | grep IPAddress`
