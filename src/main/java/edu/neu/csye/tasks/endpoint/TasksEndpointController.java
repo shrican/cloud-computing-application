@@ -173,6 +173,7 @@ public class TasksEndpointController implements TasksEndpointRest {
         TaskDto taskDto = mapper.entityToDto(task);
 
         AttachmentDto att = new AttachmentDto();
+        System.out.println(fileurl);
         att.setUrl(fileurl);
 
         task.getAttachment().add(mapper.attachmentDtoToEntity(att));
