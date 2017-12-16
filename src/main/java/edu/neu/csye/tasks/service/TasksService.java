@@ -49,9 +49,8 @@ public class TasksService {
 
     public String uploadToS3(String filepath) throws IOException {
 
-        AmazonS3 s3client = AmazonS3ClientBuilder.standard()
-                .withCredentials(new InstanceProfileCredentialsProvider(false))
-                .build();
+        AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+
         try {
             System.out.println("Uploading a new object to S3 from a file\n");
             File file = new File(filepath);
