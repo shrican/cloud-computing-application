@@ -13,11 +13,8 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.PublishResult;
-import com.google.gson.JsonObject;
-import edu.neu.csye.tasks.dataaccess.model.ResetTokenEntity;
 import edu.neu.csye.useraccount.dataaccess.dao.UserAccountRepository;
 import edu.neu.csye.useraccount.dataaccess.model.UserAccountEntity;
-import edu.neu.csye.useraccount.endpoint.model.PasswordResetToken;
 import edu.neu.csye.useraccount.service.UserAccountService;
 import edu.neu.csye.useraccount.service.model.UserAccountDto;
 import edu.neu.csye.useraccount.service.model.UserAccountMapper;
@@ -38,12 +35,11 @@ public class PasswordResetEndpointController implements PasswordResetEndpointRes
     private final UserAccountMapper userAccountMapper;
 
     @Override
-    public Response sendResetToken(ResetTokenEntity resetToken) {
+    public Response sendResetToken(UserAccountEntity resetToken) {
 
         UserAccountDto userAccountDto = getUser();
         UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
 
-        //userAccountEntity.setResetEntity(resetToken);
 
                 AmazonSNSClient snsClient = new AmazonSNSClient(new InstanceProfileCredentialsProvider());
                 snsClient.setRegion(Region.getRegion(Regions.US_EAST_1));
@@ -57,7 +53,6 @@ public class PasswordResetEndpointController implements PasswordResetEndpointRes
             return Response.status(Response.Status.OK).build();
 
         }
-
 
     public UserAccountDto getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

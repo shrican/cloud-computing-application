@@ -47,7 +47,7 @@ public class TasksService {
     private final TasksMapper tasksMapper;
     //private static String keyName = "File" + timestamp.toString();
 
-    public void uploadToS3(String filepath) throws IOException {
+    public String uploadToS3(String filepath) throws IOException {
 
         AmazonS3 s3client = AmazonS3ClientBuilder.standard()
                 .withCredentials(new InstanceProfileCredentialsProvider(false))
@@ -59,6 +59,7 @@ public class TasksService {
             String bucketName = System.getProperty("bucketName");
             s3client.putObject(new PutObjectRequest(
                     bucketName, filepath + timestamp, file));
+
 
         } catch (AmazonServiceException ase) {
             System.out.println("Caught an AmazonServiceException, which " +
@@ -78,6 +79,8 @@ public class TasksService {
                     "such as not being able to access the network.");
             System.out.println("Error Message: " + ace.getMessage());
         }
+        System.out.println("https://s3.amazonaws.com/"+bucketName+"/"+filepath + timestamp);
+        return "https://s3.amazonaws.com/"+bucketName+"/"+filepath + timestamp;
     }
 
     public void deletefroms3(String keyname) {
@@ -109,7 +112,6 @@ public class TasksService {
     }
 
     public Task loadTaskById(String id) {
-
         TaskDto task = tasksDao.loadTaskById(id);
 
         return tasksMapper.dtoToTask(task);
@@ -120,19 +122,19 @@ public class TasksService {
         OutputStream outpuStream = null;
         String fileName = cd.getFileName();
         System.out.println("File Name: " + cd.getFileName());
-        String filePath = FOLDER_PATH + fileName;
-        System.out.println("File path: " + filePath);
+        String filePath = "";
+
 
         try {
             int read = 0;
             byte[] bytes = new byte[1024];
-            outpuStream = new FileOutputStream(new File(filePath));
+            outpuStream = new FileOutputStream(new File(fileName));
             while ((read = fileInputStream.read(bytes)) != -1) {
                 outpuStream.write(bytes, 0, read);
             }
             outpuStream.flush();
             outpuStream.close();
-            uploadToS3(cd.getFileName());
+            filePath= uploadToS3(cd.getFileName());
         } catch (IOException iox) {
             iox.printStackTrace();
         } finally {

@@ -7,7 +7,7 @@
  **/
 package edu.neu.csye.useraccount.endpoint;
 
-import edu.neu.csye.tasks.dataaccess.model.ResetTokenEntity;
+import edu.neu.csye.useraccount.dataaccess.model.UserAccountEntity;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -23,6 +23,6 @@ public interface PasswordResetEndpointRest {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    Response sendResetToken(ResetTokenEntity passwordReset);
+    Response sendResetToken(UserAccountEntity passwordReset);
     
 }
