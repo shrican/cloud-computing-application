@@ -147,9 +147,6 @@ public class TasksEndpointController implements TasksEndpointRest {
 
         UserAccountDto userAccountDto = getUser();
 
-        // UserAccountEntity userAccountEntity = userAccountRepository.findByUsername(userAccountDto.getUsername());
-
-
         AttachmentEntity attachmentEntity = attachmentRepository.findByAttachmentId(idAttachments);
         service.deletefroms3(attachmentEntity.getUrl());
         TaskEntity taskEntity = tasksRepository.findByTaskId(taskId);
