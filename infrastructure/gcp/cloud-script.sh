@@ -23,7 +23,7 @@ echo '<!doctype html><html><body><h1>cloud-compute-2</h1></body></html>' | tee /
 EOF"
 
 # Create Firewall rules
-gcloud compute firewall-rules create network-firewall --target-tags network-lb-tag --allow tcp:80
+gcloud compute firewall-rules create network-firewall --target-tags network-lb-tag --allow tcp:80,tcp:8080,tcp:22,tcp:443
 
 # Create a static ip for the load balancer
 gcloud compute addresses create external-ip-1 --region us-east1
@@ -41,25 +41,25 @@ gcloud compute target-pools add-instances csye6225-target-pool --instances cloud
 gcloud compute forwarding-rules create forwading-rule --region us-east1 --ports 80 --address external-ip-1 --target-pool csye6225-target-pool
 
 #Create Bucket
-gsutil mb -p "csye-final-project-mud" -c "regional" -l us-east1 gs://csye6225bucket/
+gsutil mb -p "watchful-hall-183615" -c "regional" -l us-east1 gs://csye6225bucket1/
 
 #create bigtable
 gcloud beta bigtable instances create csye-final-bigtable --cluster=csye6225-final-cluster --cluster-zone=us-east1-b --description=test-final-project --cluster-num-nodes=3
 
 
 #create rds instance
-gcloud sql instances create sql-instance5 --tier=db-g1-small --region=us-east1
+gcloud sql instances create sql-instance6 --tier=db-g1-small --region=us-east1
 while true; do
-InstanceStatus=`gcloud sql instances describe sql-instance5 | grep RUNNABLE`
+InstanceStatus=`gcloud sql instances describe sql-instance6 | grep RUNNABLE`
 echo $InstanceStatus
 if [[ "$InstanceStatus" == "state: RUNNABLE" ]];
 then
 break
 fi
 done
-gcloud sql databases create mySchema --instance=sql-instance5
-cloud sql users set-password root % --instance sql-instance5 --password=root_access
-gcloud sql users create user1 % --instance sql-instance5 --password=rootPassword
+gcloud sql databases create mySchema --instance=sql-instance6
+cloud sql users set-password root % --instance sql-instance6 --password=root_access
+gcloud sql users create user1 % --instance sql-instance6 --password=rootPassword
 
 #Getting a Static IP for the Load Balancer
 StaticIpTemp=`gcloud compute forwarding-rules describe forwading-rule --region us-east1 | grep IPAddress`
@@ -83,8 +83,8 @@ gcloud dns record-sets transaction execute -z=csye6225zone
 gcloud beta pubsub topics create csye6225topic
 
 #Create Google Cloud Function
-#gcloud beta functions deploy helloWorld --stage-bucket csye6225bucket --trigger-http --trigger-topic=csye6225topic
-gcloud beta functions deploy helloWorld --stage-bucket csye6225bucket --trigger-http
+#gcloud beta functions deploy helloWorld --stage-bucket csye6225bucket1 --trigger-http --trigger-topic=csye6225topic
+gcloud beta functions deploy helloWorld --stage-bucket csye6225bucket1 --trigger-http
 
 
 gcloud beta pubsub topics create myTopic
