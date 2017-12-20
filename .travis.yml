@@ -56,8 +56,8 @@ deploy:
 notifications:
   username:
     recipients:
-      - patil.man@husky.neu.edu
-      - mudholkar.s@husky.neu.edu
-      - bhanushali.v@husky.neu.edu
-      - chandra.ra@husky.neu.edu
+      -
+      -
+      -
+      -
 

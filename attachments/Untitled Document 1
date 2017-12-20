@@ -93,10 +93,10 @@ script:
 notifications:
   email:
     recipients:
-      - chandra.ra@husky.neu.edu
-      - patil.man@husky.neu.edu
-      - mudholkar.s@husky.neu.edu
-      - bhanushali.v@husky.neu.edu
+      -
+      -
+      -
+      -
     on_success: always
 
 * Trigger your first build with a git push
@@ -142,8 +142,8 @@ script:
 notifications:
   email:
     recipients:
-      - chandra.ra@husky.neu.edu
-      - patil.man@husky.neu.edu
-      - mudholkar.s@husky.neu.edu
-      - bhanushali.v@husky.neu.edu
+      -
+      -
+      -
+      -
     on_success: always

@@ -1,7 +1,7 @@
- # Varsha Bhanushali, 001234580, bhanushali.v@husky.neu.edu
- # Shrikant Mudholkar, 001284732, mudholkar.s@husky.neu.edu
- # Rahul Chandra, 01225683, chandra.ra@husky.neu.edu
- # Manish Patil, 001228956, patil.man@husky.neu.edu 
+ # Varsha Bhanushali, 001234580,
+ # Shrikant Mudholkar, 001284732,
+ # Rahul Chandra, 01225683,
+ # Manish Patil, 001228956,
  
  #creaing group
 export VPC_ID=$(aws ec2 describe-vpcs --query "Vpcs[0].VpcId" --output text)
@@ -24,4 +24,4 @@ publicIP=$(aws ec2 describe-instances --instance-ids $instanceId --query "Reserv
 
 domainName="ec2.csye6225-fall2017-chandrara.me."
 
-aws route53 change-resource-record-sets --hosted-zone-taskId Z2Z3C72EUKJKZS --change-batch "{\"Comment\": \"DNS name for my instance.\", \"Changes\":[{\"Action\": \"UPSERT\", \"ResourceRecordSet\": { \"Name\": \""$domainName"\", \"Type\": \"A\", \"TTL\": 60, \"ResourceRecords\": [{\"Value\": \""$publicIP"\"}]}}]}"
+aws route53 change-resource-record-sets --hosted-zone-taskId  --change-batch "{\"Comment\": \"DNS name for my instance.\", \"Changes\":[{\"Action\": \"UPSERT\", \"ResourceRecordSet\": { \"Name\": \""$domainName"\", \"Type\": \"A\", \"TTL\": 60, \"ResourceRecords\": [{\"Value\": \""$publicIP"\"}]}}]}"

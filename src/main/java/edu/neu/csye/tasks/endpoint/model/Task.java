@@ -1,8 +1,8 @@
 /**
- * Varsha Bhanushali, 001234580, bhanushali.v@husky.neu.edu
- * Shrikant Mudholkar, 001284732, mudholkar.s@husky.neu.edu
- * Rahul Chandra, 01225683, chandra.ra@husky.neu.edu
- * Manish Patil, 001228956, patil.man@husky.neu.edu
+ * Varsha Bhanushali, 001234580,
+ * Shrikant Mudholkar, 001284732,
+ * Rahul Chandra, 01225683,
+ * Manish Patil, 001228956,
  **/
 
 package edu.neu.csye.tasks.endpoint.model;
@@ -15,8 +15,6 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Defines the properties and basic validation for a request to create a task.

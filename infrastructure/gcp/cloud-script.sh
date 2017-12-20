@@ -41,25 +41,25 @@ gcloud compute target-pools add-instances csye6225-target-pool --instances cloud
 gcloud compute forwarding-rules create forwading-rule --region us-east1 --ports 80 --address external-ip-1 --target-pool csye6225-target-pool
 
 #Create Bucket
-gsutil mb -p "watchful-hall-183615" -c "regional" -l us-east1 gs://csye6225bucket1/
+gsutil mb -p "watchful-hall-183615" -c "regional" -l us-east1 gs://csye6225bucket2/
 
 #create bigtable
 gcloud beta bigtable instances create csye-final-bigtable --cluster=csye6225-final-cluster --cluster-zone=us-east1-b --description=test-final-project --cluster-num-nodes=3
 
 
 #create rds instance
-gcloud sql instances create sql-instance6 --tier=db-g1-small --region=us-east1
+gcloud sql instances create sql-instance7 --tier=db-g1-small --region=us-east1
 while true; do
-InstanceStatus=`gcloud sql instances describe sql-instance6 | grep RUNNABLE`
+InstanceStatus=`gcloud sql instances describe sql-instance7 | grep RUNNABLE`
 echo $InstanceStatus
 if [[ "$InstanceStatus" == "state: RUNNABLE" ]];
 then
 break
 fi
 done
-gcloud sql databases create mySchema --instance=sql-instance6
-cloud sql users set-password root % --instance sql-instance6 --password=root_access
-gcloud sql users create user1 % --instance sql-instance6 --password=rootPassword
+gcloud sql databases create mySchema --instance=sql-instance7
+cloud sql users set-password root % --instance sql-instance7 --password=root_access
+gcloud sql users create user1 % --instance sql-instance7 --password=rootPassword
 
 #Getting a Static IP for the Load Balancer
 StaticIpTemp=`gcloud compute forwarding-rules describe forwading-rule --region us-east1 | grep IPAddress`
@@ -67,13 +67,13 @@ endIndex=`expr ${#StaticIpTemp} - 1`
 StaticIP=`echo $StaticIp | cut -c 12-$endIndex`
 
 #Create a Managed Zone
-gcloud dns managed-zones create csye6225zone --dns-name csye6225-fall2017-mudholkars.me. --description zoneDescription
+gcloud dns managed-zones create csye6225zone --dns-name . --description zoneDescription
 
 #Starting Transaction
 gcloud dns record-sets transaction start -z=csye6225zone
 
 #Create Resource Record Set
-gcloud dns record-sets transaction add --zone csye6225zone --name=csye6225-fall2017-mudholkars.me. --ttl=60 --type=A $StaticIP
+gcloud dns record-sets transaction add --zone csye6225zone --name=. --ttl=60 --type=A $StaticIP
 
 #Executing a transaction
 gcloud dns record-sets transaction execute -z=csye6225zone
@@ -83,8 +83,8 @@ gcloud dns record-sets transaction execute -z=csye6225zone
 gcloud beta pubsub topics create csye6225topic
 
 #Create Google Cloud Function
-#gcloud beta functions deploy helloWorld --stage-bucket csye6225bucket1 --trigger-http --trigger-topic=csye6225topic
-gcloud beta functions deploy helloWorld --stage-bucket csye6225bucket1 --trigger-http
+#gcloud beta functions deploy helloWorld --stage-bucket csye6225bucket2 --trigger-http --trigger-topic=csye6225topic
+gcloud beta functions deploy helloWorld --stage-bucket csye6225bucket2 --trigger-http
 
 
 gcloud beta pubsub topics create myTopic
